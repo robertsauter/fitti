@@ -1,6 +1,6 @@
 export const databaseName = 'trainingsplan';
 
 export const objectStoreNames = {
-    exercises: 'exercises'
+    globalExercises: 'globalExercises'
 };
 Object.freeze(objectStoreNames);

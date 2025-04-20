@@ -1,3 +1,5 @@
+import { exercisesService } from '../../services/ExercisesService.js';
+
 export class ExercisesPage extends HTMLElement {
     constructor() {
         super();
@@ -17,6 +19,11 @@ export class ExercisesPage extends HTMLElement {
                 </details>
             </div>
         `;
+    }
+
+    async connectedCallback() {
+        const exercises = await exercisesService.getGlobalExercises();
+        console.log(exercises);
     }
 }
 

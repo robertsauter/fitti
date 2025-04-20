@@ -1,13 +1,19 @@
 import { objectStoreNames } from '../Constants.js';
 import { promiseIndexedDB } from '../lib/PromiseIndexedDB.js';
+import '../models/ExerciseResponse.js'
 
 class ExercisesService {
-    getExercises() {
+    fetchGlobalExercises() {
         return fetch('http://localhost:8000/exercises');
     }
 
+    /** @return {Promise<ExerciseResponse[]>} */
+    getGlobalExercises() {
+        return promiseIndexedDB.getAll(objectStoreNames.globalExercises);
+    }
+
     async syncGlobalExercises() {
-        const response = await this.getExercises();
+        const response = await this.fetchGlobalExercises();
 
         if (!response.ok) {
             return;
@@ -16,7 +22,7 @@ class ExercisesService {
         /** @type {ExerciseResponse[]} */
         const exercises = await response.json();
 
-        await promiseIndexedDB.putAll(objectStoreNames.exercises, exercises);
+        return promiseIndexedDB.putAll(objectStoreNames.globalExercises, exercises);
     }
 }
 

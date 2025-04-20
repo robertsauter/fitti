@@ -29,10 +29,10 @@ export class App extends HTMLElement {
             .lock('portrait-primary')
             .catch(e => console.error(e));
 
-        appRouter.outlet = this;
-
         await promiseIndexedDB.initialize();
         exercisesService.syncGlobalExercises();
+
+        appRouter.outlet = this;
     }
 }
 
