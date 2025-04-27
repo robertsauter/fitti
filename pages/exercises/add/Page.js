@@ -1,5 +1,5 @@
-import { appRouter, appRouterIds } from '../../../Routes.js';
-import { exercisesService } from '../../../services/ExercisesService.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class ExercisesAddPage extends HTMLElement {
     #ids = {
@@ -22,7 +22,7 @@ export class ExercisesAddPage extends HTMLElement {
             </style>
             <div class="page-container">
                 <h2>Übung hinzufügen</h2>
-                <form id="${this.#ids.saveExerciseForm}">
+                <form id="${this.#ids.createExerciseForm}">
                     <label for="${this.#inputNames.name}">Name</label>
                     <input
                         id="${this.#inputNames.name}"

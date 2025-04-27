@@ -1,7 +1,7 @@
-import { globalObjectStoreNames, objectStoreNames } from '../Constants.js';
-import { promiseIndexedDB } from '../lib/PromiseIndexedDB.js';
-import '../models/ExerciseResponse.js';
-import '../models/Exercise.js';
+import { globalObjectStoreNames, objectStoreNames } from '/Constants.js';
+import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
+import '/models/ExerciseResponse.js';
+import '/models/Exercise.js';
 
 class ExercisesService {
     fetchGlobalExercises() {

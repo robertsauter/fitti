@@ -1,5 +1,5 @@
-import { ClientRouter } from '../lib/ClientRouter.js';
-import '../models/Route.js';
+import { ClientRouter } from '/lib/ClientRouter.js';
+import '/models/Route.js';
 
 export class Link extends HTMLElement {
     /** @type {string} */

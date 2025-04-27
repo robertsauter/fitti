@@ -1,5 +1,5 @@
-import { appRouter, appRouterIds } from '../../../Routes.js';
-import { exercisesService } from '../../../services/ExercisesService.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class ExercisesEditPage extends HTMLElement {
     #ids = {

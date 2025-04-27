@@ -1,7 +1,7 @@
-import { appRouter, appRouterIds } from '../../Routes.js';
-import { exercisesService } from '../../services/ExercisesService.js';
-import { Link } from '../../components/Link.js';
-import { ExercisesEditPageLink } from './components/EditPageLink.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { exercisesService } from '/services/ExercisesService.js';
+import { Link } from '/components/Link.js';
+import { ExercisesEditPageLink } from '/pages/exercises/components/EditPageLink.js';
 
 export class ExercisesPage extends HTMLElement {
     #ids = {

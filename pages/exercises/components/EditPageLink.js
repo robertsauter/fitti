@@ -1,5 +1,5 @@
-import { appRouter, appRouterIds } from '../../../Routes.js';
-import { Link } from '../../../components/Link.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { Link } from '/components/Link.js';
 
 export class ExercisesEditPageLink extends HTMLElement {
     /** @type {string} */

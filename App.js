@@ -1,7 +1,7 @@
-import { appRouter, appRouterIds } from './Routes.js';
-import { NavTabs } from './components/NavTabs.js';
-import { exercisesService } from './services/ExercisesService.js';
-import { promiseIndexedDB } from './lib/PromiseIndexedDB.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { NavTabs } from '/components/NavTabs.js';
+import { exercisesService } from '/services/ExercisesService.js';
+import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 
 export class App extends HTMLElement {
     constructor() {

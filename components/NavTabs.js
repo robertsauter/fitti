@@ -1,5 +1,5 @@
-import { appRouter, appRouterIds } from '../Routes.js';
-import { Link } from './Link.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { Link } from '/components/Link.js';
 
 export class NavTabs extends HTMLElement {
 
