@@ -6,6 +6,8 @@ export class Link extends HTMLElement {
     #routeId;
     /** @type {ClientRouter} */
     #router;
+    /** @type {Map<string, string> | undefined} */
+    #params;
 
     /** @param {ClientRouter} routerInstance  */
     set router(routerInstance) {
@@ -17,7 +19,24 @@ export class Link extends HTMLElement {
             return;
         }
 
-        this.shadowRoot.querySelector('a').href = foundRoute.path;
+        let path = foundRoute.path;
+
+        if (this.#params) {
+            this.#params.forEach((value, key) => {
+                const keyParam = `:${key}`
+
+                if (path.includes(keyParam)) {
+                    path = path.replace(keyParam, value);
+                }
+            });
+        }
+
+        this.shadowRoot.querySelector('a').href = path;
+    }
+
+    /** @param {Map<string, string>} newParams  */
+    set params(newParams) {
+        this.#params = newParams;
     }
 
     constructor() {
@@ -52,7 +71,7 @@ export class Link extends HTMLElement {
             return;
         }
 
-        this.#router.navigate(this.#routeId);
+        this.#router.navigate(this.#routeId, false, this.#params);
     }
 }
 

@@ -1,6 +1,7 @@
 import { appRouter, appRouterIds } from '../../Routes.js';
 import { exercisesService } from '../../services/ExercisesService.js';
 import { Link } from '../../components/Link.js';
+import { ExercisesEditPageLink } from './components/EditPageLink.js';
 
 export class ExercisesPage extends HTMLElement {
     #ids = {
@@ -62,12 +63,12 @@ export class ExercisesPage extends HTMLElement {
 
         let exerciseElements = '';
         exercises.forEach((exercise) => {
-            console.log(exercise);
             exerciseElements = `
                 ${exerciseElements}
                 <li>
                    <h3>${exercise.Name}</h6>
                    <p>${exercise.Description}</p>
+                   <fit-exercises-edit-page-link exerciseId=${exercise.ID}>Bearbeiten</fit-exercises-edit-page-link>
                 </li>
             `
         });

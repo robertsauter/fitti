@@ -4,6 +4,7 @@ import { PlansPage } from './pages/plans/Page.js';
 import { WorkoutsPage } from './pages/workouts/Page.js';
 import { ExercisesPage } from './pages/exercises/Page.js';
 import { ExercisesAddPage } from './pages/exercises/add/Page.js';
+import { ExercisesEditPage } from './pages/exercises/edit/Page.js';
 import './models/Route.js';
 
 export const appRouterIds = {
@@ -13,7 +14,8 @@ export const appRouterIds = {
     plans: 'plans',
     workouts: 'workouts',
     exercises: 'exercises',
-    exercisesAdd: 'exercisesAdd'
+    exercisesAdd: 'exercisesAdd',
+    exercisesEdit: 'exercisesEdit'
 };
 Object.freeze(appRouterIds);
 
@@ -43,6 +45,11 @@ const routes = [
         id: appRouterIds.exercisesAdd,
         path: '/uebungen/neu',
         component: '<fit-exercises-add-page></fit-exercises-add-page>',
+    },
+    {
+        id: appRouterIds.exercisesEdit,
+        path: '/uebungen/:id',
+        component: '<fit-exercises-edit-page></fit-exercises-edit-page>',
     },
 ];
 
