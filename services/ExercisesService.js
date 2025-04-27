@@ -1,6 +1,7 @@
-import { objectStoreNames } from '../Constants.js';
+import { globalObjectStoreNames, objectStoreNames } from '../Constants.js';
 import { promiseIndexedDB } from '../lib/PromiseIndexedDB.js';
-import '../models/ExerciseResponse.js'
+import '../models/ExerciseResponse.js';
+import '../models/Exercise.js';
 
 class ExercisesService {
     fetchGlobalExercises() {
@@ -9,7 +10,12 @@ class ExercisesService {
 
     /** @return {Promise<ExerciseResponse[]>} */
     getGlobalExercises() {
-        return promiseIndexedDB.getAll(objectStoreNames.globalExercises);
+        return promiseIndexedDB.getAll(globalObjectStoreNames.globalExercises);
+    }
+
+    /** @return {Promise<Exercise[]>} */
+    getUserExercises() {
+        return promiseIndexedDB.getAll(objectStoreNames.userExercises);
     }
 
     async syncGlobalExercises() {
@@ -22,7 +28,7 @@ class ExercisesService {
         /** @type {ExerciseResponse[]} */
         const exercises = await response.json();
 
-        return promiseIndexedDB.putAll(objectStoreNames.globalExercises, exercises);
+        return promiseIndexedDB.putAll(globalObjectStoreNames.globalExercises, exercises);
     }
 }
 

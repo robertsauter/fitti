@@ -5,6 +5,7 @@ import { Link } from '../../components/Link.js';
 export class ExercisesPage extends HTMLElement {
     #ids = {
         globalExercises: 'global-exercises',
+        userExercises: 'user-exercises',
         addExerciseButton: 'add-exercise-button',
     }
 
@@ -16,6 +17,7 @@ export class ExercisesPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="page-container">
+                <h2>Übungen</h2>
                 <fit-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-link>
                 <details open>
                     <summary>Ausgewählte Übungen</summary>
@@ -23,7 +25,7 @@ export class ExercisesPage extends HTMLElement {
                 </details>
                 <details open>
                     <summary>Deine Übungen</summary>
-                    <ul id="user-exercises"></ul>
+                    <ul id="${this.#ids.userExercises}"></ul>
                 </details>
             </div>
         `;
@@ -31,10 +33,11 @@ export class ExercisesPage extends HTMLElement {
 
     connectedCallback() {
         this.#displayGlobalExercises();
+        this.#displayUserExercises();
 
-        /** @type {NodeListOf<Link>} */
-        const links = this.shadowRoot.querySelectorAll('fit-link');
-        links.forEach((link) => link.router = appRouter);
+        /** @type {Link} */
+        const link = this.shadowRoot.querySelector('fit-link');
+        link.router = appRouter;
     }
 
     async #displayGlobalExercises() {
@@ -45,13 +48,31 @@ export class ExercisesPage extends HTMLElement {
             exerciseElements = `
                 ${exerciseElements}
                 <li>
-                   <h6>${exercise.Name}</h6>
+                   <h3>${exercise.Name}</h6>
                    <p>${exercise.Description}</p>
                 </li>
             `
         });
 
         this.shadowRoot.getElementById(this.#ids.globalExercises).innerHTML = exerciseElements;
+    }
+
+    async #displayUserExercises() {
+        const exercises = await exercisesService.getUserExercises();
+
+        let exerciseElements = '';
+        exercises.forEach((exercise) => {
+            console.log(exercise);
+            exerciseElements = `
+                ${exerciseElements}
+                <li>
+                   <h3>${exercise.Name}</h6>
+                   <p>${exercise.Description}</p>
+                </li>
+            `
+        });
+
+        this.shadowRoot.getElementById(this.#ids.userExercises).innerHTML = exerciseElements;
     }
 }
 
