@@ -4,3 +4,9 @@
  * @property {string} Name
  * @property {string} Description
  */
+
+/**
+ * @typedef {Object} ExerciseCreateData
+ * @property {string} Name
+ * @property {string} Description
+ */
