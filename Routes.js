@@ -7,6 +7,7 @@ export const appRouterIds = {
     register: 'register',
     plans: 'plans',
     workouts: 'workouts',
+    workoutsAdd: 'workoutsAdd',
     exercises: 'exercises',
     exercisesAdd: 'exercisesAdd',
     exercisesEdit: 'exercisesEdit'
@@ -32,6 +33,12 @@ const routes = [
         path: '/workouts',
         component: '<fit-workouts-page></fit-workouts-page>',
         importPath: '/pages/workouts/Page.js',
+    },
+    {
+        id: appRouterIds.workoutsAdd,
+        path: '/workouts/neu',
+        component: '<fit-workouts-add-page></fit-workouts-add-page>',
+        importPath: '/pages/workouts/add/Page.js',
     },
     {
         id: appRouterIds.exercises,

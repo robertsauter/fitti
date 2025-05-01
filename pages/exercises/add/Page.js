@@ -4,7 +4,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 export class ExercisesAddPage extends HTMLElement {
     #ids = {
         createExerciseForm: 'createExerciseForm'
-    };
+    }
 
     #inputNames = {
         name: 'name',
@@ -21,7 +21,7 @@ export class ExercisesAddPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="page-container">
-                <h2>Übung hinzufügen</h2>
+                <h2>Übung erstellen</h2>
                 <form id="${this.#ids.createExerciseForm}">
                     <label for="${this.#inputNames.name}">Name</label>
                     <input
