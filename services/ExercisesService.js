@@ -18,7 +18,7 @@ class ExercisesService {
      * @return {Promise<Exercise>} 
      * */
     getUserExercise(id) {
-        return promiseIndexedDB.get(id, objectStoreNames.userExercises);
+        return promiseIndexedDB.get(objectStoreNames.userExercises, id);
     }
 
     /** @return {Promise<Exercise[]>} */
@@ -38,6 +38,11 @@ class ExercisesService {
      */
     putUserExercise(exercise) {
         return promiseIndexedDB.put(objectStoreNames.userExercises, exercise);
+    }
+
+    /** @param {number} id  */
+    deleteUserExercise(id) {
+        return promiseIndexedDB.delete(objectStoreNames.userExercises, id);
     }
 
     async syncGlobalExercises() {

@@ -5,7 +5,8 @@ import { WorkoutsEditPageLink } from '/pages/workouts/components/EditPageLink.js
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
-		userWorkouts: 'userWorkouts'
+		userWorkouts: 'userWorkouts',
+		workout: 'workout',
 	}
 
 	constructor() {
@@ -34,18 +35,31 @@ export class WorkoutsPage extends HTMLElement {
 	async #displayUserWorkouts() {
 		const workouts = await workoutsService.getUserWorkouts();
 
-		let workoutElements = '';
+		const workoutsElement = this.shadowRoot.getElementById(this.#ids.userWorkouts);
 		workouts.forEach((workout) => {
-			workoutElements = `
-				${workoutElements}
-				<li>
-					<h3>${workout.Name}</h3>
-					<fit-workouts-edit-page-link workoutId=${workout.ID}>Bearbeiten</fit-workouts-edit-page-link>
-				</li>
-			`
-		});
+			const workoutElement = document.createElement('li');
+			workoutElement.id = `${this.#ids.workout}${workout.ID}`;
 
-		this.shadowRoot.getElementById(this.#ids.userWorkouts).innerHTML = workoutElements;
+			workoutElement.innerHTML = `
+				<h3>${workout.Name}</h3>
+				<button type="button">Löschen</button>
+				<fit-workouts-edit-page-link workoutId=${workout.ID}>Bearbeiten</fit-workouts-edit-page-link>
+			`;
+
+			workoutElement
+				.querySelector('button')
+				.addEventListener('click', () => this.#deleteExercise(workout.ID));
+
+			workoutsElement.appendChild(workoutElement);
+		});
+	}
+
+	/** @param {number} id  */
+	async #deleteExercise(id) {
+		await workoutsService.deleteUserWorkout(id);
+		this.shadowRoot
+			.getElementById(`${this.#ids.workout}${id}`)
+			.remove();
 	}
 }
 

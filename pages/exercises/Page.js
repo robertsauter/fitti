@@ -5,9 +5,10 @@ import { ExercisesEditPageLink } from '/pages/exercises/components/EditPageLink.
 
 export class ExercisesPage extends HTMLElement {
     #ids = {
-        globalExercises: 'global-exercises',
-        userExercises: 'user-exercises',
-        addExerciseButton: 'add-exercise-button',
+        globalExercises: 'globalExercises',
+        userExercises: 'userExercises',
+        addExerciseButton: 'addExerciseButton',
+        exercise: 'exercise',
     }
 
     constructor() {
@@ -61,19 +62,32 @@ export class ExercisesPage extends HTMLElement {
     async #displayUserExercises() {
         const exercises = await exercisesService.getUserExercises();
 
-        let exerciseElements = '';
+        const exercisesElement = this.shadowRoot.getElementById(this.#ids.userExercises);
         exercises.forEach((exercise) => {
-            exerciseElements = `
-                ${exerciseElements}
-                <li>
-                   <h3>${exercise.Name}</h3>
-                   <p>${exercise.Description}</p>
-                   <fit-exercises-edit-page-link exerciseId=${exercise.ID}>Bearbeiten</fit-exercises-edit-page-link>
-                </li>
-            `
-        });
+            const exerciseElement = document.createElement('li');
+            exerciseElement.id = `${this.#ids.exercise}${exercise.ID}`;
 
-        this.shadowRoot.getElementById(this.#ids.userExercises).innerHTML = exerciseElements;
+            exerciseElement.innerHTML = `
+                <h3>${exercise.Name}</h3>
+                <p>${exercise.Description}</p>
+                <button type="button">Löschen</button>
+                <fit-exercises-edit-page-link exerciseId=${exercise.ID}>Bearbeiten</fit-exercises-edit-page-link>
+            `;
+
+            exerciseElement
+                .querySelector('button')
+                .addEventListener('click', () => this.#deleteExercise(exercise.ID));
+
+            exercisesElement.appendChild(exerciseElement);
+        });
+    }
+
+    /** @param {number} id  */
+    async #deleteExercise(id) {
+        await exercisesService.deleteUserExercise(id);
+        this.shadowRoot
+            .getElementById(`${this.#ids.exercise}${id}`)
+            .remove();
     }
 }
 

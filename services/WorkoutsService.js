@@ -23,7 +23,11 @@ class WorkoutsService {
      * @return {Promise<Workout>}
      */
     getUserWorkout(id) {
-        return promiseIndexedDB.get(id, objectStoreNames.userWorkouts);
+        return promiseIndexedDB.get(objectStoreNames.userWorkouts, id);
+    }
+
+    deleteUserWorkout(id) {
+        return promiseIndexedDB.delete(objectStoreNames.userWorkouts, id);
     }
 }
 
