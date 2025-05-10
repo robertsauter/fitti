@@ -11,8 +11,8 @@ export class ExercisesEditPage extends HTMLElement {
         description: 'description'
     }
 
-    /** @type {number} */
-    #exerciseId;
+    /** @type {number | null} */
+    #exerciseId = null;
 
     constructor() {
         super();
@@ -36,8 +36,7 @@ export class ExercisesEditPage extends HTMLElement {
                     <textarea
                         id="${this.#inputNames.description}"
                         name="${this.#inputNames.description}"
-                        required>
-                    </textarea>
+                        required></textarea>
                     <button type="submit">Speichern</button>
                 </form>
             </div>
@@ -49,37 +48,52 @@ export class ExercisesEditPage extends HTMLElement {
             .getElementById(this.#ids.saveExerciseForm)
             .addEventListener('submit', this.saveExercise);
 
-        this.#exerciseId = Number(appRouter.getParamValue('id'));
+        const id = appRouter.getParamValue('id');
 
-        this.#fillData();
+        if (id !== null) {
+            this.#exerciseId = Number(id);
+            this.#fillData();
+        }
     }
 
     async #fillData() {
         const exercise = await exercisesService.getUserExercise(this.#exerciseId);
 
-        /** @type {HTMLInputElement} */
         const nameInput = this.shadowRoot.getElementById(this.#inputNames.name);
-        nameInput.value = exercise.Name;
 
-        /** @type {HTMLTextAreaElement} */
+        if (nameInput instanceof HTMLInputElement) {
+            nameInput.value = exercise.Name;
+        }
+
         const descriptionInput = this.shadowRoot.getElementById(this.#inputNames.description);
-        descriptionInput.value = exercise.Description;
+
+        if (descriptionInput instanceof HTMLTextAreaElement) {
+            descriptionInput.value = exercise.Description;
+        }
     }
 
     /** @param {SubmitEvent} event  */
     async saveExercise(event) {
         event.preventDefault();
 
-        if (this.#exerciseId === undefined) {
+        if (!(event.currentTarget instanceof HTMLFormElement)) {
             return;
         }
 
         const formData = new FormData(event.currentTarget);
-        await exercisesService.putUserExercise({
-            ID: this.#exerciseId,
-            Name: formData.get(this.#inputNames.name).toString(),
-            Description: formData.get(this.#inputNames.description).toString(),
-        });
+
+        if (this.#exerciseId === null) {
+            await exercisesService.addUserExercise({
+                Name: formData.get(this.#inputNames.name).toString(),
+                Description: formData.get(this.#inputNames.description).toString(),
+            });
+        } else {
+            await exercisesService.putUserExercise({
+                ID: this.#exerciseId,
+                Name: formData.get(this.#inputNames.name).toString(),
+                Description: formData.get(this.#inputNames.description).toString(),
+            });
+        }
 
         appRouter.navigate(appRouterIds.exercises);
     }

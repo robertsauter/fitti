@@ -25,7 +25,24 @@ export class EditExerciseCard extends HTMLElement {
 
     /** @type {string | null} */
     #selectedExerciseId = null;
+
+    get selectedExerciseId() {
+        return this.#selectedExerciseId;
+    }
+
+    set selectedExerciseId(id) {
+        this.#selectedExerciseId = id;
+    }
+
     #setsAmount = '1';
+
+    get setsAmount() {
+        return this.#setsAmount;
+    }
+
+    set setsAmount(amount) {
+        this.#setsAmount = amount;
+    }
 
     constructor() {
         super();
@@ -82,13 +99,16 @@ export class EditExerciseCard extends HTMLElement {
                 `}
             </select>
             <label for="${setsInputName}">Sets</label>
-            <input id="${setsInputName}" name="${setsInputName}" type="number" />
+            <input id="${setsInputName}" name="${setsInputName}" type="number" min="1" />
         `;
 
         const exerciseSelect = this.shadowRoot.getElementById(exerciseSelectName);
 
         if (exerciseSelect instanceof HTMLSelectElement) {
-            exerciseSelect.value = this.#selectedExerciseId ?? this.#globalExercises[0].ID;
+            if (this.#selectedExerciseId === null) {
+                this.#selectedExerciseId = this.#globalExercises[0].ID;
+            }
+            exerciseSelect.value = this.#selectedExerciseId;
             exerciseSelect.addEventListener('change', this.updateSelectedExercise);
         }
 

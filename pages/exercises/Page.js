@@ -66,7 +66,7 @@ export class ExercisesPage extends HTMLElement {
             exerciseElements = `
                 ${exerciseElements}
                 <li>
-                   <h3>${exercise.Name}</h6>
+                   <h3>${exercise.Name}</h3>
                    <p>${exercise.Description}</p>
                    <fit-exercises-edit-page-link exerciseId=${exercise.ID}>Bearbeiten</fit-exercises-edit-page-link>
                 </li>

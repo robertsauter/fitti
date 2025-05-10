@@ -6,6 +6,7 @@ export const globalObjectStoreNames = {
 Object.freeze(globalObjectStoreNames);
 
 export const objectStoreNames = {
-    userExercises: 'userExercises'
+    userExercises: 'userExercises',
+    userWorkouts: 'userWorkouts',
 };
 Object.freeze(objectStoreNames);
