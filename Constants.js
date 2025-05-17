@@ -8,5 +8,6 @@ Object.freeze(globalObjectStoreNames);
 export const objectStoreNames = {
     userExercises: 'userExercises',
     userWorkouts: 'userWorkouts',
+    userPlans: 'userPlans',
 };
 Object.freeze(objectStoreNames);

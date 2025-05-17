@@ -25,9 +25,12 @@ export class App extends HTMLElement {
     }
 
     async connectedCallback() {
-        window.screen.orientation
-            .lock('portrait-primary')
-            .catch(e => console.error(e));
+        try {
+            window.screen.orientation
+                .lock('portrait-primary');
+        } catch (error) {
+            console.error(error);
+        }
 
         await promiseIndexedDB.initialize();
         exercisesService.syncGlobalExercises();

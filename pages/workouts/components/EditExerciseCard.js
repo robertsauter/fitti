@@ -106,7 +106,7 @@ export class EditExerciseCard extends HTMLElement {
 
         if (exerciseSelect instanceof HTMLSelectElement) {
             if (this.#selectedExerciseId === null) {
-                this.#selectedExerciseId = this.#globalExercises[0].ID;
+                this.#selectedExerciseId = String(this.#userExercises[0].ID);
             }
             exerciseSelect.value = this.#selectedExerciseId;
             exerciseSelect.addEventListener('change', this.updateSelectedExercise);

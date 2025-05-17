@@ -43,7 +43,7 @@ export class WorkoutsEditPage extends HTMLElement {
         `;
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         this.shadowRoot
             .getElementById(this.#ids.addExerciseButton)
             .addEventListener('click', () => this.addExercise());

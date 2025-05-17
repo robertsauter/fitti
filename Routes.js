@@ -6,6 +6,8 @@ export const appRouterIds = {
     login: 'login',
     register: 'register',
     plans: 'plans',
+    plansAdd: 'plansAdd',
+    plansEdit: 'plansEdit',
     workouts: 'workouts',
     workoutsAdd: 'workoutsAdd',
     workoutsEdit: 'workoutsEdit',
@@ -28,6 +30,18 @@ const routes = [
         path: '/plaene',
         component: '<fit-plans-page></fit-plans-page>',
         importPath: '/pages/plans/Page.js',
+    },
+    {
+        id: appRouterIds.plansAdd,
+        path: '/plaene/neu',
+        component: '<fit-plans-edit-page></fit-plans-edit-page>',
+        importPath: '/pages/plans/edit/Page.js',
+    },
+    {
+        id: appRouterIds.plansEdit,
+        path: '/plaene/:id',
+        component: '<fit-plans-edit-page></fit-plans-edit-page>',
+        importPath: '/pages/plans/edit/Page.js',
     },
     {
         id: appRouterIds.workouts,
