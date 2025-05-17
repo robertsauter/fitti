@@ -11,6 +11,7 @@ export const appRouterIds = {
     workouts: 'workouts',
     workoutsAdd: 'workoutsAdd',
     workoutsEdit: 'workoutsEdit',
+    workoutsStart: 'workoutsStart',
     exercises: 'exercises',
     exercisesAdd: 'exercisesAdd',
     exercisesEdit: 'exercisesEdit'
@@ -39,7 +40,7 @@ const routes = [
     },
     {
         id: appRouterIds.plansEdit,
-        path: '/plaene/:id',
+        path: '/plaene/:id/bearbeiten',
         component: '<fit-plans-edit-page></fit-plans-edit-page>',
         importPath: '/pages/plans/edit/Page.js',
     },
@@ -57,9 +58,15 @@ const routes = [
     },
     {
         id: appRouterIds.workoutsEdit,
-        path: '/workouts/:id',
+        path: '/workouts/:id/bearbeiten',
         component: '<fit-workouts-edit-page></fit-workouts-edit-page>',
         importPath: '/pages/workouts/edit/Page.js',
+    },
+    {
+        id: appRouterIds.workoutsStart,
+        path: '/workouts/:id/starten',
+        component: '<fit-workouts-start-page></fit-workouts-start-page>',
+        importPath: '/pages/workouts/start/Page.js',
     },
     {
         id: appRouterIds.exercises,

@@ -1,7 +1,6 @@
 import { appRouter, appRouterIds } from '/Routes.js';
-import { Link } from '/components/Link.js';
 import { plansService } from '/services/PlansService.js';
-import { PlansEditPageLink } from '/pages/plans/components/EditPageLink.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
 
 export class PlansPage extends HTMLElement {
     #ids = {
@@ -18,17 +17,13 @@ export class PlansPage extends HTMLElement {
 			</style>
 			<div class="page-container">
                 <h2>Trainingspläne</h2>
-                <fit-link route="${appRouterIds.plansAdd}">Trainingsplan hinzufügen</fit-link>
+                <fit-app-router-link route="${appRouterIds.plansAdd}">Trainingsplan hinzufügen</fit-app-router-link>
                 <ul id="${this.#ids.userPlans}"></ul>
             </div>
         `;
     }
 
     connectedCallback() {
-        /** @type {Link} */
-        const link = this.shadowRoot.querySelector('fit-link');
-        link.router = appRouter;
-
         this.#displayUserPlans();
     }
 
@@ -41,10 +36,10 @@ export class PlansPage extends HTMLElement {
             planElement.id = `${this.#ids.plan}${plan.ID}`;
 
             planElement.innerHTML = `
-                    <h3>${plan.Name}</h3>
-                    <button type="button">Löschen</button>
-                    <fit-plans-edit-page-link planId=${plan.ID}>Bearbeiten</fit-plans-edit-page-link>
-                `;
+                <h3>${plan.Name}</h3>
+                <button type="button">Löschen</button>
+                <fit-app-router-link route="${appRouterIds.plansEdit}" data-id="${plan.ID}">Bearbeiten</fit-app-router-link>
+            `;
 
             planElement
                 .querySelector('button')

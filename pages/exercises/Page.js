@@ -1,7 +1,6 @@
 import { appRouter, appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
-import { Link } from '/components/Link.js';
-import { ExercisesEditPageLink } from '/pages/exercises/components/EditPageLink.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
 
 export class ExercisesPage extends HTMLElement {
     #ids = {
@@ -20,7 +19,7 @@ export class ExercisesPage extends HTMLElement {
             </style>
             <div class="page-container">
                 <h2>Übungen</h2>
-                <fit-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-link>
+                <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-app-router-link>
                 <details open>
                     <summary>Ausgewählte Übungen</summary>
                     <ul id="${this.#ids.globalExercises}"></ul>
@@ -36,10 +35,6 @@ export class ExercisesPage extends HTMLElement {
     connectedCallback() {
         this.#displayGlobalExercises();
         this.#displayUserExercises();
-
-        /** @type {Link} */
-        const link = this.shadowRoot.querySelector('fit-link');
-        link.router = appRouter;
     }
 
     async #displayGlobalExercises() {
@@ -50,7 +45,7 @@ export class ExercisesPage extends HTMLElement {
             exerciseElements = `
                 ${exerciseElements}
                 <li>
-                   <h3>${exercise.Name}</h6>
+                   <h3>${exercise.Name}</h3>
                    <p>${exercise.Description}</p>
                 </li>
             `
@@ -71,7 +66,7 @@ export class ExercisesPage extends HTMLElement {
                 <h3>${exercise.Name}</h3>
                 <p>${exercise.Description}</p>
                 <button type="button">Löschen</button>
-                <fit-exercises-edit-page-link exerciseId=${exercise.ID}>Bearbeiten</fit-exercises-edit-page-link>
+                <fit-app-router-link route="${appRouterIds.exercisesEdit}" data-id="${exercise.ID}">Bearbeiten</fit-app-router-link>
             `;
 
             exerciseElement

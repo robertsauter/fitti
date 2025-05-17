@@ -1,7 +1,6 @@
 import { appRouter, appRouterIds } from '/Routes.js';
-import { Link } from '/components/Link.js';
 import { workoutsService } from '/services/WorkoutsService.js';
-import { WorkoutsEditPageLink } from '/pages/workouts/components/EditPageLink.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
@@ -18,17 +17,13 @@ export class WorkoutsPage extends HTMLElement {
 			</style>
 			<div class="page-container">
 				<h2>Workouts</h2>
-				<fit-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-link>
+				<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
 				<ul id="${this.#ids.userWorkouts}"></ul>
 			</div>
-	`;
+		`;
 	}
 
 	connectedCallback() {
-		/** @type {Link} */
-		const link = this.shadowRoot.querySelector('fit-link');
-		link.router = appRouter;
-
 		this.#displayUserWorkouts();
 	}
 
@@ -43,7 +38,8 @@ export class WorkoutsPage extends HTMLElement {
 			workoutElement.innerHTML = `
 				<h3>${workout.Name}</h3>
 				<button type="button">Löschen</button>
-				<fit-workouts-edit-page-link workoutId=${workout.ID}>Bearbeiten</fit-workouts-edit-page-link>
+				<fit-app-router-link route="${appRouterIds.workoutsEdit}" data-id="${workout.ID}">Bearbeiten</fit-app-router-link>
+				<fit-app-router-link route="${appRouterIds.workoutsStart}" data-id="${workout.ID}">Starten</fit-app-router-link>
 			`;
 
 			workoutElement

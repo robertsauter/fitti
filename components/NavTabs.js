@@ -1,5 +1,5 @@
 import { appRouter, appRouterIds } from '/Routes.js';
-import { Link } from '/components/Link.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
 
 export class NavTabs extends HTMLElement {
 
@@ -20,18 +20,12 @@ export class NavTabs extends HTMLElement {
                 }
             </style> 
             <div class="tabs-wrapper">
-                <fit-link route="${appRouterIds.home}">Home</fit-link>
-                <fit-link route="${appRouterIds.plans}">Traininspläne</fit-link>
-                <fit-link route="${appRouterIds.workouts}">Workouts</fit-link>
-                <fit-link route="${appRouterIds.exercises}">Übungen</fit-link>
+                <fit-app-router-link route="${appRouterIds.home}">Home</fit-app-router-link>
+                <fit-app-router-link route="${appRouterIds.plans}">Traininspläne</fit-app-router-link>
+                <fit-app-router-link route="${appRouterIds.workouts}">Workouts</fit-app-router-link>
+                <fit-app-router-link route="${appRouterIds.exercises}">Übungen</fit-app-router-link>
             </div>
         `;
-    }
-
-    connectedCallback() {
-        /** @type {NodeListOf<Link>} */
-        const links = this.shadowRoot.querySelectorAll('fit-link');
-        links.forEach((link) => link.router = appRouter);
     }
 }
 
