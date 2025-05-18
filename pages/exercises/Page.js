@@ -40,38 +40,48 @@ export class ExercisesPage extends HTMLElement {
     async #displayGlobalExercises() {
         const exercises = await exercisesService.getGlobalExercises();
 
-        let exerciseElements = '';
-        exercises.forEach((exercise) => {
-            exerciseElements = `
-                ${exerciseElements}
-                <li>
-                   <h3>${exercise.Name}</h3>
-                   <p>${exercise.Description}</p>
-                </li>
-            `
-        });
+        const globalExercisesElement = this.shadowRoot.getElementById(this.#ids.globalExercises);
 
-        this.shadowRoot.getElementById(this.#ids.globalExercises).innerHTML = exerciseElements;
+        exercises.forEach((exercise) => {
+            const exerciseElement = document.createElement('li');
+            const nameElement = document.createElement('h3');
+            const descriptionElement = document.createElement('p');
+
+            nameElement.textContent = exercise.Name;
+            descriptionElement.textContent = exercise.Description;
+
+            exerciseElement.appendChild(nameElement);
+            exerciseElement.appendChild(descriptionElement);
+
+            globalExercisesElement.appendChild(exerciseElement);
+        });
     }
 
     async #displayUserExercises() {
         const exercises = await exercisesService.getUserExercises();
 
         const exercisesElement = this.shadowRoot.getElementById(this.#ids.userExercises);
+
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
             exerciseElement.id = `${this.#ids.exercise}${exercise.ID}`;
 
-            exerciseElement.innerHTML = `
-                <h3>${exercise.Name}</h3>
-                <p>${exercise.Description}</p>
-                <button type="button">Löschen</button>
-                <fit-app-router-link route="${appRouterIds.exercisesEdit}" data-id="${exercise.ID}">Bearbeiten</fit-app-router-link>
-            `;
+            const nameElement = document.createElement('h3');
+            nameElement.textContent = exercise.Name;
+            exerciseElement.appendChild(nameElement);
 
-            exerciseElement
-                .querySelector('button')
-                .addEventListener('click', () => this.#deleteExercise(exercise.ID));
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = exercise.Description;
+            exerciseElement.appendChild(descriptionElement);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.textContent = 'Löschen';
+            deleteButton.addEventListener('click', () => this.#deleteExercise(exercise.ID));
+            exerciseElement.appendChild(deleteButton);
+
+            exerciseElement.innerHTML += `<fit-app-router-link route="${appRouterIds.exercisesEdit}">Bearbeiten</fit-app-router-link>`;
+            exerciseElement.querySelector('fit-app-router-link').setAttribute('data-id', String(exercise.ID));
 
             exercisesElement.appendChild(exerciseElement);
         });

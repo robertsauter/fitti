@@ -38,8 +38,10 @@ export class PlansPage extends HTMLElement {
             planElement.innerHTML = `
                 <h3>${plan.Name}</h3>
                 <button type="button">Löschen</button>
-                <fit-app-router-link route="${appRouterIds.plansEdit}" data-id="${plan.ID}">Bearbeiten</fit-app-router-link>
+                <fit-app-router-link route="${appRouterIds.plansEdit}">Bearbeiten</fit-app-router-link>
             `;
+
+            planElement.querySelector('fit-app-router-link').setAttribute('data-id', String(plan.ID));
 
             planElement
                 .querySelector('button')

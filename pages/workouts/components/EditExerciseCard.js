@@ -82,22 +82,7 @@ export class EditExerciseCard extends HTMLElement {
             <button id="${downButtonId}" type="button">unten</button>
             <button id="${deleteButtonId}" type="button">entfernen</button>
             <label for="${exerciseSelectName}">Übung</label>
-            <select id="${exerciseSelectName}" name="${exerciseSelectName}">
-                ${this.#globalExercises.length > 0 && `
-                    <optgroup label="Ausgewählte Übungen">
-                        ${this.#globalExercises.map((exercise) => `
-                            <option value="${exercise.ID}">${exercise.Name}</option>
-                        `)}
-                    </optgroup>
-                `}
-                ${this.#userExercises.length > 0 && `
-                    <optgroup label="Deine Übungen">
-                        ${this.#userExercises.map((exercise) => `
-                            <option value="${exercise.ID}">${exercise.Name}</option>
-                        `)}
-                    </optgroup>
-                `}
-            </select>
+            <select id="${exerciseSelectName}" name="${exerciseSelectName}"></select>
             <label for="${setsInputName}">Sets</label>
             <input id="${setsInputName}" name="${setsInputName}" type="number" min="1" />
         `;
@@ -105,6 +90,33 @@ export class EditExerciseCard extends HTMLElement {
         const exerciseSelect = this.shadowRoot.getElementById(exerciseSelectName);
 
         if (exerciseSelect instanceof HTMLSelectElement) {
+            if (this.#globalExercises.length > 0) {
+                const globalOptionGroup = document.createElement('optgroup');
+                globalOptionGroup.label = 'Ausgewählte Übungen';
+
+                this.#globalExercises.forEach((exercise) => {
+                    const option = document.createElement('option');
+                    option.value = String(exercise.ID);
+                    option.textContent = exercise.Name;
+                    globalOptionGroup.appendChild(option);
+                });
+
+                exerciseSelect.appendChild(globalOptionGroup);
+            }
+
+            if (this.#userExercises.length > 0) {
+                const userOptionGroup = document.createElement('optgroup');
+                userOptionGroup.label = 'Deine Übungen';
+                this.#userExercises.forEach((exercise) => {
+                    const option = document.createElement('option');
+                    option.value = String(exercise.ID);
+                    option.textContent = exercise.Name;
+                    userOptionGroup.appendChild(option);
+                });
+
+                exerciseSelect.appendChild(userOptionGroup);
+            }
+
             if (this.#selectedExerciseId === null) {
                 this.#selectedExerciseId = String(this.#userExercises[0].ID);
             }

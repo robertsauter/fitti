@@ -38,9 +38,15 @@ export class WorkoutsPage extends HTMLElement {
 			workoutElement.innerHTML = `
 				<h3>${workout.Name}</h3>
 				<button type="button">Löschen</button>
-				<fit-app-router-link route="${appRouterIds.workoutsEdit}" data-id="${workout.ID}">Bearbeiten</fit-app-router-link>
-				<fit-app-router-link route="${appRouterIds.workoutsStart}" data-id="${workout.ID}">Starten</fit-app-router-link>
+				<fit-app-router-link route="${appRouterIds.workoutsEdit}">Bearbeiten</fit-app-router-link>
+				<fit-app-router-link route="${appRouterIds.workoutsStart}">Starten</fit-app-router-link>
 			`;
+
+			workoutElement
+				.querySelectorAll('fit-app-router-link')
+				.forEach((link) => {
+					link.setAttribute('data-id', String(workout.ID));
+				});
 
 			workoutElement
 				.querySelector('button')

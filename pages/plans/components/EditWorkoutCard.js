@@ -66,16 +66,19 @@ export class EditWorkoutCard extends HTMLElement {
             <button id="${downButtonId}" type="button">unten</button>
             <button id="${deleteButtonId}" type="button">entfernen</button>
             <label for="${workoutSelectName}">Übung</label>
-            <select id="${workoutSelectName}" name="${workoutSelectName}">
-                ${this.#userWorkouts.map((workout) => `
-                    <option value="${workout.ID}">${workout.Name}</option>
-                `)}
-            </select>
+            <select id="${workoutSelectName}" name="${workoutSelectName}"></select>
         `;
 
         const workoutSelect = this.shadowRoot.getElementById(workoutSelectName);
 
         if (workoutSelect instanceof HTMLSelectElement) {
+            this.#userWorkouts.forEach((workout) => {
+                const option = document.createElement('option');
+                option.value = String(workout.ID);
+                option.textContent = workout.Name;
+                workoutSelect.appendChild(option);
+            });
+
             if (this.#selectedWorkoutId === null) {
                 this.#selectedWorkoutId = String(this.#userWorkouts[0].ID);
             }
