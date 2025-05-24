@@ -2,8 +2,16 @@ import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
+import { ExerciseSet } from '/pages/workouts/components/ExerciseSet.js';
 
 export class StartExerciseCard extends HTMLElement {
+    #ids = {
+        deleteButton: 'deleteButton',
+        addButton: 'addButton',
+    };
+
+    #setsAmount = 0;
+
     /** @type {WorkoutExercise | null} */
     #workoutExercise = null;
 
@@ -15,6 +23,9 @@ export class StartExerciseCard extends HTMLElement {
 
     constructor() {
         super();
+
+        this.deleteExercise = this.deleteExercise.bind(this);
+        this.addSet = this.addSet.bind(this);
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -30,6 +41,8 @@ export class StartExerciseCard extends HTMLElement {
 
     /** @param {WorkoutExercise} workoutExercise */
     async #displayExercise(workoutExercise) {
+        this.#setsAmount = workoutExercise.Sets;
+
         const idAsNumber = Number(workoutExercise.ID);
         /** @type {ExerciseResponse | Exercise} */
         let exercise;
@@ -46,19 +59,34 @@ export class StartExerciseCard extends HTMLElement {
         titleElement.textContent = exercise.Name;
         wrapperElement.appendChild(titleElement);
 
+        const deleteButtonId = `${this.#ids.deleteButton}${exercise.ID}`;
+        const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
+
         wrapperElement.innerHTML += `
-            <button>Oben</button>
-            <button>Unten</button>
-            <button>Löschen</button>
-            ${Array.from(Array(workoutExercise.Sets)).map((_set, index) => `<div>
-                <p>Set ${index + 1}</p>
-                <label for="kg">KG</label>
-                <input name="kg" id="kg" type="number" min="1" />
-                <label for="reps">Wiederholungen</label>
-                <input name="reps" id="reps" type="number" min="1" />
-            </div>`).join('')}
-            <button>Set hinzufügen</button>
+            <button id="${deleteButtonId}">Löschen</button>
+            <ul></ul>
+            <button id="${addButtonId}">Set hinzufügen</button>
         `;
+
+        const setsList = wrapperElement.querySelector('ul');
+        Array.from(Array(workoutExercise.Sets)).forEach((_set, index) => {
+            const set = new ExerciseSet(exercise.ID, index + 1);
+            setsList.appendChild(set);
+        });
+
+        this.shadowRoot
+            .getElementById(deleteButtonId)
+            .addEventListener('click', this.deleteExercise);
+    }
+
+    deleteExercise() {
+        this.remove();
+    }
+
+    addSet() {
+        this.#setsAmount += 1;
+        const setsWrapper = this.shadowRoot.querySelector('ul');
+        setsWrapper.appendChild(new ExerciseSet(this.#workoutExercise.ID, this.#setsAmount));
     }
 }
 
