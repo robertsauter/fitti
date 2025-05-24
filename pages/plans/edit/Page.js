@@ -27,7 +27,7 @@ export class PlansEditPage extends HTMLElement {
             <style>
 				@import url('/globals.css');
 			</style>
-			<div class="page-container">
+			<div class="pageContainer">
                 <h2>Trainingsplan bearbeiten</h2>
                 <form id="${this.#ids.planForm}">
                     <label for="${this.#inputNames.name}">Trainingsplan Name</label>

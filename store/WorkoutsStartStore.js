@@ -1,4 +1,3 @@
-import { exercisesService } from '/services/ExercisesService.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 
@@ -39,6 +38,12 @@ class WorkoutsStartStore {
         });
 
         return;
+    }
+
+    /** @param {string} exerciseId  */
+    removeExercise(exerciseId) {
+        const exerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
+        this.#exercises.splice(exerciseIndex, 1);
     }
 
     /** 

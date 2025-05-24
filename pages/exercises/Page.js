@@ -8,7 +8,7 @@ export class ExercisesPage extends HTMLElement {
         userExercises: 'userExercises',
         addExerciseButton: 'addExerciseButton',
         exercise: 'exercise',
-    }
+    };
 
     constructor() {
         super();
@@ -17,7 +17,7 @@ export class ExercisesPage extends HTMLElement {
             <style>
                 @import url('/globals.css');
             </style>
-            <div class="page-container">
+            <div class="pageContainer">
                 <h2>Übungen</h2>
                 <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-app-router-link>
                 <details open>

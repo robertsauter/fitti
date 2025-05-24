@@ -20,6 +20,8 @@ export class ExerciseSet extends HTMLElement {
     #exerciseId;
     /** @type {number} */
     #setIndex;
+    /** @type {WorkoutStartSet} */
+    #set;
 
     /** @param {number} index  */
     set setIndex(index) {
@@ -29,9 +31,10 @@ export class ExerciseSet extends HTMLElement {
 
     /** 
      * @param {number | string} exerciseId 
-     * @param {number} setIndex 
+     * @param {number} setIndex
+     * @param {WorkoutStartSet} set 
      * */
-    constructor(exerciseId, setIndex) {
+    constructor(exerciseId, setIndex, set) {
         super();
 
         this.removeSet = this.removeSet.bind(this);
@@ -40,6 +43,7 @@ export class ExerciseSet extends HTMLElement {
 
         this.#exerciseId = exerciseId;
         this.#setIndex = setIndex;
+        this.#set = set;
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -68,6 +72,10 @@ export class ExerciseSet extends HTMLElement {
             weightInput.name = weightInputName;
             weightInput.id = weightInputName;
             weightInput.addEventListener('change', this.updateWeight);
+
+            if (this.#set.weight !== null) {
+                weightInput.value = String(this.#set.weight);
+            }
         }
 
         const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setIndex}`;
@@ -81,6 +89,10 @@ export class ExerciseSet extends HTMLElement {
             repsInput.name = repsInputName;
             repsInput.id = repsInputName;
             repsInput.addEventListener('change', this.updateReps);
+
+            if (this.#set.reps !== null) {
+                repsInput.value = String(this.#set.reps);
+            }
         }
 
         const removeButton = this.shadowRoot.querySelector('button');

@@ -9,7 +9,7 @@ export class ExercisesEditPage extends HTMLElement {
     #inputNames = {
         name: 'name',
         description: 'description'
-    }
+    };
 
     /** @type {number | null} */
     #exerciseId = null;
@@ -23,7 +23,7 @@ export class ExercisesEditPage extends HTMLElement {
             <style>
                 @import url('/globals.css');
             </style>
-            <div class="page-container">
+            <div class="pageContainer">
                 <h2>Übung bearbeiten</h2>
                 <form id="${this.#ids.saveExerciseForm}">
                     <label for="${this.#inputNames.name}">Name</label>

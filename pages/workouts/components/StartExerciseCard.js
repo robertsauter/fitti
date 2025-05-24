@@ -36,17 +36,16 @@ export class StartExerciseCard extends HTMLElement {
     }
 
     connectedCallback() {
-        this.#displayExercise(this.#workoutExercise);
+        this.#displayExercise();
     }
 
-    /** @param {WorkoutStartExerxise} workoutStartExercise */
-    async #displayExercise(workoutStartExercise) {
-        const idAsNumber = Number(workoutStartExercise.id);
+    async #displayExercise() {
+        const idAsNumber = Number(this.#workoutExercise.id);
         /** @type {ExerciseResponse | Exercise} */
         let exercise;
         if (Number.isNaN(idAsNumber)) {
             const globalExercises = await exercisesService.getGlobalExercises();
-            exercise = globalExercises.find((globalExercise) => globalExercise.ID === workoutStartExercise.id);
+            exercise = globalExercises.find((globalExercise) => globalExercise.ID === this.#workoutExercise.id);
         } else {
             exercise = await exercisesService.getUserExercise(idAsNumber);
         }
@@ -67,10 +66,10 @@ export class StartExerciseCard extends HTMLElement {
         `;
 
         const setsList = wrapperElement.querySelector('ul');
-        workoutStartExercise.sets.forEach((_set, index) => {
-            const set = new ExerciseSet(exercise.ID, index);
-            set.addEventListener('remove', this.updateSetsOnRemove);
-            setsList.appendChild(set);
+        this.#workoutExercise.sets.forEach((set, index) => {
+            const setElement = new ExerciseSet(exercise.ID, index, set);
+            setElement.addEventListener('remove', this.updateSetsOnRemove);
+            setsList.appendChild(setElement);
         });
 
         this.shadowRoot
@@ -106,6 +105,7 @@ export class StartExerciseCard extends HTMLElement {
     }
 
     deleteExercise() {
+        workoutsStartStore.removeExercise(this.#workoutExercise.id);
         this.remove();
     }
 
@@ -118,7 +118,10 @@ export class StartExerciseCard extends HTMLElement {
             return;
         }
 
-        const set = new ExerciseSet(this.#workoutExercise.id, currentSetsAmount - 1);
+        const set = new ExerciseSet(this.#workoutExercise.id, currentSetsAmount - 1, {
+            weight: null,
+            reps: null,
+        });
         set.addEventListener('remove', this.updateSetsOnRemove);
         setsWrapper.appendChild(set);
     }

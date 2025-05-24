@@ -3,16 +3,24 @@ import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
+import { ExerciseSelect } from '/components/ExerciseSelect.js';
 
 export class WorkoutsStartPage extends HTMLElement {
+    #classes = {
+        pageContainer: 'pageContainer'
+    };
+
     constructor() {
         super();
+
+        this.addExerciseSelect = this.addExerciseSelect.bind(this);
+        this.addExercise = this.addExercise.bind(this);
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
             </style>
-            <div class="page-container">
+            <div class="${this.#classes.pageContainer}">
                 <h2></h2>
                 <ul></ul>
             </div>
@@ -41,22 +49,55 @@ export class WorkoutsStartPage extends HTMLElement {
     }
 
     #displayFallback() {
-        this.shadowRoot.querySelector('.page-container').innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
+        this.shadowRoot.querySelector(`.${this.#classes.pageContainer}`).innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
     }
 
     #displayExercises() {
-        const wrapperElement = this.shadowRoot.querySelector('ul');
-
         workoutsStartStore.exercises.forEach((exercise) => {
-            const exerciseElement = new StartExerciseCard();
-
-            exerciseElement.workoutExercise = exercise;
-            wrapperElement.appendChild(exerciseElement);
+            this.#displayExercise(exercise);
         });
 
         const addButton = document.createElement('button');
         addButton.textContent = 'Übung hinzufügen';
-        wrapperElement.appendChild(addButton);
+        this.shadowRoot
+            .querySelector(`.${this.#classes.pageContainer}`)
+            .appendChild(addButton);
+
+        addButton.addEventListener('click', this.addExerciseSelect);
+    }
+
+    /** @param {WorkoutStartExerxise} exercise  */
+    #displayExercise(exercise) {
+        const exerciseElement = new StartExerciseCard();
+
+        exerciseElement.workoutExercise = exercise;
+        this.shadowRoot
+            .querySelector('ul')
+            .appendChild(exerciseElement);
+    }
+
+    addExerciseSelect() {
+        const exerciseSelect = new ExerciseSelect(workoutsStartStore.exercises.length + 1);
+
+        exerciseSelect.addEventListener('change', this.addExercise);
+
+        this.shadowRoot
+            .querySelector('ul')
+            .appendChild(exerciseSelect);
+    }
+
+    /** @param {Event} event  */
+    addExercise(event) {
+        const select = event.currentTarget;
+
+        if (select instanceof ExerciseSelect) {
+            const selectedExerciseId = select.selectedExerciseId;
+            select.remove();
+            this.#displayExercise({
+                id: selectedExerciseId,
+                sets: [],
+            });
+        }
     }
 }
 

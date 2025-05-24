@@ -6,7 +6,7 @@ export class PlansPage extends HTMLElement {
     #ids = {
         userPlans: 'userPlans',
         plan: 'plan',
-    }
+    };
 
     constructor() {
         super();
@@ -15,7 +15,7 @@ export class PlansPage extends HTMLElement {
             <style>
 				@import url('/globals.css');
 			</style>
-			<div class="page-container">
+			<div class="pageContainer">
                 <h2>Trainingspläne</h2>
                 <fit-app-router-link route="${appRouterIds.plansAdd}">Trainingsplan hinzufügen</fit-app-router-link>
                 <ul id="${this.#ids.userPlans}"></ul>

@@ -30,7 +30,7 @@ export class WorkoutsEditPage extends HTMLElement {
             <style>
                 @import url('/globals.css');
             </style>
-            <div class="page-container">
+            <div class="pageContainer">
                 <h2>Workout bearbeiten</h2>
                 <form id="${this.#ids.workoutForm}">
                     <label for="${this.#inputNames.name}">Workout Name</label>
@@ -126,7 +126,8 @@ export class WorkoutsEditPage extends HTMLElement {
                 });
             });
 
-        if (exercises.length < 1) {
+        // TODO: Add validation
+        if (exercises.length < 1 || exercises.some((exercise) => exercise.ID === null)) {
             return;
         }
 

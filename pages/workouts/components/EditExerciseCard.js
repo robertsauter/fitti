@@ -2,6 +2,7 @@ import '/models/Workout.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { ExerciseSelect } from '/components/ExerciseSelect.js';
 
 export class EditExerciseCard extends HTMLElement {
     #ids = {
@@ -12,16 +13,10 @@ export class EditExerciseCard extends HTMLElement {
     };
 
     #inputNames = {
-        exercise: 'exercise',
         sets: 'sets',
     };
 
     #exerciseId = 0;
-
-    /** @type {ExerciseResponse[]} */
-    #globalExercises = [];
-    /** @type {Exercise[]} */
-    #userExercises = [];
 
     /** @type {string | null} */
     #selectedExerciseId = null;
@@ -68,11 +63,7 @@ export class EditExerciseCard extends HTMLElement {
         const upButtonId = `${this.#ids.upButton}${this.#exerciseId}`;
         const downButtonId = `${this.#ids.downButton}${this.#exerciseId}`;
         const deleteButtonId = `${this.#ids.deleteButton}${this.#exerciseId}`;
-        const exerciseSelectName = `${this.#inputNames.exercise}${this.#exerciseId}`;
         const setsInputName = `${this.#inputNames.sets}${this.#exerciseId}`;
-
-        this.#globalExercises = await exercisesService.getGlobalExercises();
-        this.#userExercises = await exercisesService.getUserExercises();
 
         const wrapper = this.shadowRoot.querySelector('li');
         wrapper.id = wrapperId;
@@ -81,55 +72,29 @@ export class EditExerciseCard extends HTMLElement {
             <button id="${upButtonId}" type="button">oben</button>
             <button id="${downButtonId}" type="button">unten</button>
             <button id="${deleteButtonId}" type="button">entfernen</button>
-            <label for="${exerciseSelectName}">Übung</label>
-            <select id="${exerciseSelectName}" name="${exerciseSelectName}"></select>
-            <label for="${setsInputName}">Sets</label>
-            <input id="${setsInputName}" name="${setsInputName}" type="number" min="1" />
         `;
 
-        const exerciseSelect = this.shadowRoot.getElementById(exerciseSelectName);
+        const exerciseSelect = new ExerciseSelect(this.#exerciseId);
 
-        if (exerciseSelect instanceof HTMLSelectElement) {
-            if (this.#globalExercises.length > 0) {
-                const globalOptionGroup = document.createElement('optgroup');
-                globalOptionGroup.label = 'Ausgewählte Übungen';
-
-                this.#globalExercises.forEach((exercise) => {
-                    const option = document.createElement('option');
-                    option.value = String(exercise.ID);
-                    option.textContent = exercise.Name;
-                    globalOptionGroup.appendChild(option);
-                });
-
-                exerciseSelect.appendChild(globalOptionGroup);
-            }
-
-            if (this.#userExercises.length > 0) {
-                const userOptionGroup = document.createElement('optgroup');
-                userOptionGroup.label = 'Deine Übungen';
-                this.#userExercises.forEach((exercise) => {
-                    const option = document.createElement('option');
-                    option.value = String(exercise.ID);
-                    option.textContent = exercise.Name;
-                    userOptionGroup.appendChild(option);
-                });
-
-                exerciseSelect.appendChild(userOptionGroup);
-            }
-
-            if (this.#selectedExerciseId === null) {
-                this.#selectedExerciseId = String(this.#userExercises[0].ID);
-            }
-            exerciseSelect.value = this.#selectedExerciseId;
-            exerciseSelect.addEventListener('change', this.updateSelectedExercise);
+        if (this.#selectedExerciseId !== null) {
+            exerciseSelect.selectedExerciseId = this.#selectedExerciseId;
         }
 
-        const setsInput = this.shadowRoot.getElementById(setsInputName);
+        exerciseSelect.addEventListener('change', this.updateSelectedExercise);
+        wrapper.appendChild(exerciseSelect);
 
-        if (setsInput instanceof HTMLInputElement) {
-            setsInput.value = String(this.#setsAmount);
-            setsInput.addEventListener('change', this.updateSetsAmount);
-        }
+        const setsLabel = document.createElement('label');
+        setsLabel.setAttribute('for', setsInputName);
+        wrapper.appendChild(setsLabel);
+
+        const setsInput = document.createElement('input');
+        setsInput.name = setsInputName;
+        setsInput.id = setsInputName;
+        setsInput.type = 'number';
+        setsInput.min = '1';
+        setsInput.value = String(this.#setsAmount);
+        setsInput.addEventListener('change', this.updateSetsAmount);
+        wrapper.appendChild(setsInput);
 
         this.shadowRoot
             .getElementById(upButtonId)
@@ -146,8 +111,8 @@ export class EditExerciseCard extends HTMLElement {
 
     /** @param {Event} event */
     updateSelectedExercise(event) {
-        if (event.currentTarget instanceof HTMLSelectElement) {
-            this.#selectedExerciseId = event.currentTarget.value;
+        if (event.currentTarget instanceof ExerciseSelect) {
+            this.#selectedExerciseId = event.currentTarget.selectedExerciseId;
         }
     }
 
