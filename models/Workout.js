@@ -16,3 +16,15 @@
  * @property {string} Name
  * @property {WorkoutExercise[]} Exercises
  */
+
+/** 
+ * @typedef {Object} WorkoutStartExerxise
+ * @property {string} id
+ * @property {WorkoutStartSet[]} sets
+ */
+
+/** 
+ * @typedef {Object} WorkoutStartSet
+ * @property {number | null} weight
+ * @property {number | null} reps
+ */

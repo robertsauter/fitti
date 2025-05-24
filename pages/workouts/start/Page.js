@@ -2,6 +2,7 @@ import { appRouter } from '/Routes.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
+import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     constructor() {
@@ -26,6 +27,8 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
+        await workoutsStartStore.initializeExercises(Number(id));
+
         const workout = await workoutsService.getUserWorkout(Number(id));
 
         if (workout === undefined) {
@@ -34,23 +37,18 @@ export class WorkoutsStartPage extends HTMLElement {
         }
 
         this.shadowRoot.querySelector('h2').textContent = workout.Name;
-        this.#displayExercises(workout);
+        this.#displayExercises();
     }
 
     #displayFallback() {
         this.shadowRoot.querySelector('.page-container').innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
     }
 
-    /** @param {Workout} workout  */
-    #displayExercises(workout) {
+    #displayExercises() {
         const wrapperElement = this.shadowRoot.querySelector('ul');
 
-        workout.Exercises.forEach((exercise) => {
-            const exerciseElement = document.createElement('fit-start-exercise-card');
-
-            if (!(exerciseElement instanceof StartExerciseCard)) {
-                return;
-            }
+        workoutsStartStore.exercises.forEach((exercise) => {
+            const exerciseElement = new StartExerciseCard();
 
             exerciseElement.workoutExercise = exercise;
             wrapperElement.appendChild(exerciseElement);

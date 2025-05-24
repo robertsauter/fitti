@@ -1,7 +1,7 @@
 import '/models/Workout.js';
-import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
+import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 
 export class ExerciseSet extends HTMLElement {
     #inputNames = {
@@ -14,42 +14,50 @@ export class ExerciseSet extends HTMLElement {
         weightInput: 'weightInput',
         repsLabel: 'repsLabel',
         repsInput: 'repsInput',
-    }
+    };
 
     /** @type {number | string} */
     #exerciseId;
     /** @type {number} */
-    #setId;
+    #setIndex;
+
+    /** @param {number} index  */
+    set setIndex(index) {
+        this.#setIndex = index;
+        this.#updateTitle();
+    }
 
     /** 
      * @param {number | string} exerciseId 
-     * @param {number} setId 
+     * @param {number} setIndex 
      * */
-    constructor(exerciseId, setId) {
+    constructor(exerciseId, setIndex) {
         super();
 
         this.removeSet = this.removeSet.bind(this);
+        this.updateWeight = this.updateWeight.bind(this);
+        this.updateReps = this.updateReps.bind(this);
 
         this.#exerciseId = exerciseId;
-        this.#setId = setId;
+        this.#setIndex = setIndex;
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
             </style>
             <li>
-                <p>Set ${setId}</p>
+                <p>Set ${setIndex + 1}</p>
                 <label class="${this.#classes.weightLabel}">Gewicht</label>
                 <input class="${this.#classes.weightInput}" type="number" min="1" />
                 <label class="${this.#classes.repsLabel}">Wiederholungen</label>
                 <input class="${this.#classes.repsInput}" type="number" min="1" />
-                <button type="button">Set entfernen</button>
+                ${this.#setIndex !== 0 ? `<button type="button">Set entfernen</button>` : ``}
             </li>
         `;
     }
 
     connectedCallback() {
-        const weightInputName = `${this.#inputNames.weight}${this.#exerciseId}${this.#setId}`;
+        const weightInputName = `${this.#inputNames.weight}${this.#exerciseId}${this.#setIndex}`;
 
         this.shadowRoot
             .querySelector(`.${this.#classes.weightLabel}`)
@@ -59,9 +67,10 @@ export class ExerciseSet extends HTMLElement {
         if (weightInput instanceof HTMLInputElement) {
             weightInput.name = weightInputName;
             weightInput.id = weightInputName;
+            weightInput.addEventListener('change', this.updateWeight);
         }
 
-        const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setId}`;
+        const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setIndex}`;
 
         this.shadowRoot
             .querySelector(`.${this.#classes.repsLabel}`)
@@ -71,15 +80,48 @@ export class ExerciseSet extends HTMLElement {
         if (repsInput instanceof HTMLInputElement) {
             repsInput.name = repsInputName;
             repsInput.id = repsInputName;
+            repsInput.addEventListener('change', this.updateReps);
         }
 
-        this.shadowRoot
-            .querySelector('button')
-            .addEventListener('click', this.removeSet);
+        const removeButton = this.shadowRoot.querySelector('button');
+
+        if (removeButton !== null) {
+            removeButton.addEventListener('click', this.removeSet);
+        }
+    }
+
+    /**
+     * @param {Event} event 
+     */
+    updateWeight(event) {
+        const input = event.currentTarget;
+
+        if (!(input instanceof HTMLInputElement)) {
+            return;
+        }
+
+        workoutsStartStore.updateWeight(String(this.#exerciseId), this.#setIndex, Number(input.value));
+    }
+
+    /**
+     * @param {Event} event 
+     */
+    updateReps(event) {
+        const input = event.currentTarget;
+
+        if (!(input instanceof HTMLInputElement)) {
+            return;
+        }
+
+        workoutsStartStore.updateReps(String(this.#exerciseId), this.#setIndex, Number(input.value));
     }
 
     removeSet() {
-        this.remove();
+        this.dispatchEvent(new CustomEvent('remove', { detail: this.#setIndex }));
+    }
+
+    #updateTitle() {
+        this.shadowRoot.querySelector('p').textContent = `Set ${this.#setIndex + 1}`;
     }
 }
 
