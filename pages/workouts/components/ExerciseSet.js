@@ -2,6 +2,7 @@ import '/models/Workout.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
+import { customEventNames } from '/Constants.js';
 
 export class ExerciseSet extends HTMLElement {
     #inputNames = {
@@ -129,7 +130,7 @@ export class ExerciseSet extends HTMLElement {
     }
 
     removeSet() {
-        this.dispatchEvent(new CustomEvent('remove', { detail: this.#setIndex }));
+        this.dispatchEvent(new CustomEvent(customEventNames.remove, { detail: this.#setIndex }));
     }
 
     #updateTitle() {

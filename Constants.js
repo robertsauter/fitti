@@ -11,3 +11,9 @@ export const objectStoreNames = {
     userPlans: 'userPlans',
 };
 Object.freeze(objectStoreNames);
+
+export const customEventNames = {
+    moveUp: 'moveUp',
+    moveDown: 'moveDown',
+    remove: 'remove',
+};

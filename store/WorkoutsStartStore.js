@@ -46,6 +46,24 @@ class WorkoutsStartStore {
         this.#exercises.splice(exerciseIndex, 1);
     }
 
+    /**
+     *  @param {string} exerciseId
+     *  @returns {WorkoutStartExerxise}
+     *   */
+    addExercise(exerciseId) {
+        const newExercise = {
+            id: exerciseId,
+            sets: [{
+                reps: null,
+                weight: null
+            }],
+        };
+
+        this.#exercises.push(newExercise);
+
+        return newExercise;
+    }
+
     /** 
      * @param {string} exerciseId 
      * @returns {number | undefined}
@@ -110,6 +128,30 @@ class WorkoutsStartStore {
         }
 
         foundExercise.sets[setIndex].reps = reps;
+    }
+
+    /** @param {string} exerciseId  */
+    moveExerciseUp(exerciseId) {
+        const foundExerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
+
+        if (foundExerciseIndex === -1) {
+            return;
+        }
+
+        const deletedEntries = this.#exercises.splice(foundExerciseIndex, 1);
+        this.#exercises.splice(foundExerciseIndex - 1, 0, ...deletedEntries);
+    }
+
+    /** @param {string} exerciseId  */
+    moveExerciseDown(exerciseId) {
+        const foundExerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
+
+        if (foundExerciseIndex === -1) {
+            return;
+        }
+
+        const deletedEntries = this.#exercises.splice(foundExerciseIndex, 1);
+        this.#exercises.splice(foundExerciseIndex + 1, 0, ...deletedEntries);
     }
 }
 

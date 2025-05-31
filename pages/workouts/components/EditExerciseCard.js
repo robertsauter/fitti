@@ -69,9 +69,9 @@ export class EditExerciseCard extends HTMLElement {
         wrapper.id = wrapperId;
 
         wrapper.innerHTML = `
-            <button id="${upButtonId}" type="button">oben</button>
-            <button id="${downButtonId}" type="button">unten</button>
-            <button id="${deleteButtonId}" type="button">entfernen</button>
+            <button id="${upButtonId}" type="button">Oben</button>
+            <button id="${downButtonId}" type="button">Unten</button>
+            <button id="${deleteButtonId}" type="button">Entfernen</button>
         `;
 
         const exerciseSelect = new ExerciseSelect(this.#exerciseId);

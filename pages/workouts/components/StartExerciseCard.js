@@ -4,28 +4,35 @@ import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { ExerciseSet } from '/pages/workouts/components/ExerciseSet.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
+import { customEventNames } from '/Constants.js';
 
 export class StartExerciseCard extends HTMLElement {
     #ids = {
         deleteButton: 'deleteButton',
         addButton: 'addButton',
+        upButton: 'upButton',
+        downButton: 'downButton',
     };
 
     /** @type {WorkoutStartExerxise | null} */
     #workoutExercise = null;
 
 
-    /** @param {WorkoutStartExerxise} exercise */
-    set workoutExercise(exercise) {
-        this.#workoutExercise = exercise;
+    get workoutExercise() {
+        return this.#workoutExercise;
     }
 
-    constructor() {
+    /** @param {WorkoutStartExerxise} exercise */
+    constructor(exercise) {
         super();
 
         this.deleteExercise = this.deleteExercise.bind(this);
         this.addSet = this.addSet.bind(this);
         this.updateSetsOnRemove = this.updateSetsOnRemove.bind(this);
+        this.moveUp = this.moveUp.bind(this);
+        this.moveDown = this.moveDown.bind(this);
+
+        this.#workoutExercise = exercise;
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -56,29 +63,41 @@ export class StartExerciseCard extends HTMLElement {
         titleElement.textContent = exercise.Name;
         wrapperElement.appendChild(titleElement);
 
+        const upButtonId = `${this.#ids.upButton}${exercise.ID}`;
+        const upButton = document.createElement('button');
+        upButton.id = upButtonId;
+        upButton.textContent = 'Oben';
+        wrapperElement.appendChild(upButton);
+        upButton.addEventListener('click', this.moveUp);
+
+        const downButtonId = `${this.#ids.downButton}${exercise.ID}`;
+        const downButton = document.createElement('button');
+        downButton.id = downButtonId;
+        downButton.textContent = 'Unten';
+        wrapperElement.appendChild(downButton);
+        downButton.addEventListener('click', this.moveDown);
+
         const deleteButtonId = `${this.#ids.deleteButton}${exercise.ID}`;
-        const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
+        const deleteButton = document.createElement('button');
+        deleteButton.id = deleteButtonId;
+        deleteButton.textContent = 'Löschen';
+        wrapperElement.appendChild(deleteButton);
+        deleteButton.addEventListener('click', this.deleteExercise);
 
-        wrapperElement.innerHTML += `
-            <button id="${deleteButtonId}">Löschen</button>
-            <ul></ul>
-            <button id="${addButtonId}">Set hinzufügen</button>
-        `;
-
-        const setsList = wrapperElement.querySelector('ul');
+        const setsList = document.createElement('ul');
+        wrapperElement.appendChild(setsList);
         this.#workoutExercise.sets.forEach((set, index) => {
             const setElement = new ExerciseSet(exercise.ID, index, set);
-            setElement.addEventListener('remove', this.updateSetsOnRemove);
+            setElement.addEventListener(customEventNames.remove, this.updateSetsOnRemove);
             setsList.appendChild(setElement);
         });
 
-        this.shadowRoot
-            .getElementById(deleteButtonId)
-            .addEventListener('click', this.deleteExercise);
-
-        this.shadowRoot
-            .getElementById(addButtonId)
-            .addEventListener('click', this.addSet);
+        const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
+        const addButton = document.createElement('button');
+        addButton.id = addButtonId;
+        addButton.textContent = 'Set hinzufügen';
+        wrapperElement.appendChild(addButton);
+        addButton.addEventListener('click', this.addSet);
     }
 
     /** @param {Event} event  */
@@ -98,9 +117,11 @@ export class StartExerciseCard extends HTMLElement {
         const setElements = this.shadowRoot.querySelectorAll('fit-exercise-set');
 
         setElements.forEach((setElement, index) => {
-            if (setElement instanceof ExerciseSet) {
-                setElement.setIndex = index;
+            if (!(setElement instanceof ExerciseSet)) {
+                return;
             }
+
+            setElement.setIndex = index;
         });
     }
 
@@ -122,8 +143,16 @@ export class StartExerciseCard extends HTMLElement {
             weight: null,
             reps: null,
         });
-        set.addEventListener('remove', this.updateSetsOnRemove);
+        set.addEventListener(customEventNames.remove, this.updateSetsOnRemove);
         setsWrapper.appendChild(set);
+    }
+
+    moveUp() {
+        this.dispatchEvent(new Event(customEventNames.moveUp));
+    }
+
+    moveDown() {
+        this.dispatchEvent(new Event(customEventNames.moveDown));
     }
 }
 

@@ -4,6 +4,7 @@ import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
+import { customEventNames } from '/Constants.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     #classes = {
@@ -15,6 +16,8 @@ export class WorkoutsStartPage extends HTMLElement {
 
         this.addExerciseSelect = this.addExerciseSelect.bind(this);
         this.addExercise = this.addExercise.bind(this);
+        this.moveExerciseUp = this.moveExerciseUp.bind(this);
+        this.moveExerciseDown = this.moveExerciseDown.bind(this);
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -68,12 +71,19 @@ export class WorkoutsStartPage extends HTMLElement {
 
     /** @param {WorkoutStartExerxise} exercise  */
     #displayExercise(exercise) {
-        const exerciseElement = new StartExerciseCard();
+        const exerciseElement = this.createExerciseElement(exercise);
 
-        exerciseElement.workoutExercise = exercise;
         this.shadowRoot
             .querySelector('ul')
             .appendChild(exerciseElement);
+    }
+
+    /** @param {WorkoutStartExerxise} exercise  */
+    createExerciseElement(exercise) {
+        const exerciseElement = new StartExerciseCard(exercise);
+        exerciseElement.addEventListener(customEventNames.moveUp, this.moveExerciseUp);
+        exerciseElement.addEventListener(customEventNames.moveDown, this.moveExerciseDown);
+        return exerciseElement;
     }
 
     addExerciseSelect() {
@@ -90,14 +100,60 @@ export class WorkoutsStartPage extends HTMLElement {
     addExercise(event) {
         const select = event.currentTarget;
 
-        if (select instanceof ExerciseSelect) {
-            const selectedExerciseId = select.selectedExerciseId;
-            select.remove();
-            this.#displayExercise({
-                id: selectedExerciseId,
-                sets: [],
-            });
+        if (!(select instanceof ExerciseSelect)) {
+            return;
         }
+
+        // TODO: Add validation
+        if (workoutsStartStore.exercises.some((exercise) => exercise.id === select.selectedExerciseId)) {
+            return;
+        }
+
+        const newExercise = workoutsStartStore.addExercise(select.selectedExerciseId);
+        select.remove();
+        this.#displayExercise(newExercise);
+    }
+
+    /** @param {Event} event  */
+    moveExerciseUp(event) {
+        const card = event.currentTarget;
+
+        if (!(card instanceof StartExerciseCard)) {
+            return;
+        }
+
+        const previousCard = card.previousElementSibling;
+
+        if (previousCard === null) {
+            return;
+        }
+
+        workoutsStartStore.moveExerciseUp(card.workoutExercise.id);
+
+        const newCard = this.createExerciseElement(card.workoutExercise);;
+        previousCard.before(newCard);
+        card.remove();
+    }
+
+    /** @param {Event} event  */
+    moveExerciseDown(event) {
+        const card = event.currentTarget;
+
+        if (!(card instanceof StartExerciseCard)) {
+            return;
+        }
+
+        const nextCard = card.nextElementSibling;
+
+        if (nextCard === null) {
+            return;
+        }
+
+        workoutsStartStore.moveExerciseDown(card.workoutExercise.id);
+
+        const newCard = this.createExerciseElement(card.workoutExercise);
+        nextCard.after(newCard);
+        card.remove();
     }
 }
 
