@@ -1,4 +1,4 @@
-import { appRouter } from '/Routes.js';
+import { appRouter, appRouterIds } from '/Routes.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
@@ -7,8 +7,13 @@ import { ExerciseSelect } from '/components/ExerciseSelect.js';
 import { customEventNames } from '/Constants.js';
 
 export class WorkoutsStartPage extends HTMLElement {
+    #ids = {
+        addExerciseButton: 'addExerciseButton',
+        saveWorkoutButton: 'saveWorkoutButton',
+    };
+
     #classes = {
-        pageContainer: 'pageContainer'
+        pageContainer: 'pageContainer',
     };
 
     constructor() {
@@ -18,6 +23,7 @@ export class WorkoutsStartPage extends HTMLElement {
         this.addExercise = this.addExercise.bind(this);
         this.moveExerciseUp = this.moveExerciseUp.bind(this);
         this.moveExerciseDown = this.moveExerciseDown.bind(this);
+        this.saveWorkout = this.saveWorkout.bind(this);
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -26,6 +32,8 @@ export class WorkoutsStartPage extends HTMLElement {
             <div class="${this.#classes.pageContainer}">
                 <h2></h2>
                 <ul></ul>
+                <button id="${this.#ids.addExerciseButton}">Übung hinzufügen</button>
+                <button id="${this.#ids.saveWorkoutButton}">Workout beenden</button>
             </div>
         `;
     }
@@ -49,6 +57,14 @@ export class WorkoutsStartPage extends HTMLElement {
 
         this.shadowRoot.querySelector('h2').textContent = workout.Name;
         this.#displayExercises();
+
+        this.shadowRoot
+            .getElementById(this.#ids.addExerciseButton)
+            .addEventListener('click', this.addExerciseSelect);
+
+        this.shadowRoot
+            .getElementById(this.#ids.saveWorkoutButton)
+            .addEventListener('click', this.saveWorkout);
     }
 
     #displayFallback() {
@@ -59,14 +75,6 @@ export class WorkoutsStartPage extends HTMLElement {
         workoutsStartStore.exercises.forEach((exercise) => {
             this.#displayExercise(exercise);
         });
-
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Übung hinzufügen';
-        this.shadowRoot
-            .querySelector(`.${this.#classes.pageContainer}`)
-            .appendChild(addButton);
-
-        addButton.addEventListener('click', this.addExerciseSelect);
     }
 
     /** @param {WorkoutStartExerxise} exercise  */
@@ -86,7 +94,16 @@ export class WorkoutsStartPage extends HTMLElement {
         return exerciseElement;
     }
 
-    addExerciseSelect() {
+    /** @param {Event} event  */
+    addExerciseSelect(event) {
+        const addButton = event.currentTarget;
+
+        if (!(addButton instanceof HTMLButtonElement)) {
+            return;
+        }
+
+        addButton.disabled = true;
+
         const exerciseSelect = new ExerciseSelect(workoutsStartStore.exercises.length + 1);
 
         exerciseSelect.addEventListener('change', this.addExercise);
@@ -112,6 +129,14 @@ export class WorkoutsStartPage extends HTMLElement {
         const newExercise = workoutsStartStore.addExercise(select.selectedExerciseId);
         select.remove();
         this.#displayExercise(newExercise);
+
+        const addButton = this.shadowRoot.getElementById(this.#ids.addExerciseButton);
+
+        if (!(addButton instanceof HTMLButtonElement)) {
+            return;
+        }
+
+        addButton.disabled = false;
     }
 
     /** @param {Event} event  */
@@ -154,6 +179,15 @@ export class WorkoutsStartPage extends HTMLElement {
         const newCard = this.createExerciseElement(card.workoutExercise);
         nextCard.after(newCard);
         card.remove();
+    }
+
+    async saveWorkout() {
+        try {
+            await workoutsService.saveUserWorkout();
+            appRouter.navigate(appRouterIds.workouts);
+        } catch (_error) {
+            console.error('An error occurred while saving');
+        }
     }
 }
 

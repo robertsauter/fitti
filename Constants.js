@@ -9,6 +9,8 @@ export const objectStoreNames = {
     userExercises: 'userExercises',
     userWorkouts: 'userWorkouts',
     userPlans: 'userPlans',
+    workoutHistory: 'workoutHistory',
+    exerciseHistory: 'exerciseHistory',
 };
 Object.freeze(objectStoreNames);
 
@@ -17,3 +19,14 @@ export const customEventNames = {
     moveDown: 'moveDown',
     remove: 'remove',
 };
+Object.freeze(customEventNames);
+
+export const workoutHistoryIndexes = {
+    workoutId: 'WorkoutId',
+};
+Object.freeze(workoutHistoryIndexes);
+
+export const exerciseHistoryIndexes = {
+    exerciseId: 'ExerciseId',
+};
+Object.freeze(exerciseHistoryIndexes);
