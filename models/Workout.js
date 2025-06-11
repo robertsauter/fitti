@@ -28,3 +28,11 @@
  * @property {number | null} weight
  * @property {number | null} reps
  */
+
+/**
+ * @typedef {Object} WorkoutHistoryEntry
+ * @property {number} ID
+ * @property {number} WorkoutId
+ * @property {WorkoutStartExerxise[]} Exercises
+ * @property {Date} Date
+ */

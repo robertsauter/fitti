@@ -30,3 +30,8 @@ export const exerciseHistoryIndexes = {
     exerciseId: 'ExerciseId',
 };
 Object.freeze(exerciseHistoryIndexes);
+
+export const globalClassNames = {
+    pageContainer: 'pageContainer',
+};
+Object.freeze(globalClassNames);

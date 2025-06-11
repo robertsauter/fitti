@@ -26,6 +26,18 @@ class ExercisesService {
         return promiseIndexedDB.getAll(objectStoreNames.userExercises);
     }
 
+    /** @param {string} exerciseId  */
+    async getUserOrGlobalExercise(exerciseId) {
+        const idAsNumber = Number(exerciseId);
+
+        if (Number.isNaN(idAsNumber)) {
+            const globalExercises = await this.getGlobalExercises();
+            return globalExercises.find((globalExercise) => globalExercise.ID === exerciseId);
+        }
+
+        return this.getUserExercise(idAsNumber);
+    }
+
     /**
      * @param {ExerciseCreateData} exercise 
      */

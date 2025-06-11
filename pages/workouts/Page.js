@@ -18,6 +18,7 @@ export class WorkoutsPage extends HTMLElement {
 			<div class="pageContainer">
 				<h2>Workouts</h2>
 				<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
+				<fit-app-router-link route="${appRouterIds.workoutsHistory}">Beendete Workouts</fit-app-router-link>
 				<ul id="${this.#ids.userWorkouts}"></ul>
 			</div>
 		`;

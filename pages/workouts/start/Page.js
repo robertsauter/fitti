@@ -4,16 +4,12 @@ import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
-import { customEventNames } from '/Constants.js';
+import { customEventNames, globalClassNames } from '/Constants.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     #ids = {
         addExerciseButton: 'addExerciseButton',
         saveWorkoutButton: 'saveWorkoutButton',
-    };
-
-    #classes = {
-        pageContainer: 'pageContainer',
     };
 
     constructor() {
@@ -29,7 +25,7 @@ export class WorkoutsStartPage extends HTMLElement {
             <style>
                 @import url('/globals.css');
             </style>
-            <div class="${this.#classes.pageContainer}">
+            <div class="${globalClassNames.pageContainer}">
                 <h2></h2>
                 <ul></ul>
                 <button id="${this.#ids.addExerciseButton}">Übung hinzufügen</button>
@@ -68,7 +64,7 @@ export class WorkoutsStartPage extends HTMLElement {
     }
 
     #displayFallback() {
-        this.shadowRoot.querySelector(`.${this.#classes.pageContainer}`).innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
+        this.shadowRoot.querySelector(`.${globalClassNames.pageContainer}`).innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
     }
 
     #displayExercises() {

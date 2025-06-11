@@ -12,6 +12,7 @@ export const appRouterIds = {
     workoutsAdd: 'workoutsAdd',
     workoutsEdit: 'workoutsEdit',
     workoutsStart: 'workoutsStart',
+    workoutsHistory: 'workoutsHistory',
     exercises: 'exercises',
     exercisesAdd: 'exercisesAdd',
     exercisesEdit: 'exercisesEdit'
@@ -55,6 +56,12 @@ const routes = [
         path: '/workouts/neu',
         component: '<fit-workouts-edit-page></fit-workouts-edit-page>',
         importPath: '/pages/workouts/edit/Page.js',
+    },
+    {
+        id: appRouterIds.workoutsHistory,
+        path: '/workouts/beendet',
+        component: '<fit-workouts-history-page></fit-workouts-history-page>',
+        importPath: '/pages/workouts/history/Page.js',
     },
     {
         id: appRouterIds.workoutsEdit,

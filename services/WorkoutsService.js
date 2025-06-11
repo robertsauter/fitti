@@ -72,6 +72,11 @@ class WorkoutsService {
             return;
         }));
     }
+
+    /** @returns {Promise<WorkoutHistoryEntry[]>} */
+    getWorkoutHistory() {
+        return promiseIndexedDB.getAll(objectStoreNames.workoutHistory);
+    }
 }
 
 export const workoutsService = new WorkoutsService();

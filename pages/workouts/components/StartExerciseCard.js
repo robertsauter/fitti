@@ -47,15 +47,7 @@ export class StartExerciseCard extends HTMLElement {
     }
 
     async #displayExercise() {
-        const idAsNumber = Number(this.#workoutExercise.id);
-        /** @type {ExerciseResponse | Exercise} */
-        let exercise;
-        if (Number.isNaN(idAsNumber)) {
-            const globalExercises = await exercisesService.getGlobalExercises();
-            exercise = globalExercises.find((globalExercise) => globalExercise.ID === this.#workoutExercise.id);
-        } else {
-            exercise = await exercisesService.getUserExercise(idAsNumber);
-        }
+        const exercise = await exercisesService.getUserOrGlobalExercise(this.#workoutExercise.id);
 
         const wrapperElement = this.shadowRoot.querySelector('li');
 
