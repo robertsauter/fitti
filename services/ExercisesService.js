@@ -1,4 +1,4 @@
-import { globalObjectStoreNames, objectStoreNames } from '/Constants.js';
+import { exerciseHistoryIndexes, globalObjectStoreNames, objectStoreNames } from '/Constants.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import '/models/ExerciseResponse.js';
 import '/models/Exercise.js';
@@ -68,6 +68,14 @@ class ExercisesService {
         const exercises = await response.json();
 
         return promiseIndexedDB.putAll(globalObjectStoreNames.globalExercises, exercises);
+    }
+
+    /** 
+     * @param {string} id  
+     * @returns {Promise<ExerciseHistory>}
+     * */
+    async getExerciseHistory(id) {
+        return promiseIndexedDB.getByIndex(objectStoreNames.exerciseHistory, exerciseHistoryIndexes.exerciseId, id);
     }
 }
 

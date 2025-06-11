@@ -9,12 +9,16 @@ export class AppRouterLink extends HTMLElement {
     /** @type {Map<string, string> | undefined} */
     #params;
 
-    constructor() {
+    /** 
+     * @param {string} [routeId]  
+     * @param {string} [textContent] 
+     * */
+    constructor(routeId, textContent) {
         super();
 
         this.navigate = this.navigate.bind(this);
 
-        this.#routeId = this.getAttribute('route');
+        this.#routeId = routeId ?? this.getAttribute('route');
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -23,7 +27,7 @@ export class AppRouterLink extends HTMLElement {
                     text-align: center;
                 }
             </style>
-            <a part="link">${this.textContent}</a>
+            <a part="link">${textContent ?? this.textContent}</a>
         `;
 
         this.textContent = '';
@@ -45,7 +49,7 @@ export class AppRouterLink extends HTMLElement {
         let path = foundRoute.path;
         const params = new Map();
         for (let dataAttribute in this.dataset) {
-            const keyParam = `:${dataAttribute}`
+            const keyParam = `:${dataAttribute}`;
 
             if (path.includes(keyParam)) {
                 path = path.replace(keyParam, this.dataset[dataAttribute]);

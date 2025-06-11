@@ -15,7 +15,8 @@ export const appRouterIds = {
     workoutsHistory: 'workoutsHistory',
     exercises: 'exercises',
     exercisesAdd: 'exercisesAdd',
-    exercisesEdit: 'exercisesEdit'
+    exercisesEdit: 'exercisesEdit',
+    exerciseHistory: 'exerciseHistory',
 };
 Object.freeze(appRouterIds);
 
@@ -92,6 +93,12 @@ const routes = [
         path: '/uebungen/:id',
         component: '<fit-exercises-edit-page></fit-exercises-edit-page>',
         importPath: '/pages/exercises/edit/Page.js',
+    },
+    {
+        id: appRouterIds.exerciseHistory,
+        path: '/uebungen/:id/fortschritt',
+        component: '<fit-exercise-history-page></fit-exercise-history-page>',
+        importPath: '/pages/exercises/history/Page.js',
     },
 ];
 

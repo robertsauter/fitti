@@ -44,14 +44,18 @@ export class ExercisesPage extends HTMLElement {
 
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
+
             const nameElement = document.createElement('h3');
-            const descriptionElement = document.createElement('p');
-
             nameElement.textContent = exercise.Name;
-            descriptionElement.textContent = exercise.Description;
-
             exerciseElement.appendChild(nameElement);
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.textContent = exercise.Description;
             exerciseElement.appendChild(descriptionElement);
+
+            const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
+            historyLink.setAttribute('data-id', exercise.ID);
+            exerciseElement.appendChild(historyLink);
 
             globalExercisesElement.appendChild(exerciseElement);
         });
@@ -80,8 +84,13 @@ export class ExercisesPage extends HTMLElement {
             deleteButton.addEventListener('click', () => this.#deleteExercise(exercise.ID));
             exerciseElement.appendChild(deleteButton);
 
-            exerciseElement.innerHTML += `<fit-app-router-link route="${appRouterIds.exercisesEdit}">Bearbeiten</fit-app-router-link>`;
-            exerciseElement.querySelector('fit-app-router-link').setAttribute('data-id', String(exercise.ID));
+            const editLink = new AppRouterLink(appRouterIds.exercisesEdit, 'Bearbeiten');
+            editLink.setAttribute('data-id', String(exercise.ID));
+            exerciseElement.appendChild(editLink);
+
+            const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
+            historyLink.setAttribute('data-id', String(exercise.ID));
+            exerciseElement.appendChild(historyLink);
 
             exercisesElement.appendChild(exerciseElement);
         });
