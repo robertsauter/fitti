@@ -21,7 +21,6 @@ export class NavTabs extends HTMLElement {
             </style> 
             <div class="tabs-wrapper">
                 <fit-app-router-link route="${appRouterIds.home}">Home</fit-app-router-link>
-                <fit-app-router-link route="${appRouterIds.plans}">Traininspläne</fit-app-router-link>
                 <fit-app-router-link route="${appRouterIds.workouts}">Workouts</fit-app-router-link>
                 <fit-app-router-link route="${appRouterIds.exercises}">Übungen</fit-app-router-link>
             </div>
