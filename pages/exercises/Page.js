@@ -12,7 +12,6 @@ export class ExercisesPage extends HTMLElement {
     };
 
     #classes = {
-        pageWrapper: 'pageWrapper',
         buttonsWrapper: 'buttonsWrapper',
     };
 
@@ -30,11 +29,6 @@ export class ExercisesPage extends HTMLElement {
                    flex-direction: column;
                    gap: 0.5rem; 
                 }
-                .${this.#classes.pageWrapper} {
-                    display: flex;
-                    gap: 1.5rem;
-                    flex-direction: column;
-                }
                 .${this.#classes.buttonsWrapper} {
                     display: flex;
                     gap: 0.5rem;
@@ -47,20 +41,18 @@ export class ExercisesPage extends HTMLElement {
                 }
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <div class="${this.#classes.pageWrapper}">
-                    <div class="${globalClassNames.headerContainer}">
-                        <h1>Übungen</h1>
-                        <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-app-router-link>
-                    </div>
-                    <details open>
-                        <summary>Ausgewählte Übungen</summary>
-                        <ul id="${this.#ids.globalExercises}"></ul>
-                    </details>
-                    <details open>
-                        <summary>Deine Übungen</summary>
-                        <ul id="${this.#ids.userExercises}"></ul>
-                    </details>
+                <div class="${globalClassNames.headerContainer}">
+                    <h1>Übungen</h1>
+                    <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-app-router-link>
                 </div>
+                <details open>
+                    <summary>Ausgewählte Übungen</summary>
+                    <ul id="${this.#ids.globalExercises}"></ul>
+                </details>
+                <details open>
+                    <summary>Deine Übungen</summary>
+                    <ul id="${this.#ids.userExercises}"></ul>
+                </details>
             </div>
         `;
     }

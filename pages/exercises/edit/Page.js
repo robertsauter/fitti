@@ -1,3 +1,4 @@
+import { globalClassNames } from '/Constants.js';
 import { appRouter, appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 
@@ -22,22 +23,31 @@ export class ExercisesEditPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
             </style>
-            <div class="pageContainer">
-                <h1>Übung bearbeiten</h1>
+            <div class="${globalClassNames.pageContainer}">
+                <h1>Übung hinzufügen</h1>
                 <form id="${this.#ids.saveExerciseForm}">
-                    <label for="${this.#inputNames.name}">Name</label>
-                    <input
-                        id="${this.#inputNames.name}"
-                        name="${this.#inputNames.name}"
-                        type="text"
-                        required />
-                    <label for="${this.#inputNames.description}">Beschreibung</label>
-                    <textarea
-                        id="${this.#inputNames.description}"
-                        name="${this.#inputNames.description}"
-                        required></textarea>
-                    <button type="submit">Speichern</button>
+                    <div class="${globalClassNames.inputWrapper}">
+                        <label for="${this.#inputNames.name}">Name</label>
+                        <input
+                            id="${this.#inputNames.name}"
+                            name="${this.#inputNames.name}"
+                            type="text"
+                            required />
+                    </div>
+                    <div class="${globalClassNames.inputWrapper}">
+                        <label for="${this.#inputNames.description}">Beschreibung</label>
+                        <textarea
+                            id="${this.#inputNames.description}"
+                            name="${this.#inputNames.description}"
+                            required></textarea>
+                    </div>
+                    <button class="button primary" type="submit">Speichern</button>
                 </form>
             </div>
         `;
@@ -51,6 +61,7 @@ export class ExercisesEditPage extends HTMLElement {
         const id = appRouter.getParamValue('id');
 
         if (id !== null) {
+            this.shadowRoot.querySelector('h1').textContent = 'Übung bearbeiten';
             this.#exerciseId = Number(id);
             this.#fillData();
         }

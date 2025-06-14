@@ -34,6 +34,7 @@ Object.freeze(exerciseHistoryIndexes);
 export const globalClassNames = {
     pageContainer: 'pageContainer',
     headerContainer: 'headerContainer',
+    inputWrapper: 'inputWrapper',
 };
 Object.freeze(globalClassNames);
 

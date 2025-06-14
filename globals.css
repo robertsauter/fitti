@@ -61,9 +61,39 @@ details {
     border-radius: 1rem;
 }
 
+label {
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+input {
+    border-radius: 9999px;
+    border-width: 2px;
+    border-color: var(--primary);
+    padding: 0.5rem;
+    border-style: solid;
+}
+
+textarea {
+    border-radius: 1.5rem;
+    border-width: 2px;
+    border-color: var(--primary);
+    padding: 0.5rem;
+    border-style: solid;
+    min-height: 5rem;
+}
+
 .pageContainer {
     padding: 2rem;
     padding-bottom: 7rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
 }
 
 .headerContainer {

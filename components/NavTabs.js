@@ -8,15 +8,18 @@ export class NavTabs extends HTMLElement {
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
+                @import url('/globals.css');
                 .tabs-wrapper {
                     display: flex;
                     justify-content: space-around;
                     position: absolute;
                     bottom: 0;
                     left: 0;
-                    width: calc(100% - 4rem);
-                    padding: 2rem;
-                    background-color: white;
+                    width: calc(100% - 3rem);
+                    padding: 1rem;
+                    background-color: var(--background-secondary);
+                    border-radius: 9999px;
+                    margin: 0.5rem;
                 }
             </style> 
             <div class="tabs-wrapper">
