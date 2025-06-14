@@ -1,3 +1,4 @@
+import { buttonColorClassNames, buttonVariantClassNames } from '/Constants.js';
 import { ClientRouter } from '/lib/ClientRouter.js';
 import '/models/Route.js';
 import { appRouter } from '/Routes.js';
@@ -22,19 +23,33 @@ export class AppRouterLink extends HTMLElement {
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
+                @import url('/globals.css');
                 a {
                     display: block;
                     text-align: center;
+                    text-decoration: none;
                 }
             </style>
-            <a part="link">${textContent ?? this.textContent}</a>
+            <a part="link" class="button">${textContent ?? this.textContent}</a>
         `;
 
         this.textContent = '';
     }
 
     connectedCallback() {
-        this.shadowRoot.querySelector('a').addEventListener('click', this.navigate);
+        const link = this.shadowRoot.querySelector('a');
+
+        link.addEventListener('click', this.navigate);
+
+        const variant = this.getAttribute('variant');
+        if (variant !== null && Object.hasOwn(buttonVariantClassNames, variant)) {
+            link.classList.add(variant);
+        }
+
+        const color = this.getAttribute('color') ?? 'primary';
+        if (Object.hasOwn(buttonColorClassNames, color)) {
+            link.classList.add(color);
+        }
 
         this.#setupRoute();
     }

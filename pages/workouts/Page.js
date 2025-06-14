@@ -16,7 +16,7 @@ export class WorkoutsPage extends HTMLElement {
 				@import url('/globals.css');
 			</style>
 			<div class="pageContainer">
-				<h2>Workouts</h2>
+				<h1>Workouts</h1>
 				<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
 				<fit-app-router-link route="${appRouterIds.workoutsHistory}">Beendete Workouts</fit-app-router-link>
 				<ul id="${this.#ids.userWorkouts}"></ul>
@@ -37,7 +37,7 @@ export class WorkoutsPage extends HTMLElement {
 			workoutElement.id = `${this.#ids.workout}${workout.ID}`;
 
 			workoutElement.innerHTML = `
-				<h3>${workout.Name}</h3>
+				<h2>${workout.Name}</h2>
 				<button type="button">Löschen</button>
 				<fit-app-router-link route="${appRouterIds.workoutsEdit}">Bearbeiten</fit-app-router-link>
 				<fit-app-router-link route="${appRouterIds.workoutsStart}">Starten</fit-app-router-link>

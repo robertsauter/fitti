@@ -33,5 +33,18 @@ Object.freeze(exerciseHistoryIndexes);
 
 export const globalClassNames = {
     pageContainer: 'pageContainer',
+    headerContainer: 'headerContainer',
 };
 Object.freeze(globalClassNames);
+
+export const buttonColorClassNames = {
+    primary: 'primary',
+    secondary: 'secondary',
+    warning: 'warning',
+};
+Object.freeze(buttonColorClassNames);
+
+export const buttonVariantClassNames = {
+    outlined: 'outlined',
+};
+Object.freeze(buttonVariantClassNames);

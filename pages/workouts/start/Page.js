@@ -26,7 +26,7 @@ export class WorkoutsStartPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h2></h2>
+                <h1></h1>
                 <ul></ul>
                 <button id="${this.#ids.addExerciseButton}">Übung hinzufügen</button>
                 <button id="${this.#ids.saveWorkoutButton}">Workout beenden</button>
@@ -51,7 +51,7 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
-        this.shadowRoot.querySelector('h2').textContent = workout.Name;
+        this.shadowRoot.querySelector('h1').textContent = workout.Name;
         this.#displayExercises();
 
         this.shadowRoot

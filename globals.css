@@ -1,11 +1,120 @@
+:root {
+    --lime: #CEFF1A;
+
+    --blue: #A7C6DA;
+    --dark-blue: #273043;
+
+    --red: #DA4167;
+    --pink: #E5BEED;
+
+    --background-primary: var(--lime);
+    --background-secondary: var(--pink);
+    --primary: var(--dark-blue);
+    --secondary: var(--red);
+    --accent: var(--blue);
+    --warning: red;
+}
+
 body {
     margin: 0;
     user-select: none;
     -webkit-user-select: none;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--background-primary);
+}
+
+h1 {
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+summary {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+details {
+    background-color: var(--background-secondary);
+    padding: 0.5rem;
+    border-radius: 1rem;
 }
 
 .pageContainer {
     padding: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 7rem;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    border-width: 0;
+}
+
+.button.primary {
+    color: white;
+    background-color: var(--primary);
+}
+
+.button.primary.outlined {
+    color: var(--primary);
+    border-color: var(--primary);
+    border-width: 2px;
+    border-style: solid;
+    background-color: transparent;
+}
+
+.button.secondary {
+    color: white;
+    background-color: var(--secondary);
+}
+
+.button.secondary.outlined {
+    color: var(--secondary);
+    border-color: var(--secondary);
+    border-width: 2px;
+    border-style: solid;
+    background-color: transparent;
+}
+
+.button.warning {
+    color: white;
+    background-color: var(--warning);
+}
+
+.button.warning.outlined {
+    color: var(--warning);
+    border-color: var(--warning);
+    border-width: 2px;
+    border-style: solid;
+    background-color: transparent;
 }

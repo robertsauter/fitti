@@ -14,7 +14,7 @@ export class ExerciseHistoryPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h2></h2>
+                <h1></h1>
                 <ul></ul>
             </div>
         `;
@@ -31,7 +31,7 @@ export class ExerciseHistoryPage extends HTMLElement {
 
     async #createExerciseHistory() {
         const exercise = await exercisesService.getUserOrGlobalExercise(this.#exerciseId);
-        this.shadowRoot.querySelector('h2').textContent = `Übungsfortschritt für ${exercise.Name}`;
+        this.shadowRoot.querySelector('h1').textContent = `Übungsfortschritt für ${exercise.Name}`;
 
         const exerciseHistory = await exercisesService.getExerciseHistory(this.#exerciseId);
 

@@ -31,7 +31,7 @@ export class WorkoutsEditPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="pageContainer">
-                <h2>Workout bearbeiten</h2>
+                <h1>Workout bearbeiten</h1>
                 <form id="${this.#ids.workoutForm}">
                     <label for="${this.#inputNames.name}">Workout Name</label>
                     <input id="${this.#inputNames.name}" name="${this.#inputNames.name}" required />

@@ -24,7 +24,7 @@ export class ExercisesEditPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="pageContainer">
-                <h2>Übung bearbeiten</h2>
+                <h1>Übung bearbeiten</h1>
                 <form id="${this.#ids.saveExerciseForm}">
                     <label for="${this.#inputNames.name}">Name</label>
                     <input

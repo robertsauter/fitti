@@ -12,7 +12,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
                 @import url('/globals.css');
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h2>Beendete Workouts</h2>
+                <h1>Beendete Workouts</h1>
                 <ul></ul>
             </div>
         `;
@@ -41,7 +41,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
 
         const workoutElement = document.createElement('li');
 
-        const workoutTitle = document.createElement('h3');
+        const workoutTitle = document.createElement('h2');
         workoutTitle.textContent = workout.Name;
         workoutElement.appendChild(workoutTitle);
 

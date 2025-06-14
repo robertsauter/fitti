@@ -51,7 +51,7 @@ export class StartExerciseCard extends HTMLElement {
 
         const wrapperElement = this.shadowRoot.querySelector('li');
 
-        const titleElement = document.createElement('h3');
+        const titleElement = document.createElement('h2');
         titleElement.textContent = exercise.Name;
         wrapperElement.appendChild(titleElement);
 
