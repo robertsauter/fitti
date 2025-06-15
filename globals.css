@@ -74,6 +74,15 @@ input {
     border-style: solid;
 }
 
+select {
+    border-radius: 9999px;
+    border-width: 2px;
+    border-color: var(--primary);
+    padding: 0.5rem;
+    border-style: solid;
+    background-color: white;
+}
+
 textarea {
     border-radius: 1.5rem;
     border-width: 2px;

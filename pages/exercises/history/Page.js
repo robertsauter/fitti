@@ -22,7 +22,12 @@ export class ExerciseHistoryPage extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     gap: 1rem;
-                } 
+                }
+                .dayCard {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <h1></h1>
@@ -96,13 +101,14 @@ export class ExerciseHistoryPage extends HTMLElement {
     #createHistoryDay(historyEntries) {
         const date = historyEntries[0].Date;
         const dayElement = document.createElement('li');
-        dayElement.className = 'card secondary';
+        dayElement.className = 'card secondary dayCard';
 
         const dateElement = document.createElement('h2');
         dateElement.textContent = formatDate(date);
         dayElement.appendChild(dateElement);
 
         const setsList = document.createElement('ul');
+        setsList.className = 'card white';
 
         historyEntries.forEach((entry, index) => {
             const setElement = document.createElement('li');

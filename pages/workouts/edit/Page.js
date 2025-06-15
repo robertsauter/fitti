@@ -4,6 +4,7 @@ import '/models/ExerciseResponse.js';
 import { EditExerciseCard } from '/pages/workouts/components/EditExerciseCard.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import { appRouter, appRouterIds } from '/Routes.js';
+import { globalClassNames } from '/Constants.js';
 
 export class WorkoutsEditPage extends HTMLElement {
     #ids = {
@@ -29,15 +30,32 @@ export class WorkoutsEditPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
             </style>
             <div class="pageContainer">
-                <h1>Workout bearbeiten</h1>
+                <h1>Workout erstellen</h1>
                 <form id="${this.#ids.workoutForm}">
-                    <label for="${this.#inputNames.name}">Workout Name</label>
-                    <input id="${this.#inputNames.name}" name="${this.#inputNames.name}" required />
+                    <div class="${globalClassNames.inputWrapper}">
+                        <label for="${this.#inputNames.name}">Workout Name</label>
+                        <input id="${this.#inputNames.name}" name="${this.#inputNames.name}" required />
+                    </div>
                     <ul id="${this.#ids.exercisesList}"></ul>
-                    <button id="${this.#ids.addExerciseButton}" type="button">Übung hinzufügen</button>
-                    <button type="submit">Speichern</button>
+                    <button
+                        id="${this.#ids.addExerciseButton}"
+                        type="button"
+                        class="button primary outlined">
+                        Übung hinzufügen
+                    </button>
+                    <button type="submit" class="button primary">Speichern</button>
                 </form>
             </div>
         `;
@@ -55,6 +73,7 @@ export class WorkoutsEditPage extends HTMLElement {
         const id = appRouter.getParamValue('id');
 
         if (id !== null) {
+            this.shadowRoot.querySelector('h1').textContent = 'Workout bearbeiten';
             this.#workoutId = Number(id);
             this.#initializeWorkout();
         }

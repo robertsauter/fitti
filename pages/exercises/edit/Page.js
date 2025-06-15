@@ -30,7 +30,7 @@ export class ExercisesEditPage extends HTMLElement {
                 }
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h1>Übung hinzufügen</h1>
+                <h1>Übung erstellen</h1>
                 <form id="${this.#ids.saveExerciseForm}">
                     <div class="${globalClassNames.inputWrapper}">
                         <label for="${this.#inputNames.name}">Name</label>

@@ -1,3 +1,4 @@
+import { globalClassNames } from '/Constants.js';
 import { exercisesService } from '/services/ExercisesService.js';
 
 export class ExerciseSelect extends HTMLElement {
@@ -33,8 +34,10 @@ export class ExerciseSelect extends HTMLElement {
             <style>
                 @import url('/globals.css');
             </style>
-            <label for="${exerciseSelectName}">Übung</label>
-            <select id="${exerciseSelectName}" name="${exerciseSelectName}"></select>
+            <div class="${globalClassNames.inputWrapper}">
+                <label for="${exerciseSelectName}">Übung</label>
+                <select id="${exerciseSelectName}" name="${exerciseSelectName}"></select>
+            </div>
         `;
     }
 

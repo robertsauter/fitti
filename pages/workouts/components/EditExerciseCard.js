@@ -3,6 +3,7 @@ import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
+import { globalClassNames } from '/Constants.js';
 
 export class EditExerciseCard extends HTMLElement {
     #ids = {
@@ -51,8 +52,21 @@ export class EditExerciseCard extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                .card {
+                   display: flex;
+                   flex-direction: column;
+                   gap: 0.5rem; 
+                }
+                .buttonsWrapper {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 0.5rem;
+                }
             </style>
-            <li></li>
+            <li class="card secondary">
+                <h2>Unbekannte Übung</h2>
+                <div class="card white exerciseWrapper"></div>
+            </li>
         `;
     }
 
@@ -65,27 +79,50 @@ export class EditExerciseCard extends HTMLElement {
         const deleteButtonId = `${this.#ids.deleteButton}${this.#exerciseId}`;
         const setsInputName = `${this.#inputNames.sets}${this.#exerciseId}`;
 
-        const wrapper = this.shadowRoot.querySelector('li');
+        const wrapper = this.shadowRoot.querySelector('.exerciseWrapper');
         wrapper.id = wrapperId;
 
         wrapper.innerHTML = `
-            <button id="${upButtonId}" type="button">Oben</button>
-            <button id="${downButtonId}" type="button">Unten</button>
-            <button id="${deleteButtonId}" type="button">Entfernen</button>
+            <div class="buttonsWrapper">
+                <button
+                    id="${upButtonId}"
+                    type="button"
+                    class="button secondary outlined">
+                    Oben
+                </button>
+                <button
+                    id="${downButtonId}"
+                    type="button"
+                    class="button secondary outlined">
+                    Unten
+                </button>
+            </div> 
+            <button
+                id="${deleteButtonId}"
+                type="button"
+                class="button outlined error">
+                Entfernen
+            </button>
         `;
 
         const exerciseSelect = new ExerciseSelect(this.#exerciseId);
 
         if (this.#selectedExerciseId !== null) {
             exerciseSelect.selectedExerciseId = this.#selectedExerciseId;
+            const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
+            this.shadowRoot.querySelector('h2').textContent = exercise.Name;
         }
 
         exerciseSelect.addEventListener('change', this.updateSelectedExercise);
         wrapper.appendChild(exerciseSelect);
 
+        const setsWrapper = document.createElement('div');
+        setsWrapper.classList.add(globalClassNames.inputWrapper);
+
         const setsLabel = document.createElement('label');
         setsLabel.setAttribute('for', setsInputName);
-        wrapper.appendChild(setsLabel);
+        setsLabel.textContent = 'Sätze';
+        setsWrapper.appendChild(setsLabel);
 
         const setsInput = document.createElement('input');
         setsInput.name = setsInputName;
@@ -94,7 +131,9 @@ export class EditExerciseCard extends HTMLElement {
         setsInput.min = '1';
         setsInput.value = String(this.#setsAmount);
         setsInput.addEventListener('change', this.updateSetsAmount);
-        wrapper.appendChild(setsInput);
+        setsWrapper.appendChild(setsInput);
+
+        wrapper.appendChild(setsWrapper);
 
         this.shadowRoot
             .getElementById(upButtonId)
@@ -110,9 +149,11 @@ export class EditExerciseCard extends HTMLElement {
     }
 
     /** @param {Event} event */
-    updateSelectedExercise(event) {
+    async updateSelectedExercise(event) {
         if (event.currentTarget instanceof ExerciseSelect) {
             this.#selectedExerciseId = event.currentTarget.selectedExerciseId;
+            const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
+            this.shadowRoot.querySelector('h2').textContent = exercise.Name;
         }
     }
 

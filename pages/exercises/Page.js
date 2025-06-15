@@ -36,7 +36,7 @@ export class ExercisesPage extends HTMLElement {
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.headerContainer}">
                     <h1>Übungen</h1>
-                    <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung hinzufügen</fit-app-router-link>
+                    <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung erstellen</fit-app-router-link>
                 </div>
                 <details open>
                     <summary>Ausgewählte Übungen</summary>
@@ -106,7 +106,7 @@ export class ExercisesPage extends HTMLElement {
             const deleteButton = document.createElement('button');
             deleteButton.type = 'button';
             deleteButton.textContent = 'Löschen';
-            deleteButton.className = 'button warning outlined';
+            deleteButton.className = 'button error outlined';
             deleteButton.addEventListener('click', () => this.#deleteExercise(exercise.ID));
             buttonsWrapper.appendChild(deleteButton);
 

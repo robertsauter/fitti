@@ -20,7 +20,7 @@ export class WorkoutsPage extends HTMLElement {
 					flex-direction: column;
 					gap: 1rem;
 				}
-				li {
+				.card {
 					display: flex;
 					flex-direction: column;
 					gap: 0.5rem;
@@ -34,7 +34,7 @@ export class WorkoutsPage extends HTMLElement {
 			<div class="${globalClassNames.pageContainer}">
 				<div class="${globalClassNames.headerContainer}">
 					<h1>Workouts</h1>
-					<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
+					<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout erstellen</fit-app-router-link>
 				</div>
 				<fit-app-router-link route="${appRouterIds.workoutsHistory}" variant="outlined">Beendete Workouts</fit-app-router-link>
 				<ul id="${this.#ids.userWorkouts}"></ul>
@@ -57,11 +57,13 @@ export class WorkoutsPage extends HTMLElement {
 
 			workoutElement.innerHTML = `
 				<h2></h2>	
-				<div class="buttonsWrapper">
-					<button type="button" class="button error outlined">Löschen</button>
-					<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" color="secondary">Bearbeiten</fit-app-router-link>
+				<div class="card white">
+					<div class="buttonsWrapper">
+						<button type="button" class="button error outlined">Löschen</button>
+						<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" color="secondary">Bearbeiten</fit-app-router-link>
+					</div>
+					<fit-app-router-link route="${appRouterIds.workoutsStart}" color="secondary">Starten</fit-app-router-link>
 				</div>
-				<fit-app-router-link route="${appRouterIds.workoutsStart}" color="secondary">Starten</fit-app-router-link>
 			`;
 
 			workoutElement.querySelector('h2').textContent = workout.Name;
