@@ -11,26 +11,20 @@ export class ExercisesPage extends HTMLElement {
         exercise: 'exercise',
     };
 
-    #classes = {
-        buttonsWrapper: 'buttonsWrapper',
-    };
-
     constructor() {
         super();
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
-                li {
-                   padding: 1rem;
-                   background-color: white;
-                   border-radius: 1rem;
+                .card {
                    display: flex;
                    flex-direction: column;
                    gap: 0.5rem; 
                 }
-                .${this.#classes.buttonsWrapper} {
-                    display: flex;
+                .buttonsWrapper {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
                     gap: 0.5rem;
                     justify-content: flex-end;
                 }
@@ -69,6 +63,7 @@ export class ExercisesPage extends HTMLElement {
 
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
+            exerciseElement.className = 'card white';
 
             const nameElement = document.createElement('h3');
             nameElement.textContent = exercise.Name;
@@ -78,15 +73,11 @@ export class ExercisesPage extends HTMLElement {
             descriptionElement.textContent = exercise.Description;
             exerciseElement.appendChild(descriptionElement);
 
-            const buttonsWrapper = document.createElement('div');
-            buttonsWrapper.className = this.#classes.buttonsWrapper;
-
             const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
             historyLink.setAttribute('data-id', exercise.ID);
             historyLink.setAttribute('color', buttonColorClassNames.secondary);
-            buttonsWrapper.appendChild(historyLink);
+            exerciseElement.appendChild(historyLink);
 
-            exerciseElement.appendChild(buttonsWrapper);
 
             globalExercisesElement.appendChild(exerciseElement);
         });
@@ -100,6 +91,7 @@ export class ExercisesPage extends HTMLElement {
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
             exerciseElement.id = `${this.#ids.exercise}${exercise.ID}`;
+            exerciseElement.className = 'card white';
 
             const nameElement = document.createElement('h3');
             nameElement.textContent = exercise.Name;
@@ -110,7 +102,7 @@ export class ExercisesPage extends HTMLElement {
             exerciseElement.appendChild(descriptionElement);
 
             const buttonsWrapper = document.createElement('div');
-            buttonsWrapper.className = this.#classes.buttonsWrapper;
+            buttonsWrapper.className = 'buttonsWrapper';
 
             const deleteButton = document.createElement('button');
             deleteButton.type = 'button';
@@ -125,12 +117,12 @@ export class ExercisesPage extends HTMLElement {
             editLink.setAttribute('variant', buttonVariantClassNames.outlined);
             buttonsWrapper.appendChild(editLink);
 
+            exerciseElement.appendChild(buttonsWrapper);
+
             const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
             historyLink.setAttribute('data-id', String(exercise.ID));
             historyLink.setAttribute('color', buttonColorClassNames.secondary);
-            buttonsWrapper.appendChild(historyLink);
-
-            exerciseElement.appendChild(buttonsWrapper);
+            exerciseElement.appendChild(historyLink);
 
             exercisesElement.appendChild(exerciseElement);
         });

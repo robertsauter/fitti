@@ -91,6 +91,20 @@ textarea {
     flex-direction: column;
 }
 
+.card {
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--background-primary);
+}
+
+.card.secondary {
+    background-color: var(--background-secondary);
+}
+
+.card.white {
+    background-color: white;
+}
+
 .inputWrapper {
     display: flex;
     flex-direction: column;

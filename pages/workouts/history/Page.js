@@ -2,6 +2,7 @@ import { globalClassNames } from '/Constants.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { formatDate } from '/lib/DateHelpers.js';
 
 export class WorkoutsHistoryPage extends HTMLElement {
     constructor() {
@@ -46,7 +47,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         workoutElement.appendChild(workoutTitle);
 
         const workoutDate = document.createElement('p');
-        workoutDate.textContent = `${workoutHistoryEntry.Date.getDate()}.${workoutHistoryEntry.Date.getMonth()}.${workoutHistoryEntry.Date.getFullYear()}`;
+        workoutDate.textContent = formatDate(workoutHistoryEntry.Date);
         workoutElement.appendChild(workoutDate);
 
         const exercisesList = document.createElement('ul');

@@ -1,6 +1,8 @@
 import { globalClassNames } from '/Constants.js';
 import { appRouter } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import '/models/Exercise.js';
+import { compareDate, formatDate, isSameDay } from '/lib/DateHelpers.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
     /** @type {string | null} */
@@ -12,9 +14,19 @@ export class ExerciseHistoryPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                .setWrapper {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 2fr;
+                }
+                .dayList {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                } 
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <h1></h1>
+                <p></p>
                 <ul></ul>
             </div>
         `;
@@ -40,25 +52,80 @@ export class ExerciseHistoryPage extends HTMLElement {
             return;
         }
 
-        const setList = this.shadowRoot.querySelector('ul');
+        const highestWeight = exerciseHistory.History.toSorted((firstEntry, secondEntry) => (secondEntry.Weight - firstEntry.Weight))[0].Weight;
+        const bestSetEver = exerciseHistory.History
+            .filter((entry) => (entry.Weight === highestWeight))
+            .toSorted((firstEntry, secondEntry) => (secondEntry.Reps - firstEntry.Reps))[0];
 
-        exerciseHistory.History.forEach((historyEntry) => {
-            const entryElement = document.createElement('li');
+        this.shadowRoot.querySelector('p').textContent = `Bester Satz: ${bestSetEver.Weight}kg x ${bestSetEver.Reps} Wiederholungen (${formatDate(bestSetEver.Date)})`;
 
-            const dateElement = document.createElement('p');
-            dateElement.textContent = `${historyEntry.Date.getDate()}.${historyEntry.Date.getMonth()}.${historyEntry.Date.getFullYear()}`;
-            entryElement.appendChild(dateElement);
+        const historyByDay = exerciseHistory.History
+            .reduce(this.groupHistoryEntriesByDate, [])
+            .toSorted((firstGroup, secondGroup) => (compareDate(secondGroup[0].Date, firstGroup[0].Date)));
+
+        const dayList = this.shadowRoot.querySelector('ul');
+        dayList.className = 'dayList';
+        historyByDay.forEach((day) => {
+            dayList.appendChild(this.#createHistoryDay(day));
+        });
+    }
+
+    /** 
+     * @param {ExerciseHistoryEntry[][]} groupedEntries 
+     * @param {ExerciseHistoryEntry} entry 
+     * @returns {ExerciseHistoryEntry[][]}
+     * */
+    groupHistoryEntriesByDate(groupedEntries, entry) {
+        if (groupedEntries.length === 0) {
+            return [[entry]];
+        }
+
+        const lastEntryGroup = groupedEntries[groupedEntries.length - 1];
+        if (isSameDay(lastEntryGroup[0].Date, entry.Date)) {
+            const newLastEntryGroup = [...lastEntryGroup, entry];
+            const groupedEntriesWithoutLast = groupedEntries.slice(0, -1);
+            return [...groupedEntriesWithoutLast, newLastEntryGroup];
+        }
+
+        return [...groupedEntries, [entry]];
+    }
+
+    /** 
+     * @param {ExerciseHistoryEntry[]} historyEntries 
+     *  */
+    #createHistoryDay(historyEntries) {
+        const date = historyEntries[0].Date;
+        const dayElement = document.createElement('li');
+        dayElement.className = 'card secondary';
+
+        const dateElement = document.createElement('h2');
+        dateElement.textContent = formatDate(date);
+        dayElement.appendChild(dateElement);
+
+        const setsList = document.createElement('ul');
+
+        historyEntries.forEach((entry, index) => {
+            const setElement = document.createElement('li');
+            setElement.className = 'setWrapper';
+
+            const setIndexElement = document.createElement('p');
+            setIndexElement.textContent = `${index + 1}. Satz:`;
+            setElement.appendChild(setIndexElement);
 
             const weightElement = document.createElement('p');
-            weightElement.textContent = `Gewicht: ${historyEntry.Weight}`;
-            entryElement.appendChild(weightElement);
+            weightElement.textContent = `${entry.Weight}kg`;
+            setElement.appendChild(weightElement);
 
             const repsElement = document.createElement('p');
-            repsElement.textContent = `Wiederholungen: ${historyEntry.Reps}`;
-            entryElement.appendChild(repsElement);
+            repsElement.textContent = `${entry.Reps} Wiederholungen`;
+            setElement.appendChild(repsElement);
 
-            setList.appendChild(entryElement);
+            setsList.appendChild(setElement);
         });
+
+        dayElement.appendChild(setsList);
+
+        return dayElement;
     }
 
     #displayFallback() {
