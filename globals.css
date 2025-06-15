@@ -12,7 +12,7 @@
     --primary: var(--dark-blue);
     --secondary: var(--red);
     --accent: var(--blue);
-    --warning: red;
+    --error: red;
 }
 
 body {
@@ -150,14 +150,14 @@ textarea {
     background-color: transparent;
 }
 
-.button.warning {
+.button.error {
     color: white;
-    background-color: var(--warning);
+    background-color: var(--error);
 }
 
-.button.warning.outlined {
-    color: var(--warning);
-    border-color: var(--warning);
+.button.error.outlined {
+    color: var(--error);
+    border-color: var(--error);
     border-width: 2px;
     border-style: solid;
     background-color: transparent;

@@ -1,4 +1,4 @@
-import { appRouter, appRouterIds } from '/Routes.js';
+import { appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
 import { buttonColorClassNames, buttonVariantClassNames, globalClassNames } from '/Constants.js';
@@ -26,7 +26,6 @@ export class ExercisesPage extends HTMLElement {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     gap: 0.5rem;
-                    justify-content: flex-end;
                 }
                 ul {
                     display: flex;

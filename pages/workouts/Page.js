@@ -1,6 +1,7 @@
 import { appRouter, appRouterIds } from '/Routes.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
+import { globalClassNames } from '/Constants.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
@@ -14,11 +15,28 @@ export class WorkoutsPage extends HTMLElement {
 		this.attachShadow({ mode: 'open' }).innerHTML = `
 			<style>
 				@import url('/globals.css');
+				ul {
+					display: flex;
+					flex-direction: column;
+					gap: 1rem;
+				}
+				li {
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+				}
+				.buttonsWrapper {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 0.5rem;
+                }
 			</style>
-			<div class="pageContainer">
-				<h1>Workouts</h1>
-				<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
-				<fit-app-router-link route="${appRouterIds.workoutsHistory}">Beendete Workouts</fit-app-router-link>
+			<div class="${globalClassNames.pageContainer}">
+				<div class="${globalClassNames.headerContainer}">
+					<h1>Workouts</h1>
+					<fit-app-router-link route="${appRouterIds.workoutsAdd}">Workout hinzufügen</fit-app-router-link>
+				</div>
+				<fit-app-router-link route="${appRouterIds.workoutsHistory}" variant="outlined">Beendete Workouts</fit-app-router-link>
 				<ul id="${this.#ids.userWorkouts}"></ul>
 			</div>
 		`;
@@ -34,14 +52,19 @@ export class WorkoutsPage extends HTMLElement {
 		const workoutsElement = this.shadowRoot.getElementById(this.#ids.userWorkouts);
 		workouts.forEach((workout) => {
 			const workoutElement = document.createElement('li');
+			workoutElement.className = 'card secondary';
 			workoutElement.id = `${this.#ids.workout}${workout.ID}`;
 
 			workoutElement.innerHTML = `
-				<h2>${workout.Name}</h2>
-				<button type="button">Löschen</button>
-				<fit-app-router-link route="${appRouterIds.workoutsEdit}">Bearbeiten</fit-app-router-link>
-				<fit-app-router-link route="${appRouterIds.workoutsStart}">Starten</fit-app-router-link>
+				<h2></h2>	
+				<div class="buttonsWrapper">
+					<button type="button" class="button error outlined">Löschen</button>
+					<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" color="secondary">Bearbeiten</fit-app-router-link>
+				</div>
+				<fit-app-router-link route="${appRouterIds.workoutsStart}" color="secondary">Starten</fit-app-router-link>
 			`;
+
+			workoutElement.querySelector('h2').textContent = workout.Name;
 
 			workoutElement
 				.querySelectorAll('fit-app-router-link')
