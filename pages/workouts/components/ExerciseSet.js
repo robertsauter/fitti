@@ -2,19 +2,12 @@ import '/models/Workout.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
-import { customEventNames } from '/Constants.js';
+import { customEventNames, globalClassNames } from '/Constants.js';
 
 export class ExerciseSet extends HTMLElement {
     #inputNames = {
         weight: 'weight',
         reps: 'reps',
-    };
-
-    #classes = {
-        weightLabel: 'weightLabel',
-        weightInput: 'weightInput',
-        repsLabel: 'repsLabel',
-        repsInput: 'repsInput',
     };
 
     /** @type {number | string} */
@@ -49,14 +42,23 @@ export class ExerciseSet extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                li {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
             </style>
-            <li>
+            <li class="card white">
                 <p>Set ${setIndex + 1}</p>
-                <label class="${this.#classes.weightLabel}">Gewicht</label>
-                <input class="${this.#classes.weightInput}" type="number" min="1" />
-                <label class="${this.#classes.repsLabel}">Wiederholungen</label>
-                <input class="${this.#classes.repsInput}" type="number" min="1" />
-                ${this.#setIndex !== 0 ? `<button type="button">Set entfernen</button>` : ``}
+                <div class="${globalClassNames.inputWrapper}">
+                    <label class="weightLabel">Gewicht</label>
+                    <input class="weightInput" type="number" min="1" />
+                </div>
+                <div class="${globalClassNames.inputWrapper}">
+                    <label class="repsLabel">Wiederholungen</label>
+                    <input class="repsInput" type="number" min="1" />
+                </div>
+                ${this.#setIndex !== 0 ? `<button type="button" class="button secondary outlined">Set entfernen</button>` : ``}
             </li>
         `;
     }
@@ -65,10 +67,10 @@ export class ExerciseSet extends HTMLElement {
         const weightInputName = `${this.#inputNames.weight}${this.#exerciseId}${this.#setIndex}`;
 
         this.shadowRoot
-            .querySelector(`.${this.#classes.weightLabel}`)
+            .querySelector('.weightLabel')
             .setAttribute('for', weightInputName);
 
-        const weightInput = this.shadowRoot.querySelector(`.${this.#classes.weightInput}`);
+        const weightInput = this.shadowRoot.querySelector('.weightInput');
         if (weightInput instanceof HTMLInputElement) {
             weightInput.name = weightInputName;
             weightInput.id = weightInputName;
@@ -82,10 +84,10 @@ export class ExerciseSet extends HTMLElement {
         const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setIndex}`;
 
         this.shadowRoot
-            .querySelector(`.${this.#classes.repsLabel}`)
+            .querySelector('.repsLabel')
             .setAttribute('for', repsInputName);
 
-        const repsInput = this.shadowRoot.querySelector(`.${this.#classes.repsInput}`);
+        const repsInput = this.shadowRoot.querySelector('.repsInput');
         if (repsInput instanceof HTMLInputElement) {
             repsInput.name = repsInputName;
             repsInput.id = repsInputName;

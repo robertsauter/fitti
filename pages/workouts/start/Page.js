@@ -24,12 +24,17 @@ export class WorkoutsStartPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                ul {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <h1></h1>
                 <ul></ul>
-                <button id="${this.#ids.addExerciseButton}">Übung hinzufügen</button>
-                <button id="${this.#ids.saveWorkoutButton}">Workout beenden</button>
+                <button id="${this.#ids.addExerciseButton}" class="button primary outlined">Übung hinzufügen</button>
+                <button id="${this.#ids.saveWorkoutButton}" class="button primary">Workout beenden</button>
             </div>
         `;
     }
