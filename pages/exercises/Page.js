@@ -39,20 +39,20 @@ export class ExercisesPage extends HTMLElement {
                     <fit-app-router-link route="${appRouterIds.exercisesAdd}">Übung erstellen</fit-app-router-link>
                 </div>
                 <details open>
-                    <summary>Ausgewählte Übungen</summary>
-                    <ul id="${this.#ids.globalExercises}"></ul>
-                </details>
-                <details open>
                     <summary>Deine Übungen</summary>
                     <ul id="${this.#ids.userExercises}"></ul>
+                </details>
+                <details open>
+                    <summary>Ausgewählte Übungen</summary>
+                    <ul id="${this.#ids.globalExercises}"></ul>
                 </details>
             </div>
         `;
     }
 
     connectedCallback() {
-        this.#displayGlobalExercises();
         this.#displayUserExercises();
+        this.#displayGlobalExercises();
     }
 
     async #displayGlobalExercises() {

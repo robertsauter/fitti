@@ -2,9 +2,6 @@ import { ClientRouter } from '/lib/ClientRouter.js';
 import '/models/Route.js';
 
 export const appRouterIds = {
-    home: 'home',
-    login: 'login',
-    register: 'register',
     workouts: 'workouts',
     workoutsAdd: 'workoutsAdd',
     workoutsEdit: 'workoutsEdit',
@@ -19,12 +16,6 @@ Object.freeze(appRouterIds);
 
 /** @type {Route[]} */
 const routes = [
-    {
-        id: appRouterIds.home,
-        path: '/',
-        component: '<fit-home-page></fit-home-page>',
-        importPath: '/pages/home/Page.js',
-    },
     {
         id: appRouterIds.workouts,
         path: '/workouts',
