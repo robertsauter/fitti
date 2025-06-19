@@ -1,0 +1,31 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.exercisesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.exerciseCard,
+.buttonsCard,
+.setCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.buttonsWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.setsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}

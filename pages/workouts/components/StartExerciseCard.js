@@ -33,51 +33,34 @@ export class StartExerciseCard extends HTMLElement {
         this.moveDown = this.moveDown.bind(this);
 
         this.#workoutExercise = exercise;
+    }
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .card {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                .buttonsWrapper {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 0.5rem;
-                }
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                } 
-            </style>
-            <li class="card secondary">
+    connectedCallback() {
+        this.innerHTML = `
+            <li class="exerciseCard card secondary">
                 <h2></h2>
                 <div class="buttonsCard card white"></div>
             </li>
         `;
-    }
 
-    connectedCallback() {
         this.#displayExercise();
     }
 
     async #displayExercise() {
         const exercise = await exercisesService.getUserOrGlobalExercise(this.#workoutExercise.id);
 
-        const wrapperElement = this.shadowRoot.querySelector('li');
+        const wrapperElement = this.querySelector('li');
 
-        this.shadowRoot.querySelector('h2').textContent = exercise.Name;
+        this.querySelector('h2').textContent = exercise.Name;
 
-        const buttonsCard = this.shadowRoot.querySelector('.buttonsCard');
+        const buttonsCard = this.querySelector('.buttonsCard');
 
         const buttonsWrapper = document.createElement('div');
         buttonsWrapper.className = 'buttonsWrapper';
 
         const upButtonId = `${this.#ids.upButton}${exercise.ID}`;
         const upButton = document.createElement('button');
+        upButton.type = 'button';
         upButton.className = 'button secondary outlined';
         upButton.id = upButtonId;
         upButton.textContent = 'Oben';
@@ -86,6 +69,7 @@ export class StartExerciseCard extends HTMLElement {
 
         const downButtonId = `${this.#ids.downButton}${exercise.ID}`;
         const downButton = document.createElement('button');
+        downButton.type = 'button';
         downButton.className = 'button secondary outlined';
         downButton.id = downButtonId;
         downButton.textContent = 'Unten';
@@ -96,6 +80,7 @@ export class StartExerciseCard extends HTMLElement {
 
         const deleteButtonId = `${this.#ids.deleteButton}${exercise.ID}`;
         const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
         deleteButton.className = 'button error outlined';
         deleteButton.id = deleteButtonId;
         deleteButton.textContent = 'Löschen';
@@ -105,6 +90,7 @@ export class StartExerciseCard extends HTMLElement {
         wrapperElement.appendChild(buttonsCard);
 
         const setsList = document.createElement('ul');
+        setsList.className = 'setsList';
         wrapperElement.appendChild(setsList);
         this.#workoutExercise.sets.forEach((set, index) => {
             const setElement = new ExerciseSet(exercise.ID, index, set);
@@ -114,6 +100,7 @@ export class StartExerciseCard extends HTMLElement {
 
         const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
         const addButton = document.createElement('button');
+        addButton.type = 'button';
         addButton.className = 'button secondary';
         addButton.id = addButtonId;
         addButton.textContent = 'Set hinzufügen';
@@ -131,11 +118,10 @@ export class StartExerciseCard extends HTMLElement {
         }
 
         workoutsStartStore.removeSet(this.#workoutExercise.id, event.detail);
-        this.shadowRoot
-            .querySelectorAll('fit-exercise-set')
+        this.querySelectorAll('fit-exercise-set')
             .item(event.detail)
             .remove();
-        const setElements = this.shadowRoot.querySelectorAll('fit-exercise-set');
+        const setElements = this.querySelectorAll('fit-exercise-set');
 
         setElements.forEach((setElement, index) => {
             if (!(setElement instanceof ExerciseSet)) {
@@ -153,7 +139,7 @@ export class StartExerciseCard extends HTMLElement {
 
     addSet() {
         workoutsStartStore.addSet(this.#workoutExercise.id);
-        const setsWrapper = this.shadowRoot.querySelector('ul');
+        const setsWrapper = this.querySelector('ul');
         const currentSetsAmount = workoutsStartStore.getSetsAmount(this.#workoutExercise.id);
 
         if (currentSetsAmount === undefined) {

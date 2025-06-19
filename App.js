@@ -20,7 +20,6 @@ export class App extends HTMLElement {
 
                 <fit-nav-tabs></fit-nav-tabs>
             </div> 
-        
         `;
     }
 

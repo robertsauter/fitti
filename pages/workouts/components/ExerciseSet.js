@@ -38,18 +38,12 @@ export class ExerciseSet extends HTMLElement {
         this.#exerciseId = exerciseId;
         this.#setIndex = setIndex;
         this.#set = set;
+    }
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                li {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-            </style>
-            <li class="card white">
-                <p>Set ${setIndex + 1}</p>
+    connectedCallback() {
+        this.innerHTML = `
+            <li class="setCard card white">
+                <p>Set ${this.#setIndex + 1}</p>
                 <div class="${globalClassNames.inputWrapper}">
                     <label class="weightLabel">Gewicht</label>
                     <input class="weightInput" type="number" min="1" />
@@ -61,17 +55,14 @@ export class ExerciseSet extends HTMLElement {
                 ${this.#setIndex !== 0 ? `<button type="button" class="button secondary outlined">Set entfernen</button>` : ``}
             </li>
         `;
-    }
 
-    connectedCallback() {
         const weightInputName = `${this.#inputNames.weight}${this.#exerciseId}${this.#setIndex}`;
 
-        this.shadowRoot
-            .querySelector('.weightLabel')
-            .setAttribute('for', weightInputName);
+        this.querySelector('.weightLabel').setAttribute('for', weightInputName);
 
-        const weightInput = this.shadowRoot.querySelector('.weightInput');
+        const weightInput = this.querySelector('.weightInput');
         if (weightInput instanceof HTMLInputElement) {
+            weightInput.required = true;
             weightInput.name = weightInputName;
             weightInput.id = weightInputName;
             weightInput.addEventListener('change', this.updateWeight);
@@ -83,12 +74,11 @@ export class ExerciseSet extends HTMLElement {
 
         const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setIndex}`;
 
-        this.shadowRoot
-            .querySelector('.repsLabel')
-            .setAttribute('for', repsInputName);
+        this.querySelector('.repsLabel').setAttribute('for', repsInputName);
 
-        const repsInput = this.shadowRoot.querySelector('.repsInput');
+        const repsInput = this.querySelector('.repsInput');
         if (repsInput instanceof HTMLInputElement) {
+            repsInput.required = true;
             repsInput.name = repsInputName;
             repsInput.id = repsInputName;
             repsInput.addEventListener('change', this.updateReps);
@@ -98,7 +88,7 @@ export class ExerciseSet extends HTMLElement {
             }
         }
 
-        const removeButton = this.shadowRoot.querySelector('button');
+        const removeButton = this.querySelector('button');
 
         if (removeButton !== null) {
             removeButton.addEventListener('click', this.removeSet);
@@ -136,7 +126,7 @@ export class ExerciseSet extends HTMLElement {
     }
 
     #updateTitle() {
-        this.shadowRoot.querySelector('p').textContent = `Set ${this.#setIndex + 1}`;
+        this.querySelector('p').textContent = `Set ${this.#setIndex + 1}`;
     }
 }
 

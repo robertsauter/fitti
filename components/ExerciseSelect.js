@@ -27,22 +27,22 @@ export class ExerciseSelect extends HTMLElement {
         this.updateSelectedExercise = this.updateSelectedExercise.bind(this);
 
         this.#exerciseIndex = exerciseIndex;
+    }
 
-        const exerciseSelectName = `${this.#inputNames.exercise}${exerciseIndex}`;
+    async connectedCallback() {
+        const exerciseSelectName = `${this.#inputNames.exercise}${this.#exerciseIndex}`;
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
+        this.innerHTML = `
             <style>
                 @import url('/globals.css');
             </style>
             <div class="${globalClassNames.inputWrapper}">
                 <label for="${exerciseSelectName}">Übung</label>
-                <select id="${exerciseSelectName}" name="${exerciseSelectName}"></select>
+                <select id="${exerciseSelectName}" name="${exerciseSelectName}" required></select>
             </div>
         `;
-    }
 
-    async connectedCallback() {
-        const exerciseSelect = this.shadowRoot.getElementById(`${this.#inputNames.exercise}${this.#exerciseIndex}`);
+        const exerciseSelect = this.querySelector(`#${this.#inputNames.exercise}${this.#exerciseIndex}`);
 
         const globalExercises = await exercisesService.getGlobalExercises();
         const userExercises = await exercisesService.getUserExercises();
@@ -87,10 +87,42 @@ export class ExerciseSelect extends HTMLElement {
 
     /** @param {Event} event */
     updateSelectedExercise(event) {
-        if (event.currentTarget instanceof HTMLSelectElement) {
-            this.#selectedExerciseId = event.currentTarget.value;
-            this.dispatchEvent(new Event('change'));
+        const select = event.currentTarget;
+
+        if (!(select instanceof HTMLSelectElement)) {
+            return;
         }
+
+        const form = select.form;
+
+        if (form !== null) {
+            let isValid = true;
+            Object.values(form.elements).forEach((input) => {
+                if (input instanceof HTMLSelectElement && input.name !== select.name && input.value === select.value) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                this.resetValidation();
+            } else {
+                this.triggerExerciseInUseValidation();
+            }
+        }
+
+        this.#selectedExerciseId = select.value;
+        this.dispatchEvent(new Event('change'));
+    }
+
+    triggerExerciseInUseValidation() {
+        const select = this.querySelector('select');
+        select.setCustomValidity('Diese Übung wird schon verwendet.');
+        select.reportValidity();
+    }
+
+    resetValidation() {
+        const select = this.querySelector('select');
+        select.setCustomValidity('');
     }
 }
 

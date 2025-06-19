@@ -48,8 +48,10 @@ export class EditExerciseCard extends HTMLElement {
         this.moveUp = this.moveUp.bind(this);
         this.moveDown = this.moveDown.bind(this);
         this.deleteExercise = this.deleteExercise.bind(this);
+    }
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
+    async connectedCallback() {
+        this.innerHTML = `
             <style>
                 @import url('/globals.css');
                 .card {
@@ -68,9 +70,7 @@ export class EditExerciseCard extends HTMLElement {
                 <div class="card white exerciseWrapper"></div>
             </li>
         `;
-    }
 
-    async connectedCallback() {
         this.#exerciseId = Number(this.getAttribute('exerciseId'));
 
         const wrapperId = `${this.#ids.exerciseWrapper}${this.#exerciseId}`;
@@ -79,7 +79,7 @@ export class EditExerciseCard extends HTMLElement {
         const deleteButtonId = `${this.#ids.deleteButton}${this.#exerciseId}`;
         const setsInputName = `${this.#inputNames.sets}${this.#exerciseId}`;
 
-        const wrapper = this.shadowRoot.querySelector('.exerciseWrapper');
+        const wrapper = this.querySelector('.exerciseWrapper');
         wrapper.id = wrapperId;
 
         wrapper.innerHTML = `
@@ -110,7 +110,7 @@ export class EditExerciseCard extends HTMLElement {
         if (this.#selectedExerciseId !== null) {
             exerciseSelect.selectedExerciseId = this.#selectedExerciseId;
             const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
-            this.shadowRoot.querySelector('h2').textContent = exercise.Name;
+            this.querySelector('h2').textContent = exercise.Name;
         }
 
         exerciseSelect.addEventListener('change', this.updateSelectedExercise);
@@ -135,16 +135,13 @@ export class EditExerciseCard extends HTMLElement {
 
         wrapper.appendChild(setsWrapper);
 
-        this.shadowRoot
-            .getElementById(upButtonId)
+        this.querySelector(`#${upButtonId}`)
             .addEventListener('click', this.moveUp);
 
-        this.shadowRoot
-            .getElementById(downButtonId)
+        this.querySelector(`#${downButtonId}`)
             .addEventListener('click', this.moveDown);
 
-        this.shadowRoot
-            .getElementById(deleteButtonId)
+        this.querySelector(`#${deleteButtonId}`)
             .addEventListener('click', this.deleteExercise);
     }
 
@@ -153,7 +150,7 @@ export class EditExerciseCard extends HTMLElement {
         if (event.currentTarget instanceof ExerciseSelect) {
             this.#selectedExerciseId = event.currentTarget.selectedExerciseId;
             const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
-            this.shadowRoot.querySelector('h2').textContent = exercise.Name;
+            this.querySelector('h2').textContent = exercise.Name;
         }
     }
 

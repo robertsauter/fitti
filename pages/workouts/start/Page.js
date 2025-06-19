@@ -24,17 +24,25 @@ export class WorkoutsStartPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
+                @import url('/pages/workouts/start/Page.css');
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <h1></h1>
-                <ul></ul>
-                <button id="${this.#ids.addExerciseButton}" class="button primary outlined">Übung hinzufügen</button>
-                <button id="${this.#ids.saveWorkoutButton}" class="button primary">Workout beenden</button>
+                <form>
+                    <ul class="exercisesList"></ul>
+                    <button
+                        id="${this.#ids.addExerciseButton}"
+                        class="button primary outlined"
+                        type="button">
+                        Übung hinzufügen
+                    </button>
+                    <button
+                        id="${this.#ids.saveWorkoutButton}"
+                        class="button primary"
+                        type="submit">
+                        Workout beenden
+                    </button>
+                </form>
             </div>
         `;
     }
@@ -64,8 +72,8 @@ export class WorkoutsStartPage extends HTMLElement {
             .addEventListener('click', this.addExerciseSelect);
 
         this.shadowRoot
-            .getElementById(this.#ids.saveWorkoutButton)
-            .addEventListener('click', this.saveWorkout);
+            .querySelector('form')
+            .addEventListener('submit', this.saveWorkout);
     }
 
     #displayFallback() {
@@ -122,10 +130,12 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
-        // TODO: Add validation
         if (workoutsStartStore.exercises.some((exercise) => exercise.id === select.selectedExerciseId)) {
+            select.triggerExerciseInUseValidation();
             return;
         }
+
+        select.resetValidation();
 
         const newExercise = workoutsStartStore.addExercise(select.selectedExerciseId);
         select.remove();
@@ -182,7 +192,10 @@ export class WorkoutsStartPage extends HTMLElement {
         card.remove();
     }
 
-    async saveWorkout() {
+    /** @param {SubmitEvent} event  */
+    async saveWorkout(event) {
+        event.preventDefault();
+
         try {
             await workoutsService.saveUserWorkout();
             appRouter.navigate(appRouterIds.workouts);
