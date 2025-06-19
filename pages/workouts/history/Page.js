@@ -11,10 +11,29 @@ export class WorkoutsHistoryPage extends HTMLElement {
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
+                .workoutsList {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                .exercisesList {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                .card {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                .setWrapper {
+                    display: grid;
+                    grid-template-columns: 1fr 1.5fr 1.5fr;
+                } 
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <h1>Beendete Workouts</h1>
-                <ul></ul>
+                <ul class="workoutsList"></ul>
             </div>
         `;
 
@@ -41,6 +60,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         const workout = await workoutsService.getUserWorkout(workoutHistoryEntry.WorkoutId);
 
         const workoutElement = document.createElement('li');
+        workoutElement.className = 'card secondary';
 
         const workoutTitle = document.createElement('h2');
         workoutTitle.textContent = workout.Name;
@@ -51,6 +71,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         workoutElement.appendChild(workoutDate);
 
         const exercisesList = document.createElement('ul');
+        exercisesList.className = 'exercisesList';
         await Promise.all(workoutHistoryEntry.Exercises.map(async (exercise) => {
             const exerciseElement = await this.#createExerciseElement(exercise);
             exercisesList.appendChild(exerciseElement);
@@ -65,14 +86,15 @@ export class WorkoutsHistoryPage extends HTMLElement {
         const exerciseDetails = await exercisesService.getUserOrGlobalExercise(exercise.id);
 
         const exerciseElement = document.createElement('li');
+        exerciseElement.className = 'card white';
 
-        const exerciseName = document.createElement('p');
+        const exerciseName = document.createElement('h3');
         exerciseName.textContent = exerciseDetails.Name;
         exerciseElement.appendChild(exerciseName);
 
-        const setsList = document.createElement('ol');
-        await Promise.all(exercise.sets.map((set) => {
-            const setElement = this.#createSetElement(set);
+        const setsList = document.createElement('ul');
+        await Promise.all(exercise.sets.map((set, index) => {
+            const setElement = this.#createSetElement(set, index);
             setsList.appendChild(setElement);
         }));
         exerciseElement.appendChild(setsList);
@@ -80,9 +102,17 @@ export class WorkoutsHistoryPage extends HTMLElement {
         return exerciseElement;
     }
 
-    /** @param {WorkoutStartSet} set  */
-    #createSetElement(set) {
+    /** 
+     * @param {WorkoutStartSet} set 
+     * @param {number} index 
+     *  */
+    #createSetElement(set, index) {
         const setElement = document.createElement('li');
+        setElement.className = 'setWrapper';
+
+        const setIndex = document.createElement('p');
+        setIndex.textContent = `${index + 1}. Satz:`;
+        setElement.appendChild(setIndex);
 
         const weight = document.createElement('p');
         weight.textContent = `Weight: ${set.weight}`;
