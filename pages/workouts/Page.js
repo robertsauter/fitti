@@ -49,7 +49,12 @@ export class WorkoutsPage extends HTMLElement {
 	async #displayUserWorkouts() {
 		const workouts = await workoutsService.getUserWorkouts();
 
-		const workoutsElement = this.shadowRoot.getElementById(this.#ids.userWorkouts);
+		const workoutsElement = this.shadowRoot?.getElementById(this.#ids.userWorkouts);
+
+		if (!workoutsElement) {
+			return;
+		}
+
 		workouts.forEach((workout) => {
 			const workoutElement = document.createElement('li');
 			workoutElement.className = 'card secondary';
@@ -66,7 +71,13 @@ export class WorkoutsPage extends HTMLElement {
 				</div>
 			`;
 
-			workoutElement.querySelector('h2').textContent = workout.Name;
+			const header = workoutElement.querySelector('h2');
+
+			if (header === null) {
+				return;
+			}
+
+			header.textContent = workout.Name;
 
 			workoutElement
 				.querySelectorAll('fit-app-router-link')
@@ -76,7 +87,7 @@ export class WorkoutsPage extends HTMLElement {
 
 			workoutElement
 				.querySelector('button')
-				.addEventListener('click', () => this.#deleteExercise(workout.ID));
+				?.addEventListener('click', () => this.#deleteExercise(workout.ID));
 
 			workoutsElement.appendChild(workoutElement);
 		});
@@ -86,8 +97,8 @@ export class WorkoutsPage extends HTMLElement {
 	async #deleteExercise(id) {
 		await workoutsService.deleteUserWorkout(id);
 		this.shadowRoot
-			.getElementById(`${this.#ids.workout}${id}`)
-			.remove();
+			?.getElementById(`${this.#ids.workout}${id}`)
+			?.remove();
 	}
 }
 

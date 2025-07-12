@@ -15,7 +15,7 @@ class ExercisesService {
 
     /** 
      * @param {number} id
-     * @return {Promise<Exercise>} 
+     * @return {Promise<Exercise | undefined>}
      * */
     getUserExercise(id) {
         return promiseIndexedDB.get(objectStoreNames.userExercises, id);
@@ -76,6 +76,22 @@ class ExercisesService {
      * */
     async getExerciseHistory(id) {
         return promiseIndexedDB.getByIndex(objectStoreNames.exerciseHistory, exerciseHistoryIndexes.exerciseId, id);
+    }
+
+    /** 
+     * @param {string} id  
+     * @returns {Promise<boolean>}
+     * */
+    async doesExerciseExist(id) {
+        const idAsNumber = Number(id);
+
+        if (Number.isNaN(idAsNumber)) {
+            const globalExercises = await this.getGlobalExercises();
+            return globalExercises.some((globalExercise) => globalExercise.ID === id);
+        }
+
+        const count = await promiseIndexedDB.count(objectStoreNames.userExercises, idAsNumber);
+        return count > 0;
     }
 }
 

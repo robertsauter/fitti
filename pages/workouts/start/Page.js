@@ -64,20 +64,30 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
-        this.shadowRoot.querySelector('h1').textContent = workout.Name;
+        const header = this.shadowRoot?.querySelector('h1');
+        if (header) {
+            header.textContent = workout.Name;
+        }
+
         this.#displayExercises();
 
         this.shadowRoot
-            .getElementById(this.#ids.addExerciseButton)
-            .addEventListener('click', this.addExerciseSelect);
+            ?.getElementById(this.#ids.addExerciseButton)
+            ?.addEventListener('click', this.addExerciseSelect);
 
         this.shadowRoot
-            .querySelector('form')
-            .addEventListener('submit', this.saveWorkout);
+            ?.querySelector('form')
+            ?.addEventListener('submit', this.saveWorkout);
     }
 
     #displayFallback() {
-        this.shadowRoot.querySelector(`.${globalClassNames.pageContainer}`).innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
+        const container = this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`);
+
+        if (!container) {
+            return;
+        }
+
+        container.innerHTML = `<p>Workout konnte nicht gefunden werden.</p>`;
     }
 
     #displayExercises() {
@@ -91,8 +101,8 @@ export class WorkoutsStartPage extends HTMLElement {
         const exerciseElement = this.createExerciseElement(exercise);
 
         this.shadowRoot
-            .querySelector('ul')
-            .appendChild(exerciseElement);
+            ?.querySelector('ul')
+            ?.appendChild(exerciseElement);
     }
 
     /** @param {WorkoutStartExerxise} exercise  */
@@ -118,15 +128,15 @@ export class WorkoutsStartPage extends HTMLElement {
         exerciseSelect.addEventListener('change', this.addExercise);
 
         this.shadowRoot
-            .querySelector('ul')
-            .appendChild(exerciseSelect);
+            ?.querySelector('ul')
+            ?.appendChild(exerciseSelect);
     }
 
     /** @param {Event} event  */
     addExercise(event) {
         const select = event.currentTarget;
 
-        if (!(select instanceof ExerciseSelect)) {
+        if (!(select instanceof ExerciseSelect) || select.selectedExerciseId === null) {
             return;
         }
 
@@ -141,7 +151,7 @@ export class WorkoutsStartPage extends HTMLElement {
         select.remove();
         this.#displayExercise(newExercise);
 
-        const addButton = this.shadowRoot.getElementById(this.#ids.addExerciseButton);
+        const addButton = this.shadowRoot?.getElementById(this.#ids.addExerciseButton);
 
         if (!(addButton instanceof HTMLButtonElement)) {
             return;
@@ -160,7 +170,7 @@ export class WorkoutsStartPage extends HTMLElement {
 
         const previousCard = card.previousElementSibling;
 
-        if (previousCard === null) {
+        if (previousCard === null || card.workoutExercise === null) {
             return;
         }
 
@@ -181,7 +191,7 @@ export class WorkoutsStartPage extends HTMLElement {
 
         const nextCard = card.nextElementSibling;
 
-        if (nextCard === null) {
+        if (nextCard === null || card.workoutExercise === null) {
             return;
         }
 

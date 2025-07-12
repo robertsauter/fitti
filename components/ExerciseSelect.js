@@ -48,6 +48,19 @@ export class ExerciseSelect extends HTMLElement {
         const userExercises = await exercisesService.getUserExercises();
 
         if (exerciseSelect instanceof HTMLSelectElement) {
+            if (userExercises.length > 0) {
+                const userOptionGroup = document.createElement('optgroup');
+                userOptionGroup.label = 'Deine Übungen';
+                userExercises.forEach((exercise) => {
+                    const option = document.createElement('option');
+                    option.value = String(exercise.ID);
+                    option.textContent = exercise.Name;
+                    userOptionGroup.appendChild(option);
+                });
+
+                exerciseSelect.appendChild(userOptionGroup);
+            }
+
             if (globalExercises.length > 0) {
                 const globalOptionGroup = document.createElement('optgroup');
                 globalOptionGroup.label = 'Ausgewählte Übungen';
@@ -60,19 +73,6 @@ export class ExerciseSelect extends HTMLElement {
                 });
 
                 exerciseSelect.appendChild(globalOptionGroup);
-            }
-
-            if (userExercises.length > 0) {
-                const userOptionGroup = document.createElement('optgroup');
-                userOptionGroup.label = 'Deine Übungen';
-                userExercises.forEach((exercise) => {
-                    const option = document.createElement('option');
-                    option.value = String(exercise.ID);
-                    option.textContent = exercise.Name;
-                    userOptionGroup.appendChild(option);
-                });
-
-                exerciseSelect.appendChild(userOptionGroup);
             }
 
             if (this.#selectedExerciseId !== null) {
@@ -116,13 +116,13 @@ export class ExerciseSelect extends HTMLElement {
 
     triggerExerciseInUseValidation() {
         const select = this.querySelector('select');
-        select.setCustomValidity('Diese Übung wird schon verwendet.');
-        select.reportValidity();
+        select?.setCustomValidity('Diese Übung wird schon verwendet.');
+        select?.reportValidity();
     }
 
     resetValidation() {
         const select = this.querySelector('select');
-        select.setCustomValidity('');
+        select?.setCustomValidity('');
     }
 }
 

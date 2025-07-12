@@ -47,8 +47,16 @@ export class ExerciseHistoryPage extends HTMLElement {
     }
 
     async #createExerciseHistory() {
+        if (this.#exerciseId === null) {
+            return;
+        }
+
         const exercise = await exercisesService.getUserOrGlobalExercise(this.#exerciseId);
-        this.shadowRoot.querySelector('h1').textContent = `Übungsfortschritt für ${exercise.Name}`;
+
+        const header = this.shadowRoot?.querySelector('h1');
+        if (header) {
+            header.textContent = `Übungsfortschritt für ${exercise === undefined ? 'Unbekannte Übung' : exercise.Name}`;
+        }
 
         const exerciseHistory = await exercisesService.getExerciseHistory(this.#exerciseId);
 
@@ -62,17 +70,23 @@ export class ExerciseHistoryPage extends HTMLElement {
             .filter((entry) => (entry.Weight === highestWeight))
             .toSorted((firstEntry, secondEntry) => (secondEntry.Reps - firstEntry.Reps))[0];
 
-        this.shadowRoot.querySelector('p').textContent = `Bester Satz: ${bestSetEver.Weight}kg x ${bestSetEver.Reps} Wiederholungen (${formatDate(bestSetEver.Date)})`;
+        const bestSetElement = this.shadowRoot?.querySelector('p');
+        if (bestSetElement) {
+            bestSetElement.textContent = `Bester Satz: ${bestSetEver.Weight}kg x ${bestSetEver.Reps} Wiederholungen (${formatDate(bestSetEver.Date)})`;
+
+        }
 
         const historyByDay = exerciseHistory.History
             .reduce(this.groupHistoryEntriesByDate, [])
             .toSorted((firstGroup, secondGroup) => (compareDate(secondGroup[0].Date, firstGroup[0].Date)));
 
-        const dayList = this.shadowRoot.querySelector('ul');
-        dayList.className = 'dayList';
-        historyByDay.forEach((day) => {
-            dayList.appendChild(this.#createHistoryDay(day));
-        });
+        const dayList = this.shadowRoot?.querySelector('ul');
+        if (dayList) {
+            dayList.className = 'dayList';
+            historyByDay.forEach((day) => {
+                dayList.appendChild(this.#createHistoryDay(day));
+            });
+        }
     }
 
     /** 
@@ -137,7 +151,7 @@ export class ExerciseHistoryPage extends HTMLElement {
     #displayFallback() {
         const fallbackElement = document.createElement('p');
         fallbackElement.textContent = 'Du hast noch keinen Fortschritt für diese Übung aufgezeichnet.';
-        this.shadowRoot.querySelector(`.${globalClassNames.pageContainer}`).appendChild(fallbackElement);
+        this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`)?.appendChild(fallbackElement);
     }
 }
 

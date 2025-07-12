@@ -5,6 +5,7 @@ import { EditExerciseCard } from '/pages/workouts/components/EditExerciseCard.js
 import { workoutsService } from '/services/WorkoutsService.js';
 import { appRouter, appRouterIds } from '/Routes.js';
 import { globalClassNames } from '/Constants.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class WorkoutsEditPage extends HTMLElement {
     #ids = {
@@ -63,43 +64,55 @@ export class WorkoutsEditPage extends HTMLElement {
 
     connectedCallback() {
         this.shadowRoot
-            .getElementById(this.#ids.addExerciseButton)
-            .addEventListener('click', () => this.addExercise());
+            ?.getElementById(this.#ids.addExerciseButton)
+            ?.addEventListener('click', () => this.addExercise());
 
         this.shadowRoot
-            .getElementById(this.#ids.workoutForm)
-            .addEventListener('submit', this.saveWorkout);
+            ?.getElementById(this.#ids.workoutForm)
+            ?.addEventListener('submit', this.saveWorkout);
 
         const id = appRouter.getParamValue('id');
 
         if (id !== null) {
-            this.shadowRoot.querySelector('h1').textContent = 'Workout bearbeiten';
+            const header = this.shadowRoot?.querySelector('h1');
+
+            if (header) {
+                header.textContent = 'Workout bearbeiten';
+            }
+
             this.#workoutId = Number(id);
             this.#initializeWorkout();
         }
     }
 
     async #initializeWorkout() {
+        if (this.#workoutId === null) {
+            return;
+        }
+
         const workout = await workoutsService.getUserWorkout(this.#workoutId);
 
-        const nameInput = this.shadowRoot.getElementById(this.#inputNames.name);
+        const nameInput = this.shadowRoot?.getElementById(this.#inputNames.name);
 
         if (nameInput instanceof HTMLInputElement) {
             nameInput.value = workout.Name;
         }
 
-        workout.Exercises.forEach((exercise) => {
+        workout.Exercises.forEach(async (exercise) => {
+            const doesExerciseExist = await exercisesService.doesExerciseExist(exercise.ID);
+            console.log(exercise, doesExerciseExist);
+
+            if (!doesExerciseExist) {
+                return;
+            }
+
             this.addExercise(exercise);
         });
     }
 
     /** @param {WorkoutExercise} [exercise]  */
     addExercise(exercise) {
-        const exerciseElement = document.createElement('fit-edit-exercise-card');
-
-        if (!(exerciseElement instanceof EditExerciseCard)) {
-            return;
-        }
+        const exerciseElement = new EditExerciseCard();
 
         exerciseElement.setAttribute('exerciseId', String(this.#exercisesAmount));
 
@@ -109,8 +122,8 @@ export class WorkoutsEditPage extends HTMLElement {
         }
 
         this.shadowRoot
-            .getElementById(this.#ids.exercisesList)
-            .appendChild(exerciseElement);
+            ?.getElementById(this.#ids.exercisesList)
+            ?.appendChild(exerciseElement);
 
         this.#exercisesAmount += 1;
     }
@@ -133,9 +146,9 @@ export class WorkoutsEditPage extends HTMLElement {
         /** @type {WorkoutExercise[]} */
         const exercises = [];
         this.shadowRoot
-            .querySelectorAll('fit-edit-exercise-card')
+            ?.querySelectorAll('fit-edit-exercise-card')
             .forEach((card) => {
-                if (!(card instanceof EditExerciseCard)) {
+                if (!(card instanceof EditExerciseCard) || card.selectedExerciseId === null) {
                     return;
                 }
 

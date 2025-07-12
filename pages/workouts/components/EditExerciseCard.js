@@ -80,6 +80,11 @@ export class EditExerciseCard extends HTMLElement {
         const setsInputName = `${this.#inputNames.sets}${this.#exerciseId}`;
 
         const wrapper = this.querySelector('.exerciseWrapper');
+
+        if (wrapper === null) {
+            return;
+        }
+
         wrapper.id = wrapperId;
 
         wrapper.innerHTML = `
@@ -110,7 +115,16 @@ export class EditExerciseCard extends HTMLElement {
         if (this.#selectedExerciseId !== null) {
             exerciseSelect.selectedExerciseId = this.#selectedExerciseId;
             const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
-            this.querySelector('h2').textContent = exercise.Name;
+
+            if (exercise === undefined) {
+                this.deleteExercise();
+                return;
+            }
+
+            const header = this.querySelector('h2');
+            if (header) {
+                header.textContent = exercise.Name;
+            }
         }
 
         exerciseSelect.addEventListener('change', this.updateSelectedExercise);
@@ -136,21 +150,30 @@ export class EditExerciseCard extends HTMLElement {
         wrapper.appendChild(setsWrapper);
 
         this.querySelector(`#${upButtonId}`)
-            .addEventListener('click', this.moveUp);
+            ?.addEventListener('click', this.moveUp);
 
         this.querySelector(`#${downButtonId}`)
-            .addEventListener('click', this.moveDown);
+            ?.addEventListener('click', this.moveDown);
 
         this.querySelector(`#${deleteButtonId}`)
-            .addEventListener('click', this.deleteExercise);
+            ?.addEventListener('click', this.deleteExercise);
     }
 
     /** @param {Event} event */
     async updateSelectedExercise(event) {
         if (event.currentTarget instanceof ExerciseSelect) {
             this.#selectedExerciseId = event.currentTarget.selectedExerciseId;
+
+            if (this.#selectedExerciseId === null) {
+                return;
+            }
+
             const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
-            this.querySelector('h2').textContent = exercise.Name;
+
+            const header = this.querySelector('h2');
+            if (header) {
+                header.textContent = exercise?.Name ?? 'Unbekannte Übung';
+            }
         }
     }
 

@@ -55,28 +55,42 @@ export class ExercisesEditPage extends HTMLElement {
 
     connectedCallback() {
         this.shadowRoot
-            .getElementById(this.#ids.saveExerciseForm)
-            .addEventListener('submit', this.saveExercise);
+            ?.getElementById(this.#ids.saveExerciseForm)
+            ?.addEventListener('submit', this.saveExercise);
 
         const id = appRouter.getParamValue('id');
 
         if (id !== null) {
-            this.shadowRoot.querySelector('h1').textContent = 'Übung bearbeiten';
+            const header = this.shadowRoot?.querySelector('h1');
+
+            if (header) {
+                header.textContent = 'Übung bearbeiten';
+            }
+
             this.#exerciseId = Number(id);
             this.#fillData();
         }
     }
 
     async #fillData() {
+        if (this.#exerciseId === null) {
+            return;
+        }
+
         const exercise = await exercisesService.getUserExercise(this.#exerciseId);
 
-        const nameInput = this.shadowRoot.getElementById(this.#inputNames.name);
+        if (exercise === undefined) {
+            appRouter.navigate(appRouterIds.exercisesAdd);
+            return;
+        }
+
+        const nameInput = this.shadowRoot?.getElementById(this.#inputNames.name);
 
         if (nameInput instanceof HTMLInputElement) {
             nameInput.value = exercise.Name;
         }
 
-        const descriptionInput = this.shadowRoot.getElementById(this.#inputNames.description);
+        const descriptionInput = this.shadowRoot?.getElementById(this.#inputNames.description);
 
         if (descriptionInput instanceof HTMLTextAreaElement) {
             descriptionInput.value = exercise.Description;
@@ -93,16 +107,23 @@ export class ExercisesEditPage extends HTMLElement {
 
         const formData = new FormData(event.currentTarget);
 
+        const name = formData.get(this.#inputNames.name)?.toString();
+        const description = formData.get(this.#inputNames.description)?.toString();
+
+        if (name === undefined || description === undefined) {
+            return;
+        }
+
         if (this.#exerciseId === null) {
             await exercisesService.addUserExercise({
-                Name: formData.get(this.#inputNames.name).toString(),
-                Description: formData.get(this.#inputNames.description).toString(),
+                Name: name,
+                Description: description,
             });
         } else {
             await exercisesService.putUserExercise({
                 ID: this.#exerciseId,
-                Name: formData.get(this.#inputNames.name).toString(),
-                Description: formData.get(this.#inputNames.description).toString(),
+                Name: name,
+                Description: description,
             });
         }
 

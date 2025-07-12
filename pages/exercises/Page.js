@@ -58,7 +58,11 @@ export class ExercisesPage extends HTMLElement {
     async #displayGlobalExercises() {
         const exercises = await exercisesService.getGlobalExercises();
 
-        const globalExercisesElement = this.shadowRoot.getElementById(this.#ids.globalExercises);
+        const globalExercisesElement = this.shadowRoot?.getElementById(this.#ids.globalExercises);
+
+        if (!globalExercisesElement) {
+            return;
+        }
 
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
@@ -85,7 +89,11 @@ export class ExercisesPage extends HTMLElement {
     async #displayUserExercises() {
         const exercises = await exercisesService.getUserExercises();
 
-        const exercisesElement = this.shadowRoot.getElementById(this.#ids.userExercises);
+        const exercisesElement = this.shadowRoot?.getElementById(this.#ids.userExercises);
+
+        if (!exercisesElement) {
+            return;
+        }
 
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
@@ -131,8 +139,8 @@ export class ExercisesPage extends HTMLElement {
     async #deleteExercise(id) {
         await exercisesService.deleteUserExercise(id);
         this.shadowRoot
-            .getElementById(`${this.#ids.exercise}${id}`)
-            .remove();
+            ?.getElementById(`${this.#ids.exercise}${id}`)
+            ?.remove();
     }
 }
 
