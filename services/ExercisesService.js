@@ -8,6 +8,14 @@ class ExercisesService {
         return fetch('http://localhost:8000/exercises');
     }
 
+    /** 
+     * @param {string} id
+     * @return {Promise<ExerciseResponse | undefined>} 
+     * */
+    getGlobalExercise(id) {
+        return promiseIndexedDB.get(globalObjectStoreNames.globalExercises, id);
+    }
+
     /** @return {Promise<ExerciseResponse[]>} */
     getGlobalExercises() {
         return promiseIndexedDB.getAll(globalObjectStoreNames.globalExercises);
@@ -31,8 +39,7 @@ class ExercisesService {
         const idAsNumber = Number(exerciseId);
 
         if (Number.isNaN(idAsNumber)) {
-            const globalExercises = await this.getGlobalExercises();
-            return globalExercises.find((globalExercise) => globalExercise.ID === exerciseId);
+            return this.getGlobalExercise(exerciseId);
         }
 
         return this.getUserExercise(idAsNumber);
@@ -85,12 +92,14 @@ class ExercisesService {
     async doesExerciseExist(id) {
         const idAsNumber = Number(id);
 
+        let count = 0;
+
         if (Number.isNaN(idAsNumber)) {
-            const globalExercises = await this.getGlobalExercises();
-            return globalExercises.some((globalExercise) => globalExercise.ID === id);
+            count = await promiseIndexedDB.count(globalObjectStoreNames.globalExercises, id)
+        } else {
+            count = await promiseIndexedDB.count(objectStoreNames.userExercises, idAsNumber);
         }
 
-        const count = await promiseIndexedDB.count(objectStoreNames.userExercises, idAsNumber);
         return count > 0;
     }
 }
