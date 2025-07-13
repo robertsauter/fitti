@@ -22,7 +22,7 @@ class WorkoutsService {
 
     /** 
      * @param {number} id  
-     * @return {Promise<Workout>}
+     * @return {Promise<Workout | undefined>}
      */
     getUserWorkout(id) {
         return promiseIndexedDB.get(objectStoreNames.userWorkouts, id);
@@ -34,6 +34,10 @@ class WorkoutsService {
     }
 
     saveUserWorkout() {
+        if (workoutsStartStore.workoutId === undefined) {
+            return;
+        }
+
         const workout = {
             WorkoutId: workoutsStartStore.workoutId,
             Exercises: workoutsStartStore.exercises,
@@ -52,8 +56,8 @@ class WorkoutsService {
 
             const newHistoryEntries = exercise.sets.map((set) => ({
                 Date: new Date(),
-                Weight: set.weight,
-                Reps: set.reps,
+                Weight: set.weight ?? 0,
+                Reps: set.reps ?? 0,
             }));
 
             if (exerciseHistory === undefined) {

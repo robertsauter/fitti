@@ -5,6 +5,7 @@ import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
 import { customEventNames, globalClassNames } from '/Constants.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     #ids = {
@@ -91,7 +92,13 @@ export class WorkoutsStartPage extends HTMLElement {
     }
 
     #displayExercises() {
-        workoutsStartStore.exercises.forEach((exercise) => {
+        workoutsStartStore.exercises.forEach(async (exercise) => {
+            const doesExerciseExist = await exercisesService.doesExerciseExist(exercise.id);
+
+            if (!doesExerciseExist) {
+                return;
+            }
+
             this.#displayExercise(exercise);
         });
     }

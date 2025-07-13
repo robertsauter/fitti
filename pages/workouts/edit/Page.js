@@ -100,7 +100,6 @@ export class WorkoutsEditPage extends HTMLElement {
 
         workout.Exercises.forEach(async (exercise) => {
             const doesExerciseExist = await exercisesService.doesExerciseExist(exercise.ID);
-            console.log(exercise, doesExerciseExist);
 
             if (!doesExerciseExist) {
                 return;

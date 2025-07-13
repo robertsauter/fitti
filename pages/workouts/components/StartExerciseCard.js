@@ -14,8 +14,8 @@ export class StartExerciseCard extends HTMLElement {
         downButton: 'downButton',
     };
 
-    /** @type {WorkoutStartExerxise | null} */
-    #workoutExercise = null;
+    /** @type {WorkoutStartExerxise} */
+    #workoutExercise;
 
 
     get workoutExercise() {
@@ -49,11 +49,22 @@ export class StartExerciseCard extends HTMLElement {
     async #displayExercise() {
         const exercise = await exercisesService.getUserOrGlobalExercise(this.#workoutExercise.id);
 
-        const wrapperElement = this.querySelector('li');
+        if (exercise === undefined) {
+            this.deleteExercise();
+            return;
+        }
 
-        this.querySelector('h2').textContent = exercise.Name;
+        const header = this.querySelector('h2');
+        if (header !== null) {
+            header.textContent = exercise.Name;
+        }
 
         const buttonsCard = this.querySelector('.buttonsCard');
+        const wrapperElement = this.querySelector('li');
+
+        if (buttonsCard === null || wrapperElement === null) {
+            return;
+        }
 
         const buttonsWrapper = document.createElement('div');
         buttonsWrapper.className = 'buttonsWrapper';
@@ -138,8 +149,12 @@ export class StartExerciseCard extends HTMLElement {
     }
 
     addSet() {
-        workoutsStartStore.addSet(this.#workoutExercise.id);
         const setsWrapper = this.querySelector('ul');
+        if (setsWrapper === null) {
+            return;
+        }
+
+        workoutsStartStore.addSet(this.#workoutExercise.id);
         const currentSetsAmount = workoutsStartStore.getSetsAmount(this.#workoutExercise.id);
 
         if (currentSetsAmount === undefined) {

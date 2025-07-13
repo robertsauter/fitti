@@ -47,10 +47,19 @@ export class WorkoutsHistoryPage extends HTMLElement {
             return;
         }
 
-        const workoutsList = this.shadowRoot.querySelector('ul');
+        const workoutsList = this.shadowRoot?.querySelector('ul');
+
+        if (!workoutsList) {
+            return;
+        }
 
         workoutHistory.forEach(async (workout) => {
             const workoutElement = await this.#createWorkoutElement(workout);
+
+            if (workoutElement === null) {
+                return;
+            }
+
             workoutsList.appendChild(workoutElement);
         });
     }
@@ -58,6 +67,10 @@ export class WorkoutsHistoryPage extends HTMLElement {
     /** @param {WorkoutHistoryEntry} workoutHistoryEntry  */
     async #createWorkoutElement(workoutHistoryEntry) {
         const workout = await workoutsService.getUserWorkout(workoutHistoryEntry.WorkoutId);
+
+        if (workout === undefined) {
+            return null;
+        }
 
         const workoutElement = document.createElement('li');
         workoutElement.className = 'card secondary';
@@ -74,6 +87,11 @@ export class WorkoutsHistoryPage extends HTMLElement {
         exercisesList.className = 'exercisesList';
         await Promise.all(workoutHistoryEntry.Exercises.map(async (exercise) => {
             const exerciseElement = await this.#createExerciseElement(exercise);
+
+            if (exerciseElement === null) {
+                return;
+            }
+
             exercisesList.appendChild(exerciseElement);
         }));
         workoutElement.appendChild(exercisesList);
@@ -84,6 +102,10 @@ export class WorkoutsHistoryPage extends HTMLElement {
     /** @param {WorkoutStartExerxise} exercise */
     async #createExerciseElement(exercise) {
         const exerciseDetails = await exercisesService.getUserOrGlobalExercise(exercise.id);
+
+        if (exerciseDetails === undefined) {
+            return null;
+        }
 
         const exerciseElement = document.createElement('li');
         exerciseElement.className = 'card white';
@@ -126,7 +148,13 @@ export class WorkoutsHistoryPage extends HTMLElement {
     }
 
     #displayFallback() {
-        this.shadowRoot.querySelector(`.${globalClassNames.pageContainer}`).innerHTML = `<p>Keine Workouts gefunden.</p>`;
+        const pageContainer = this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`);
+
+        if (!pageContainer) {
+            return;
+        }
+
+        pageContainer.innerHTML = `<p>Keine Workouts gefunden.</p>`;
     }
 }
 

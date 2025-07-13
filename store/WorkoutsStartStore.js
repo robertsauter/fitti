@@ -2,7 +2,7 @@ import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 
 class WorkoutsStartStore {
-    /** @type {number} */
+    /** @type {number | undefined} */
     #workoutId;
     /** @type {WorkoutStartExerxise[]} */
     #exercises = [];
