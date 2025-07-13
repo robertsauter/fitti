@@ -66,7 +66,7 @@ export class ExercisesPage extends HTMLElement {
 
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
-            exerciseElement.className = 'card white';
+            exerciseElement.className = 'card';
 
             const nameElement = document.createElement('h3');
             nameElement.textContent = exercise.Name;
@@ -78,7 +78,6 @@ export class ExercisesPage extends HTMLElement {
 
             const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
             historyLink.setAttribute('data-id', exercise.ID);
-            historyLink.setAttribute('color', buttonColorClassNames.secondary);
             exerciseElement.appendChild(historyLink);
 
 
@@ -98,7 +97,7 @@ export class ExercisesPage extends HTMLElement {
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
             exerciseElement.id = `${this.#ids.exercise}${exercise.ID}`;
-            exerciseElement.className = 'card white';
+            exerciseElement.className = 'card';
 
             const nameElement = document.createElement('h3');
             nameElement.textContent = exercise.Name;
@@ -120,7 +119,6 @@ export class ExercisesPage extends HTMLElement {
 
             const editLink = new AppRouterLink(appRouterIds.exercisesEdit, 'Bearbeiten');
             editLink.setAttribute('data-id', String(exercise.ID));
-            editLink.setAttribute('color', buttonColorClassNames.secondary);
             editLink.setAttribute('variant', buttonVariantClassNames.outlined);
             buttonsWrapper.appendChild(editLink);
 
@@ -128,7 +126,6 @@ export class ExercisesPage extends HTMLElement {
 
             const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, 'Fortschritt');
             historyLink.setAttribute('data-id', String(exercise.ID));
-            historyLink.setAttribute('color', buttonColorClassNames.secondary);
             exerciseElement.appendChild(historyLink);
 
             exercisesElement.appendChild(exerciseElement);

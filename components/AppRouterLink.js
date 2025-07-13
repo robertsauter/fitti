@@ -5,7 +5,7 @@ import { appRouter } from '/Routes.js';
 
 export class AppRouterLink extends HTMLElement {
     /** @type {string} */
-    #routeId;
+    #routeId = '';
 
     /** @type {Map<string, string> | undefined} */
     #params;
@@ -19,7 +19,13 @@ export class AppRouterLink extends HTMLElement {
 
         this.navigate = this.navigate.bind(this);
 
-        this.#routeId = routeId ?? this.getAttribute('route');
+        const finalRouteId = routeId ?? this.getAttribute('route');
+
+        if (finalRouteId === null) {
+            return;
+        }
+
+        this.#routeId = finalRouteId;
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
@@ -37,18 +43,17 @@ export class AppRouterLink extends HTMLElement {
     }
 
     connectedCallback() {
-        const link = this.shadowRoot.querySelector('a');
+        const link = this.shadowRoot?.querySelector('a');
+
+        if (!link) {
+            return;
+        }
 
         link.addEventListener('click', this.navigate);
 
         const variant = this.getAttribute('variant');
         if (variant !== null && Object.hasOwn(buttonVariantClassNames, variant)) {
             link.classList.add(variant);
-        }
-
-        const color = this.getAttribute('color') ?? 'primary';
-        if (Object.hasOwn(buttonColorClassNames, color)) {
-            link.classList.add(color);
         }
 
         this.#setupRoute();
@@ -65,9 +70,10 @@ export class AppRouterLink extends HTMLElement {
         const params = new Map();
         for (let dataAttribute in this.dataset) {
             const keyParam = `:${dataAttribute}`;
+            const value = this.dataset[dataAttribute];
 
-            if (path.includes(keyParam)) {
-                path = path.replace(keyParam, this.dataset[dataAttribute]);
+            if (path.includes(keyParam) && value !== undefined) {
+                path = path.replace(keyParam, value);
                 params.set(dataAttribute, this.dataset[dataAttribute]);
             }
         }
@@ -76,10 +82,16 @@ export class AppRouterLink extends HTMLElement {
             this.#params = params;
         }
 
-        this.shadowRoot.querySelector('a').href = path;
+        const link = this.shadowRoot?.querySelector('a');
+
+        if (!link) {
+            return;
+        }
+
+        link.href = path;
     }
 
-    /** @param {PointerEvent} event  */
+    /** @param {Event} event  */
     navigate(event) {
         event.preventDefault();
 

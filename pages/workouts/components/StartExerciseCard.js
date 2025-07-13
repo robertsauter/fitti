@@ -37,9 +37,11 @@ export class StartExerciseCard extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <li class="exerciseCard card secondary">
+            <style>
+                @import url('/globals.css');
+            </style>
+            <li class="exerciseCard card">
                 <h2></h2>
-                <div class="buttonsCard card white"></div>
             </li>
         `;
 
@@ -59,10 +61,9 @@ export class StartExerciseCard extends HTMLElement {
             header.textContent = exercise.Name;
         }
 
-        const buttonsCard = this.querySelector('.buttonsCard');
         const wrapperElement = this.querySelector('li');
 
-        if (buttonsCard === null || wrapperElement === null) {
+        if (wrapperElement === null) {
             return;
         }
 
@@ -72,7 +73,7 @@ export class StartExerciseCard extends HTMLElement {
         const upButtonId = `${this.#ids.upButton}${exercise.ID}`;
         const upButton = document.createElement('button');
         upButton.type = 'button';
-        upButton.className = 'button secondary outlined';
+        upButton.className = 'button outlined';
         upButton.id = upButtonId;
         upButton.textContent = 'Oben';
         buttonsWrapper.appendChild(upButton);
@@ -81,13 +82,13 @@ export class StartExerciseCard extends HTMLElement {
         const downButtonId = `${this.#ids.downButton}${exercise.ID}`;
         const downButton = document.createElement('button');
         downButton.type = 'button';
-        downButton.className = 'button secondary outlined';
+        downButton.className = 'button outlined';
         downButton.id = downButtonId;
         downButton.textContent = 'Unten';
         buttonsWrapper.appendChild(downButton);
         downButton.addEventListener('click', this.moveDown);
 
-        buttonsCard.appendChild(buttonsWrapper);
+        wrapperElement.appendChild(buttonsWrapper);
 
         const deleteButtonId = `${this.#ids.deleteButton}${exercise.ID}`;
         const deleteButton = document.createElement('button');
@@ -95,10 +96,8 @@ export class StartExerciseCard extends HTMLElement {
         deleteButton.className = 'button error outlined';
         deleteButton.id = deleteButtonId;
         deleteButton.textContent = 'Löschen';
-        buttonsCard.appendChild(deleteButton);
+        wrapperElement.appendChild(deleteButton);
         deleteButton.addEventListener('click', this.deleteExercise);
-
-        wrapperElement.appendChild(buttonsCard);
 
         const setsList = document.createElement('ul');
         setsList.className = 'setsList';
@@ -112,7 +111,7 @@ export class StartExerciseCard extends HTMLElement {
         const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
         const addButton = document.createElement('button');
         addButton.type = 'button';
-        addButton.className = 'button secondary';
+        addButton.className = 'button';
         addButton.id = addButtonId;
         addButton.textContent = 'Set hinzufügen';
         wrapperElement.appendChild(addButton);

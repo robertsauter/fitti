@@ -73,7 +73,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         }
 
         const workoutElement = document.createElement('li');
-        workoutElement.className = 'card secondary';
+        workoutElement.className = 'card';
 
         const workoutTitle = document.createElement('h2');
         workoutTitle.textContent = workout.Name;
@@ -108,7 +108,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         }
 
         const exerciseElement = document.createElement('li');
-        exerciseElement.className = 'card white';
+        exerciseElement.className = 'card';
 
         const exerciseName = document.createElement('h3');
         exerciseName.textContent = exerciseDetails.Name;

@@ -1,17 +1,13 @@
 :root {
     --lime: #CEFF1A;
 
-    --blue: #A7C6DA;
     --dark-blue: #273043;
 
-    --red: #DA4167;
     --pink: #E5BEED;
 
     --background-primary: var(--lime);
     --background-secondary: var(--pink);
     --primary: var(--dark-blue);
-    --secondary: var(--red);
-    --accent: var(--blue);
     --error: red;
 }
 
@@ -53,12 +49,6 @@ summary {
     font-size: 1.25rem;
     font-weight: bold;
     margin: 0.5rem 0;
-}
-
-details {
-    background-color: var(--background-secondary);
-    padding: 0.5rem;
-    border-radius: 1rem;
 }
 
 label {
@@ -103,14 +93,6 @@ textarea {
 .card {
     padding: 1rem;
     border-radius: 1rem;
-    background-color: var(--background-primary);
-}
-
-.card.secondary {
-    background-color: var(--background-secondary);
-}
-
-.card.white {
     background-color: white;
 }
 
@@ -131,29 +113,13 @@ textarea {
     padding: 0.5rem 1.5rem;
     border-radius: 9999px;
     border-width: 0;
-}
-
-.button.primary {
     color: white;
     background-color: var(--primary);
 }
 
-.button.primary.outlined {
+.button.outlined {
     color: var(--primary);
     border-color: var(--primary);
-    border-width: 2px;
-    border-style: solid;
-    background-color: transparent;
-}
-
-.button.secondary {
-    color: white;
-    background-color: var(--secondary);
-}
-
-.button.secondary.outlined {
-    color: var(--secondary);
-    border-color: var(--secondary);
     border-width: 2px;
     border-style: solid;
     background-color: transparent;

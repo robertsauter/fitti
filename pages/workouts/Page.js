@@ -57,18 +57,16 @@ export class WorkoutsPage extends HTMLElement {
 
 		workouts.forEach((workout) => {
 			const workoutElement = document.createElement('li');
-			workoutElement.className = 'card secondary';
+			workoutElement.className = 'card';
 			workoutElement.id = `${this.#ids.workout}${workout.ID}`;
 
 			workoutElement.innerHTML = `
 				<h2></h2>	
-				<div class="card white">
-					<div class="buttonsWrapper">
-						<button type="button" class="button error outlined">Löschen</button>
-						<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" color="secondary">Bearbeiten</fit-app-router-link>
-					</div>
-					<fit-app-router-link route="${appRouterIds.workoutsStart}" color="secondary">Starten</fit-app-router-link>
+				<div class="buttonsWrapper">
+					<button type="button" class="button error outlined">Löschen</button>
+					<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined">Bearbeiten</fit-app-router-link>
 				</div>
+				<fit-app-router-link route="${appRouterIds.workoutsStart}">Starten</fit-app-router-link>
 			`;
 
 			const header = workoutElement.querySelector('h2');

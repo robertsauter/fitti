@@ -73,7 +73,6 @@ export class ExerciseHistoryPage extends HTMLElement {
         const bestSetElement = this.shadowRoot?.querySelector('p');
         if (bestSetElement) {
             bestSetElement.textContent = `Bester Satz: ${bestSetEver.Weight}kg x ${bestSetEver.Reps} Wiederholungen (${formatDate(bestSetEver.Date)})`;
-
         }
 
         const historyByDay = exerciseHistory.History
@@ -115,14 +114,14 @@ export class ExerciseHistoryPage extends HTMLElement {
     #createHistoryDay(historyEntries) {
         const date = historyEntries[0].Date;
         const dayElement = document.createElement('li');
-        dayElement.className = 'card secondary dayCard';
+        dayElement.className = 'dayCard';
 
         const dateElement = document.createElement('h2');
         dateElement.textContent = formatDate(date);
         dayElement.appendChild(dateElement);
 
         const setsList = document.createElement('ul');
-        setsList.className = 'card white';
+        setsList.className = 'card';
 
         historyEntries.forEach((entry, index) => {
             const setElement = document.createElement('li');

@@ -53,10 +53,10 @@ export class WorkoutsEditPage extends HTMLElement {
                     <button
                         id="${this.#ids.addExerciseButton}"
                         type="button"
-                        class="button primary outlined">
+                        class="button outlined">
                         Übung hinzufügen
                     </button>
-                    <button type="submit" class="button primary">Speichern</button>
+                    <button type="submit" class="button">Speichern</button>
                 </form>
             </div>
         `;
@@ -91,6 +91,10 @@ export class WorkoutsEditPage extends HTMLElement {
         }
 
         const workout = await workoutsService.getUserWorkout(this.#workoutId);
+
+        if (workout === undefined) {
+            return;
+        }
 
         const nameInput = this.shadowRoot?.getElementById(this.#inputNames.name);
 

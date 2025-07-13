@@ -42,7 +42,13 @@ export class ExerciseSet extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <li class="setCard card white">
+            <style>
+                @import url('/globals.css');
+                p {
+                    font-weight: bold;
+                }
+            </style>
+            <li class="setCard">
                 <p>Set ${this.#setIndex + 1}</p>
                 <div class="${globalClassNames.inputWrapper}">
                     <label class="weightLabel">Gewicht</label>
@@ -52,13 +58,13 @@ export class ExerciseSet extends HTMLElement {
                     <label class="repsLabel">Wiederholungen</label>
                     <input class="repsInput" type="number" min="1" />
                 </div>
-                ${this.#setIndex !== 0 ? `<button type="button" class="button secondary outlined">Set entfernen</button>` : ``}
+                ${this.#setIndex !== 0 ? `<button type="button" class="button outlined">Set entfernen</button>` : ``}
             </li>
         `;
 
         const weightInputName = `${this.#inputNames.weight}${this.#exerciseId}${this.#setIndex}`;
 
-        this.querySelector('.weightLabel').setAttribute('for', weightInputName);
+        this.querySelector('.weightLabel')?.setAttribute('for', weightInputName);
 
         const weightInput = this.querySelector('.weightInput');
         if (weightInput instanceof HTMLInputElement) {
@@ -74,7 +80,7 @@ export class ExerciseSet extends HTMLElement {
 
         const repsInputName = `${this.#inputNames.reps}${this.#exerciseId}${this.#setIndex}`;
 
-        this.querySelector('.repsLabel').setAttribute('for', repsInputName);
+        this.querySelector('.repsLabel')?.setAttribute('for', repsInputName);
 
         const repsInput = this.querySelector('.repsInput');
         if (repsInput instanceof HTMLInputElement) {
@@ -126,7 +132,13 @@ export class ExerciseSet extends HTMLElement {
     }
 
     #updateTitle() {
-        this.querySelector('p').textContent = `Set ${this.#setIndex + 1}`;
+        const titleElement = this.querySelector('p');
+
+        if (titleElement === null) {
+            return;
+        }
+
+        titleElement.textContent = `Set ${this.#setIndex + 1}`;
     }
 }
 

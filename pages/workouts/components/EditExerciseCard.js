@@ -59,15 +59,20 @@ export class EditExerciseCard extends HTMLElement {
                    flex-direction: column;
                    gap: 0.5rem; 
                 }
+                .exerciseWrapper {
+                   display: flex;
+                   flex-direction: column;
+                   gap: 0.5rem; 
+                }
                 .buttonsWrapper {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     gap: 0.5rem;
                 }
             </style>
-            <li class="card secondary">
+            <li class="card">
                 <h2>Unbekannte Übung</h2>
-                <div class="card white exerciseWrapper"></div>
+                <div class="exerciseWrapper"></div>
             </li>
         `;
 
@@ -92,13 +97,13 @@ export class EditExerciseCard extends HTMLElement {
                 <button
                     id="${upButtonId}"
                     type="button"
-                    class="button secondary outlined">
+                    class="button outlined">
                     Oben
                 </button>
                 <button
                     id="${downButtonId}"
                     type="button"
-                    class="button secondary outlined">
+                    class="button outlined">
                     Unten
                 </button>
             </div> 
