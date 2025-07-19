@@ -108,8 +108,6 @@ export class WorkoutsHistoryPage extends HTMLElement {
         }
 
         const exerciseElement = document.createElement('li');
-        exerciseElement.className = 'card';
-
         const exerciseName = document.createElement('h3');
         exerciseName.textContent = exerciseDetails.Name;
         exerciseElement.appendChild(exerciseName);

@@ -79,7 +79,7 @@ export class ExercisesPage extends HTMLElement {
             const exerciseElement = document.createElement('li');
             exerciseElement.className = 'card';
 
-            const nameElement = document.createElement('h3');
+            const nameElement = document.createElement('h2');
             nameElement.textContent = exercise.Name;
             exerciseElement.appendChild(nameElement);
 
@@ -117,7 +117,7 @@ export class ExercisesPage extends HTMLElement {
             const headerWrapper = document.createElement('div');
             headerWrapper.className = 'headerWrapper';
 
-            const nameElement = document.createElement('h3');
+            const nameElement = document.createElement('h2');
             nameElement.textContent = exercise.Name;
             headerWrapper.appendChild(nameElement);
 
