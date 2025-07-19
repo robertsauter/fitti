@@ -35,6 +35,8 @@ export const globalClassNames = {
     pageContainer: 'pageContainer',
     headerContainer: 'headerContainer',
     inputWrapper: 'inputWrapper',
+    titleWrapper: 'titleWrapper',
+    emojiCircle: 'emojiCircle',
 };
 Object.freeze(globalClassNames);
 
