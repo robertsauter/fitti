@@ -38,14 +38,14 @@ export const globalClassNames = {
 };
 Object.freeze(globalClassNames);
 
-export const buttonColorClassNames = {
-    primary: 'primary',
-    secondary: 'secondary',
-    warning: 'warning',
-};
-Object.freeze(buttonColorClassNames);
 
 export const buttonVariantClassNames = {
     outlined: 'outlined',
 };
 Object.freeze(buttonVariantClassNames);
+
+export const buttonSizeClassNames = {
+    icon: 'icon',
+    textAndIcon: 'textAndIcon',
+};
+Object.freeze(buttonSizeClassNames);

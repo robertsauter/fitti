@@ -1,5 +1,4 @@
-import { buttonColorClassNames, buttonVariantClassNames } from '/Constants.js';
-import { ClientRouter } from '/lib/ClientRouter.js';
+import { buttonSizeClassNames, buttonVariantClassNames } from '/Constants.js';
 import '/models/Route.js';
 import { appRouter } from '/Routes.js';
 
@@ -36,7 +35,7 @@ export class AppRouterLink extends HTMLElement {
                     text-decoration: none;
                 }
             </style>
-            <a part="link" class="button">${textContent ?? this.textContent}</a>
+            <a part="link" class="button">${textContent ?? this.innerHTML}</a>
         `;
 
         this.textContent = '';
@@ -54,6 +53,11 @@ export class AppRouterLink extends HTMLElement {
         const variant = this.getAttribute('variant');
         if (variant !== null && Object.hasOwn(buttonVariantClassNames, variant)) {
             link.classList.add(variant);
+        }
+
+        const size = this.getAttribute('size');
+        if (size !== null && Object.hasOwn(buttonSizeClassNames, size)) {
+            link.classList.add(size);
         }
 
         this.#setupRoute();
