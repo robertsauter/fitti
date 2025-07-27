@@ -11,9 +11,9 @@ export class AppRouterLink extends HTMLElement {
 
     /** 
      * @param {string} [routeId]  
-     * @param {string} [textContent] 
+     * @param {string} [innerHTML] 
      * */
-    constructor(routeId, textContent) {
+    constructor(routeId, innerHTML) {
         super();
 
         this.navigate = this.navigate.bind(this);
@@ -35,7 +35,7 @@ export class AppRouterLink extends HTMLElement {
                     text-decoration: none;
                 }
             </style>
-            <a part="link" class="button">${textContent ?? this.innerHTML}</a>
+            <a part="link" class="button">${innerHTML ?? this.innerHTML}</a>
         `;
 
         this.textContent = '';

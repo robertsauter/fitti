@@ -51,3 +51,17 @@ export const buttonSizeClassNames = {
     textAndIcon: 'textAndIcon',
 };
 Object.freeze(buttonSizeClassNames);
+
+export const iconNames = {
+    add: 'add',
+    checkmarkCircleFilled: 'checkmarkCircle',
+    deleteFilled: 'delete',
+    editFilled: 'edit',
+    playSparkle: 'playSparkle',
+    rocket: 'rocket',
+    bicepEmoji: 'bicepEmoji',
+    penEmoji: 'penEmoji',
+    save: 'save',
+    rocketEmoji: 'rocketEmoji',
+};
+Object.freeze(iconNames);
