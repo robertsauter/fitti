@@ -1,8 +1,10 @@
-import { globalClassNames } from '/Constants.js';
+import { globalClassNames, iconNames } from '/Constants.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { formatDate } from '/lib/DateHelpers.js';
+import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
+import { Icon } from '/components/Icon.js';
 
 export class WorkoutsHistoryPage extends HTMLElement {
     constructor() {
@@ -32,7 +34,13 @@ export class WorkoutsHistoryPage extends HTMLElement {
                 } 
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h1>Beendete Workouts</h1>
+                <div class="${globalClassNames.titleWrapper}">
+                    <div class="${globalClassNames.emojiCircle}">
+                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                        <fit-icon name="${iconNames.checkmarkEmoji}"></fit-icon>
+                    </div>
+                    <h1>Beendete Workouts</h1>
+                </div>
                 <ul class="workoutsList"></ul>
             </div>
         `;

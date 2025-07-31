@@ -4,8 +4,10 @@ import '/models/ExerciseResponse.js';
 import { EditExerciseCard } from '/pages/workouts/components/EditExerciseCard.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import { appRouter, appRouterIds } from '/Routes.js';
-import { globalClassNames } from '/Constants.js';
+import { globalClassNames, iconNames } from '/Constants.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { Icon } from '/components/Icon.js';
+import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 
 export class WorkoutsEditPage extends HTMLElement {
     #ids = {
@@ -43,7 +45,13 @@ export class WorkoutsEditPage extends HTMLElement {
                 }
             </style>
             <div class="pageContainer">
-                <h1>Workout erstellen</h1>
+                <div class="${globalClassNames.titleWrapper}">
+                    <div class="${globalClassNames.emojiCircle}">
+                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                        <fit-icon name="${iconNames.penEmoji}"></fit-icon>
+                    </div>
+                    <h1>Workout erstellen</h1>
+                </div>
                 <form id="${this.#ids.workoutForm}">
                     <div class="${globalClassNames.inputWrapper}">
                         <label for="${this.#inputNames.name}">Workout Name</label>
@@ -53,10 +61,14 @@ export class WorkoutsEditPage extends HTMLElement {
                     <button
                         id="${this.#ids.addExerciseButton}"
                         type="button"
-                        class="button outlined">
+                        class="button outlined textAndIcon">
                         Übung hinzufügen
+                        <fit-icon name="${iconNames.addFilled}"></fit-icon>
                     </button>
-                    <button type="submit" class="button">Speichern</button>
+                    <button type="submit" class="button textAndIcon">
+                        Speichern
+                        <fit-icon name="${iconNames.save}"></fit-icon>
+                    </button>
                 </form>
             </div>
         `;

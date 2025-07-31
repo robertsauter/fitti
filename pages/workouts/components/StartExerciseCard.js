@@ -4,7 +4,8 @@ import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { ExerciseSet } from '/pages/workouts/components/ExerciseSet.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
-import { customEventNames } from '/Constants.js';
+import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
+import { Icon } from '/components/Icon.js';
 
 export class StartExerciseCard extends HTMLElement {
     #ids = {
@@ -39,9 +40,16 @@ export class StartExerciseCard extends HTMLElement {
         this.innerHTML = `
             <style>
                 @import url('/globals.css');
+                .buttonsWrapper {
+                    display: flex;
+                    gap: 0.5rem;
+                    align-items: center;
+                }
             </style>
             <li class="exerciseCard card">
-                <h2></h2>
+                <div class="${globalClassNames.headerContainer}">
+                    <h2></h2>
+                </div>
             </li>
         `;
 
@@ -61,9 +69,9 @@ export class StartExerciseCard extends HTMLElement {
             header.textContent = exercise.Name;
         }
 
-        const wrapperElement = this.querySelector('li');
+        const headerContainer = this.querySelector(`.${globalClassNames.headerContainer}`);
 
-        if (wrapperElement === null) {
+        if (headerContainer === null) {
             return;
         }
 
@@ -73,31 +81,37 @@ export class StartExerciseCard extends HTMLElement {
         const upButtonId = `${this.#ids.upButton}${exercise.ID}`;
         const upButton = document.createElement('button');
         upButton.type = 'button';
-        upButton.className = 'button outlined';
+        upButton.className = 'button outlined icon';
         upButton.id = upButtonId;
-        upButton.textContent = 'Oben';
+        upButton.innerHTML = `<fit-icon name="${iconNames.arrowUpFilled}"></fit-icon>`;
         buttonsWrapper.appendChild(upButton);
         upButton.addEventListener('click', this.moveUp);
 
         const downButtonId = `${this.#ids.downButton}${exercise.ID}`;
         const downButton = document.createElement('button');
         downButton.type = 'button';
-        downButton.className = 'button outlined';
+        downButton.className = 'button outlined icon';
         downButton.id = downButtonId;
-        downButton.textContent = 'Unten';
+        downButton.innerHTML = `<fit-icon name="${iconNames.arrowDownFilled}"></fit-icon>`;
         buttonsWrapper.appendChild(downButton);
         downButton.addEventListener('click', this.moveDown);
-
-        wrapperElement.appendChild(buttonsWrapper);
 
         const deleteButtonId = `${this.#ids.deleteButton}${exercise.ID}`;
         const deleteButton = document.createElement('button');
         deleteButton.type = 'button';
-        deleteButton.className = 'button error outlined';
+        deleteButton.className = 'button error outlined icon';
         deleteButton.id = deleteButtonId;
-        deleteButton.textContent = 'Löschen';
-        wrapperElement.appendChild(deleteButton);
+        deleteButton.innerHTML = `<fit-icon name="${iconNames.deleteFilled}"></fit-icon>`;
+        buttonsWrapper.appendChild(deleteButton);
         deleteButton.addEventListener('click', this.deleteExercise);
+
+        headerContainer.appendChild(buttonsWrapper);
+
+        const wrapperElement = this.querySelector('li');
+
+        if (wrapperElement === null) {
+            return;
+        }
 
         const setsList = document.createElement('ul');
         setsList.className = 'setsList';
@@ -111,9 +125,12 @@ export class StartExerciseCard extends HTMLElement {
         const addButtonId = `${this.#ids.addButton}${exercise.ID}`;
         const addButton = document.createElement('button');
         addButton.type = 'button';
-        addButton.className = 'button';
+        addButton.className = 'button textAndIcon';
         addButton.id = addButtonId;
-        addButton.textContent = 'Set hinzufügen';
+        addButton.innerHTML = `
+            Set hinzufügen
+            <fit-icon name="${iconNames.add}"></fit-icon>
+        `;
         wrapperElement.appendChild(addButton);
         addButton.addEventListener('click', this.addSet);
     }

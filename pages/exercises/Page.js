@@ -23,10 +23,6 @@ export class ExercisesPage extends HTMLElement {
                    flex-direction: column;
                    gap: 0.5rem; 
                 }
-                .headerWrapper {
-                    display: flex;
-                    justify-content: space-between;
-                }
                 .buttonsWrapper {
                     display: flex;
                     gap: 0.5rem;
@@ -116,7 +112,7 @@ export class ExercisesPage extends HTMLElement {
             exerciseElement.className = 'card';
 
             const headerWrapper = document.createElement('div');
-            headerWrapper.className = 'headerWrapper';
+            headerWrapper.className = globalClassNames.headerContainer;
 
             const nameElement = document.createElement('h2');
             nameElement.textContent = exercise.Name;

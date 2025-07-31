@@ -54,7 +54,7 @@ Object.freeze(buttonSizeClassNames);
 
 export const iconNames = {
     add: 'add',
-    checkmarkCircleFilled: 'checkmarkCircle',
+    checkmarkCircleFilled: 'checkmarkCircleFilled',
     deleteFilled: 'delete',
     editFilled: 'edit',
     playSparkle: 'playSparkle',
@@ -63,5 +63,12 @@ export const iconNames = {
     penEmoji: 'penEmoji',
     save: 'save',
     rocketEmoji: 'rocketEmoji',
+    addFilled: 'addFilled',
+    arrowDownFilled: 'arrowDownFilled',
+    arrowUpFilled: 'arrowUpFilled',
+    notepadEmoji: 'notepadEmoji',
+    dismissFilled: 'dismissFilled',
+    checkmarkCircle: 'checkmarkCircle',
+    checkmarkEmoji: 'checkmarkEmoji',
 };
 Object.freeze(iconNames);

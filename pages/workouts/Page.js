@@ -36,7 +36,9 @@ export class WorkoutsPage extends HTMLElement {
 			<div class="${globalClassNames.pageContainer}">
 				<div class="${globalClassNames.headerContainer}">
 					<div class="${globalClassNames.titleWrapper}">
-						<fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+						<div class="${globalClassNames.emojiCircle}">
+							<fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+						</div>
 						<h1>Workouts</h1>
 					</div>
 					<fit-app-router-link route="${appRouterIds.workoutsAdd}" size="${buttonSizeClassNames.icon}">

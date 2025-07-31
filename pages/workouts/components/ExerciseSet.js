@@ -2,7 +2,7 @@ import '/models/Workout.js';
 import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
-import { customEventNames, globalClassNames } from '/Constants.js';
+import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
 
 export class ExerciseSet extends HTMLElement {
     #inputNames = {
@@ -58,7 +58,12 @@ export class ExerciseSet extends HTMLElement {
                     <label class="repsLabel">Wiederholungen</label>
                     <input class="repsInput" type="number" min="1" />
                 </div>
-                ${this.#setIndex !== 0 ? `<button type="button" class="button outlined">Set entfernen</button>` : ``}
+                ${this.#setIndex !== 0 ? `
+                    <button type="button" class="button outlined textAndIcon">
+                        Set entfernen
+                        <fit-icon name="${iconNames.dismissFilled}"></fit-icon>
+                    </button>
+                ` : ``}
             </li>
         `;
 

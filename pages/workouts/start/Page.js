@@ -4,8 +4,10 @@ import '/models/Workout.js';
 import { StartExerciseCard } from '/pages/workouts/components/StartExerciseCard.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
-import { customEventNames, globalClassNames } from '/Constants.js';
+import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { Icon } from '/components/Icon.js';
+import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     #ids = {
@@ -28,20 +30,28 @@ export class WorkoutsStartPage extends HTMLElement {
                 @import url('/pages/workouts/start/Page.css');
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <h1></h1>
+                <div class="${globalClassNames.titleWrapper}">
+                    <div class="${globalClassNames.emojiCircle}">
+                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                        <fit-icon name="${iconNames.notepadEmoji}"></fit-icon>
+                    </div>
+                    <h1></h1>
+                </div>
                 <form>
                     <ul class="exercisesList"></ul>
                     <button
                         id="${this.#ids.addExerciseButton}"
-                        class="button primary outlined"
+                        class="button primary outlined textAndIcon"
                         type="button">
                         Übung hinzufügen
+                        <fit-icon name="${iconNames.addFilled}"></fit-icon>
                     </button>
                     <button
                         id="${this.#ids.saveWorkoutButton}"
-                        class="button primary"
+                        class="button primary textAndIcon"
                         type="submit">
                         Workout beenden
+                        <fit-icon name="${iconNames.checkmarkCircle}"></fit-icon>
                     </button>
                 </form>
             </div>

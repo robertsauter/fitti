@@ -9,16 +9,14 @@ export class App extends HTMLElement {
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
-                .app-container {
+                .appContainer {
                     height: 100vh;
                     overflow: scroll;
                 }
             </style>
 
-            <div class="app-container">
-                <div id="router-outlet"></div>
-
-                <fit-nav-tabs></fit-nav-tabs>
+            <div class="appContainer">
+                <div id="routerOutlet"></div>
             </div> 
         `;
     }
@@ -35,6 +33,14 @@ export class App extends HTMLElement {
         exercisesService.syncGlobalExercises();
 
         appRouter.outlet = this;
+
+        const appContainer = this.shadowRoot?.querySelector('.appContainer');
+        if (!appContainer) {
+            return;
+        }
+
+        const navTabs = new NavTabs();
+        appContainer.appendChild(navTabs);
     }
 }
 

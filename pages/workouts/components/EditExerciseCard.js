@@ -3,7 +3,7 @@ import '/models/Exercise.js';
 import '/models/ExerciseResponse.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
-import { globalClassNames } from '/Constants.js';
+import { globalClassNames, iconNames } from '/Constants.js';
 
 export class EditExerciseCard extends HTMLElement {
     #ids = {
@@ -65,13 +65,15 @@ export class EditExerciseCard extends HTMLElement {
                    gap: 0.5rem; 
                 }
                 .buttonsWrapper {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
+                    display: flex;
                     gap: 0.5rem;
+                    align-items: center;
                 }
             </style>
             <li class="card">
-                <h2>Unbekannte Übung</h2>
+                <div class="${globalClassNames.headerContainer}">
+                    <h2>Unbekannte Übung</h2>
+                </div>
                 <div class="exerciseWrapper"></div>
             </li>
         `;
@@ -84,35 +86,34 @@ export class EditExerciseCard extends HTMLElement {
         const deleteButtonId = `${this.#ids.deleteButton}${this.#exerciseId}`;
         const setsInputName = `${this.#inputNames.sets}${this.#exerciseId}`;
 
-        const wrapper = this.querySelector('.exerciseWrapper');
+        const headerWrapper = this.querySelector(`.${globalClassNames.headerContainer}`);
 
-        if (wrapper === null) {
+        if (headerWrapper === null) {
             return;
         }
 
-        wrapper.id = wrapperId;
-
-        wrapper.innerHTML = `
+        headerWrapper.innerHTML = `
+            <h2>Unbekannte Übung</h2>
             <div class="buttonsWrapper">
                 <button
                     id="${upButtonId}"
                     type="button"
-                    class="button outlined">
-                    Oben
+                    class="button outlined icon">
+                    <fit-icon name="${iconNames.arrowUpFilled}"></fit-icon>
                 </button>
                 <button
                     id="${downButtonId}"
                     type="button"
-                    class="button outlined">
-                    Unten
+                    class="button outlined icon">
+                    <fit-icon name="${iconNames.arrowDownFilled}"></fit-icon>
+                </button>
+                <button
+                    id="${deleteButtonId}"
+                    type="button"
+                    class="button outlined error icon">
+                    <fit-icon name="${iconNames.deleteFilled}"></fit-icon>
                 </button>
             </div> 
-            <button
-                id="${deleteButtonId}"
-                type="button"
-                class="button outlined error">
-                Entfernen
-            </button>
         `;
 
         const exerciseSelect = new ExerciseSelect(this.#exerciseId);
@@ -130,6 +131,12 @@ export class EditExerciseCard extends HTMLElement {
             if (header) {
                 header.textContent = exercise.Name;
             }
+        }
+
+        const wrapper = this.querySelector('.exerciseWrapper');
+
+        if (wrapper === null) {
+            return;
         }
 
         exerciseSelect.addEventListener('change', this.updateSelectedExercise);
