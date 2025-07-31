@@ -8,13 +8,6 @@ export class App extends HTMLElement {
         super();
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                .appContainer {
-                    height: 100vh;
-                    overflow: scroll;
-                }
-            </style>
-
             <div class="appContainer">
                 <div id="routerOutlet"></div>
             </div> 

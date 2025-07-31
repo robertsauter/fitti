@@ -15,7 +15,7 @@ export class NavTabs extends HTMLElement {
                 .tabs-wrapper {
                     display: grid;
                     grid-template-columns: 50% 50%;
-                    position: absolute;
+                    position: fixed;
                     bottom: 0;
                     left: 0;
                     width: 100%;

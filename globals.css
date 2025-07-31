@@ -85,7 +85,7 @@ textarea {
 
 .pageContainer {
     padding: 2rem;
-    padding-bottom: 9rem;
+    padding-bottom: 7rem;
     display: flex;
     gap: 1.5rem;
     flex-direction: column;
