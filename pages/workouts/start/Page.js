@@ -66,7 +66,9 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
-        await workoutsStartStore.initializeExercises(Number(id));
+        if (workoutsStartStore.workoutId === undefined) {
+            await workoutsStartStore.initializeExercises(Number(id));
+        }
 
         const workout = await workoutsService.getUserWorkout(Number(id));
 

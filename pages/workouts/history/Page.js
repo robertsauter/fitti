@@ -143,7 +143,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         setElement.appendChild(setIndex);
 
         const weight = document.createElement('p');
-        weight.textContent = `Weight: ${set.weight}`;
+        weight.textContent = `Gewicht: ${set.weight}`;
         setElement.appendChild(weight);
 
         const reps = document.createElement('p');
