@@ -70,5 +70,6 @@ export const iconNames = {
     dismissFilled: 'dismissFilled',
     checkmarkCircle: 'checkmarkCircle',
     checkmarkEmoji: 'checkmarkEmoji',
+    gearEmoji: 'gearEmoji',
 };
 Object.freeze(iconNames);

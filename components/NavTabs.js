@@ -9,12 +9,12 @@ export class NavTabs extends HTMLElement {
     constructor() {
         super();
 
+        this.updateTabs = this.updateTabs.bind(this);
+
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url('/globals.css');
-                .tabs-wrapper {
-                    display: grid;
-                    grid-template-columns: 50% 50%;
+                .navbarContainer {
                     position: fixed;
                     bottom: 0;
                     left: 0;
@@ -23,6 +23,11 @@ export class NavTabs extends HTMLElement {
                     border-top-left-radius: 1rem;
                     border-top-right-radius: 1rem;
                     margin-top: 0.5rem;
+                }
+                .tabsWrapper {
+                    padding: 1rem;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
                     gap: 0.25rem;
                 }
                 fit-app-router-link::part(link) {
@@ -40,33 +45,39 @@ export class NavTabs extends HTMLElement {
                     background-color: var(--primary);
                     color: white;
                 }
+                .tab.middle fit-app-router-link::part(link) {
+                    border-radius: 0.25rem;
+                }
                 .tab.left fit-app-router-link::part(link) {
                     border-top-left-radius: 2rem;
                     border-bottom-left-radius: 2rem;
                     border-top-right-radius: 0.25rem;
                     border-bottom-right-radius: 0.25rem;
-                    margin: 1rem 0 1rem 1rem;
                 }
                 .tab.right fit-app-router-link::part(link) {
                     border-top-right-radius: 2rem;
                     border-bottom-right-radius: 2rem;
                     border-top-left-radius: 0.25rem;
                     border-bottom-left-radius: 0.25rem;
-                    margin: 1rem 1rem 1rem 0;
                 }
-            </style> 
-            <div class="tabs-wrapper">
-                <div class="tab left">
-                    <fit-app-router-link route="${appRouterIds.workouts}">
-                        Workouts
-                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
-                    </fit-app-router-link>
-                </div>
-                <div class="tab right">
-                    <fit-app-router-link route="${appRouterIds.exercises}">
-                        Übungen
-                        <fit-icon name="${iconNames.bicepEmoji}"></fit-icon>
-                    </fit-app-router-link>
+            </style>
+            <div class="navbarContainer">
+                <div class="tabsWrapper">
+                    <div class="tab left">
+                        <fit-app-router-link route="${appRouterIds.workouts}">
+                            <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                        </fit-app-router-link>
+                    </div>
+                    <div class="tab middle">
+                        <fit-app-router-link route="${appRouterIds.exercises}">
+                            <fit-icon name="${iconNames.bicepEmoji}"></fit-icon>
+                        </fit-app-router-link>
+                    </div>
+                    <div class="tab right">
+                        <fit-app-router-link route="${appRouterIds.settings}">
+                            <fit-icon name="${iconNames.gearEmoji}"></fit-icon>
+                        </fit-app-router-link>
+                    </div>
                 </div>
             </div>
         `;
@@ -78,28 +89,29 @@ export class NavTabs extends HTMLElement {
                 return;
             }
 
-            const tabs = this.shadowRoot?.querySelectorAll('.tab');
-
-            if (tabs === undefined) {
-                return;
-            }
-
             if (activeRoute.path.includes('workouts')) {
-                tabs.forEach((tab) => {
-                    if (tab.classList.contains('left')) {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
-                });
+                this.updateTabs('left');
             } else if (activeRoute.path.includes('uebungen')) {
-                tabs.forEach((tab) => {
-                    if (tab.classList.contains('right')) {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
-                });
+                this.updateTabs('middle');
+            } else if (activeRoute.path.includes('einstellungen')) {
+                this.updateTabs('right');
+            }
+        });
+    }
+
+    /** @param {string} className  */
+    updateTabs(className) {
+        const tabs = this.shadowRoot?.querySelectorAll('.tab');
+
+        if (tabs === undefined) {
+            return;
+        }
+
+        tabs.forEach((tab) => {
+            if (tab.classList.contains(className)) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
             }
         });
     }
