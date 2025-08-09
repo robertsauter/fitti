@@ -8,7 +8,6 @@ Object.freeze(globalObjectStoreNames);
 export const objectStoreNames = {
     userExercises: 'userExercises',
     userWorkouts: 'userWorkouts',
-    userPlans: 'userPlans',
     workoutHistory: 'workoutHistory',
     exerciseHistory: 'exerciseHistory',
 };
@@ -71,5 +70,7 @@ export const iconNames = {
     checkmarkCircle: 'checkmarkCircle',
     checkmarkEmoji: 'checkmarkEmoji',
     gearEmoji: 'gearEmoji',
+    downloadFilled: 'downloadFilled',
+    uploadFilled: 'uploadFilled',
 };
 Object.freeze(iconNames);
