@@ -88,6 +88,18 @@ textarea {
     min-height: 5rem;
 }
 
+dialog {
+    width: 80%;
+    height: 80%;
+    border-radius: 1rem;
+    border-style: none;
+}
+
+dialog::backdrop {
+    background-color: black;
+    opacity: 75%;
+}
+
 .pageContainer {
     padding: 2rem;
     padding-bottom: 7rem;
