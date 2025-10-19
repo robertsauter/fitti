@@ -52,7 +52,7 @@ export class App extends HTMLElement {
     registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                navigator.serviceWorker.register('/serviceWorker/sw.js');
+                navigator.serviceWorker.register('/sw.js');
             }
             catch (error) {
                 console.error('Service worker registration failed');

@@ -84,27 +84,15 @@ async function deleteOldCaches() {
 }
 
 self.addEventListener('install', (event) => {
-    if (!(event instanceof ExtendableEvent)) {
-        return;
-    }
-
     event.waitUntil(
         addResourcesToCache(ASSETS)
     );
 });
 
 self.addEventListener('activate', (event) => {
-    if (!(event instanceof ExtendableEvent)) {
-        return;
-    }
-
     event.waitUntil(deleteOldCaches());
 });
 
 self.addEventListener('fetch', (event) => {
-    if (!(event instanceof FetchEvent)) {
-        return;
-    }
-
     event.respondWith(cacheFirst(event.request));
 });
