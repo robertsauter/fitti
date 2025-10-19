@@ -15,6 +15,9 @@ export class App extends HTMLElement {
     }
 
     async connectedCallback() {
+        this.requestPersistentStorage();
+        this.registerServiceWorker();
+
         try {
             window.screen.orientation
                 .lock('portrait-primary');
@@ -34,6 +37,27 @@ export class App extends HTMLElement {
 
         const navTabs = new NavTabs();
         appContainer.appendChild(navTabs);
+    }
+
+    async requestPersistentStorage() {
+        if ('storage' in navigator) {
+            const isPersisted = await navigator.storage.persisted();
+
+            if (!isPersisted) {
+                navigator.storage.persist();
+            }
+        }
+    }
+
+    registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            try {
+                navigator.serviceWorker.register('/serviceWorker/sw.js');
+            }
+            catch (error) {
+                console.error('Service worker registration failed');
+            }
+        }
     }
 }
 

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+        "target": "ES2023",
+        "module": "ES2022",
+        "baseUrl": ".",
+        "paths": {
+            "/*": [
+                "./*"
+            ]
+        },
+        "strict": true,
+        "lib": [
+            "ES2023",
+            "WebWorker"
+        ]
+    },
+}
