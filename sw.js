@@ -1,4 +1,57 @@
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
+
+const ASSETS = [
+    '/',
+    '/workouts',
+    '/workouts/neu',
+    '/workouts/beendet',
+    '/workouts/?/bearbeiten',
+    '/workouts/?/starten',
+    '/uebungen',
+    '/uebungen/neu',
+    '/uebungen/?',
+    '/uebungen/?/fortschritt',
+    '/einstellungen',
+    '/components/AppRouterLink.js',
+    '/components/ExerciseSelect.js',
+    '/components/Icon.js',
+    '/components/NavTabs.js',
+    '/components/RandomGenderWorkoutEmoji.js',
+    '/lib/ClientRouter.js',
+    '/lib/DateHelpers.js',
+    '/lib/Observable.js',
+    '/lib/PromiseIndexedDB.js',
+    '/lib/TrainingDataParser.js',
+    '/models/Exercise.js',
+    '/models/ExerciseResponse.js',
+    '/models/Observer.js',
+    '/models/Route.js',
+    '/models/TrainingData.js',
+    '/models/Workout.js',
+    '/pages/exercises/edit/Page.js',
+    '/pages/exercises/history/Page.js',
+    '/pages/exercises/Page.js',
+    '/pages/settings/components/ExportButton.js',
+    '/pages/settings/components/ImportButton.js',
+    '/pages/settings/Page.js',
+    '/pages/workouts/components/EditExerciseCard.js',
+    '/pages/workouts/components/ExerciseSet.js',
+    '/pages/workouts/components/StartExerciseCard.js',
+    '/pages/workouts/edit/Page.js',
+    '/pages/workouts/history/Page.js',
+    '/pages/workouts/start/Page.js',
+    '/pages/workouts/start/Page.css',
+    '/pages/workouts/Page.js',
+    '/services/ExercisesService.js',
+    '/services/WorkoutsService.js',
+    '/store/WorkoutsStartStore.js',
+    '/App.js',
+    '/Constants.js',
+    '/globals.css',
+    '/index.html',
+    '/Nunito-VariableFont_wght.ttf',
+    '/Routes.js',
+];
 
 /** @param {string[]} resources  */
 async function addResourcesToCache(resources) {
@@ -15,9 +68,15 @@ async function cacheFirst(request) {
     }
 
     const responseFromNetwork = await fetch(request);
-    const url = new URL(request.url);
+    const urlParts = new URL(request.url).pathname.split('/');
 
-    if (url.origin === location.origin) {
+    const isInAssets = ASSETS.some((asset) => {
+        const assetParts = asset.split('/');
+
+        return assetParts.every((assetPart, i) => assetPart === '?' || assetPart === urlParts[i]);
+    });
+
+    if (isInAssets) {
         putInCache(request, responseFromNetwork.clone());
     }
 
@@ -46,11 +105,12 @@ async function deleteOldCaches() {
 
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_VERSION)
+        addResourcesToCache(ASSETS)
     );
 });
 
 self.addEventListener('activate', (event) => {
+    console.log('DELETING')
     event.waitUntil(deleteOldCaches());
 });
 
