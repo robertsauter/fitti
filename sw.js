@@ -1,17 +1,6 @@
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 
 const ASSETS = [
-    '/',
-    '/workouts',
-    '/workouts/neu',
-    '/workouts/beendet',
-    '/workouts/?/bearbeiten',
-    '/workouts/?/starten',
-    '/uebungen',
-    '/uebungen/neu',
-    '/uebungen/?',
-    '/uebungen/?/fortschritt',
-    '/einstellungen',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
@@ -53,6 +42,20 @@ const ASSETS = [
     '/Routes.js',
 ];
 
+const ROUTES = [
+    '/',
+    '/workouts',
+    '/workouts/neu',
+    '/workouts/beendet',
+    '/workouts/?/bearbeiten',
+    '/workouts/?/starten',
+    '/uebungen',
+    '/uebungen/neu',
+    '/uebungen/?',
+    '/uebungen/?/fortschritt',
+    '/einstellungen',
+];
+
 /** @param {string[]} resources  */
 async function addResourcesToCache(resources) {
     const cache = await caches.open(CACHE_VERSION);
@@ -67,14 +70,25 @@ async function cacheFirst(request) {
         return responseFromCache;
     }
 
-    const responseFromNetwork = await fetch(request);
-    const urlParts = new URL(request.url).pathname.split('/');
+    const url = new URL(request.url);
+    const urlParts = url.pathname.split('/');
 
-    const isInAssets = ASSETS.some((asset) => {
+    const isRoute = ROUTES.some((asset) => {
         const assetParts = asset.split('/');
 
         return assetParts.every((assetPart, i) => assetPart === '?' || assetPart === urlParts[i]);
     });
+
+    if (isRoute) {
+        const indexResponse = await caches.match('/index.html');
+
+        if (indexResponse) {
+            return indexResponse;
+        }
+    }
+
+    const responseFromNetwork = await fetch(request);
+    const isInAssets = ASSETS.some((asset) => asset === url.pathname);
 
     if (isInAssets) {
         putInCache(request, responseFromNetwork.clone());
@@ -110,7 +124,6 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-    console.log('DELETING')
     event.waitUntil(deleteOldCaches());
 });
 
