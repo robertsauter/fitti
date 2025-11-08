@@ -1,0 +1,84 @@
+{
+    "id": "/",
+    "name": "Fitti",
+    "short_name": "Fitti",
+    "theme_color": "#CEFF1A",
+    "background_color": "#CEFF1A",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "handle_links": "preferred",
+    "dir": "ltr",
+    "lang": "de",
+    "scope": "https://fitti.bechtio.de",
+    "description": "Der vielleicht simpelste Trainingsplan für Fortgeschrittene. Ganz einfach Übungen und Workouts anlegen und los gehts!",
+    "categories": [
+        "sports",
+        "utilities",
+        "productivity",
+        "fitness"
+    ],
+    "icons": [
+        {
+            "src": "/assets/icons/180.png",
+            "type": "image/png",
+            "sizes": "180x180"
+        },
+        {
+            "src": "/assets/icons/192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/assets/icons/384.png",
+            "type": "image/png",
+            "sizes": "384x384"
+        },
+        {
+            "src": "/assets/icons/512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        },
+        {
+            "src": "/assets/icons/512_maskable.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/assets/icons/1024.png",
+            "type": "image/png",
+            "sizes": "1024x1024"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/assets/screenshots/screenshot_1.png",
+            "sizes": "1290x2796",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Exercises"
+        },
+        {
+            "src": "/assets/screenshots/screenshot_2.png",
+            "sizes": "1290x2796",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Workouts"
+        },
+        {
+            "src": "/assets/screenshots/screenshot_3.png",
+            "sizes": "1290x2796",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Exercise history"
+        },
+        {
+            "src": "/assets/screenshots/screenshot_4.png",
+            "sizes": "1290x2796",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Workout history"
+        }
+    ]
+}

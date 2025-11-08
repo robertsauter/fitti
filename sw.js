@@ -1,6 +1,7 @@
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v9';
 
 const ASSETS = [
+    '/favicon.ico',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
