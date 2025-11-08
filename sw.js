@@ -1,6 +1,7 @@
-const CACHE_VERSION = 'v11';
+const CACHE_VERSION = 'v12';
 
 const ASSETS = [
+    '/manifest.json',
     '/favicon.ico',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
@@ -44,7 +45,6 @@ const ASSETS = [
 ];
 
 const ROUTES = [
-    '',
     '/',
     '/workouts',
     '/workouts/neu',
