@@ -46,55 +46,13 @@ export class ExercisesPage extends HTMLElement {
                         <fit-icon name="${iconNames.add}"></fit-icon>
                     </fit-app-router-link>
                 </div>
-                <details open>
-                    <summary>Deine Übungen</summary>
-                    <ul id="${this.#ids.userExercises}"></ul>
-                </details>
-                <details open>
-                    <summary>Ausgewählte Übungen</summary>
-                    <ul id="${this.#ids.globalExercises}"></ul>
-                </details>
+                <ul id="${this.#ids.userExercises}"></ul>
             </div>
         `;
     }
 
     connectedCallback() {
         this.#displayUserExercises();
-        this.#displayGlobalExercises();
-    }
-
-    async #displayGlobalExercises() {
-        const exercises = await exercisesService.getGlobalExercises();
-
-        const globalExercisesElement = this.shadowRoot?.getElementById(this.#ids.globalExercises);
-
-        if (!globalExercisesElement) {
-            return;
-        }
-
-        exercises.forEach((exercise) => {
-            const exerciseElement = document.createElement('li');
-            exerciseElement.className = 'card';
-
-            const nameElement = document.createElement('h2');
-            nameElement.textContent = exercise.Name;
-            exerciseElement.appendChild(nameElement);
-
-            const descriptionElement = document.createElement('p');
-            descriptionElement.textContent = exercise.Description;
-            exerciseElement.appendChild(descriptionElement);
-
-            const historyLink = new AppRouterLink(appRouterIds.exerciseHistory, `
-                Fortschritt
-                <fit-icon name="${iconNames.rocket}"></fit-icon>
-            `);
-            historyLink.setAttribute('size', buttonSizeClassNames.textAndIcon);
-            historyLink.setAttribute('data-id', exercise.ID);
-            exerciseElement.appendChild(historyLink);
-
-
-            globalExercisesElement.appendChild(exerciseElement);
-        });
     }
 
     async #displayUserExercises() {
