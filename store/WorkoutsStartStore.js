@@ -153,6 +153,11 @@ class WorkoutsStartStore {
         const deletedEntries = this.#exercises.splice(foundExerciseIndex, 1);
         this.#exercises.splice(foundExerciseIndex + 1, 0, ...deletedEntries);
     }
+
+    reset() {
+        this.#workoutId = undefined;
+        this.#exercises = [];
+    }
 }
 
 export const workoutsStartStore = new WorkoutsStartStore();

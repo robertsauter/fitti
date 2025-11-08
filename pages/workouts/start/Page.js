@@ -66,11 +66,13 @@ export class WorkoutsStartPage extends HTMLElement {
             return;
         }
 
-        if (workoutsStartStore.workoutId === undefined) {
-            await workoutsStartStore.initializeExercises(Number(id));
+        const idAsNumber = Number(id);
+
+        if (workoutsStartStore.workoutId === undefined || workoutsStartStore.workoutId !== idAsNumber) {
+            await workoutsStartStore.initializeExercises(idAsNumber);
         }
 
-        const workout = await workoutsService.getUserWorkout(Number(id));
+        const workout = await workoutsService.getUserWorkout(idAsNumber);
 
         if (workout === undefined) {
             this.#displayFallback();
@@ -228,6 +230,7 @@ export class WorkoutsStartPage extends HTMLElement {
         try {
             await workoutsService.saveUserWorkout();
             appRouter.navigate(appRouterIds.workouts);
+            workoutsStartStore.reset();
         } catch (_error) {
             console.error('An error occurred while saving');
         }
