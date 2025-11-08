@@ -1,5 +1,6 @@
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 class WorkoutsStartStore {
     /** @type {number | undefined} */
@@ -25,17 +26,28 @@ class WorkoutsStartStore {
             return;
         }
 
-        this.#exercises = workout.Exercises.map((workoutExercise) => {
-            const sets = Array.from(Array(workoutExercise.Sets)).map(() => ({
-                weight: null,
-                reps: null,
-            }));
+        this.#exercises = await Promise.all(
+            workout.Exercises.map(async (workoutExercise) => {
+                /** @type {WorkoutStartSet[]} */
+                const sets = Array.from(Array(workoutExercise.Sets)).map(() => ({
+                    weight: null,
+                    reps: null,
+                }));
 
-            return {
-                id: workoutExercise.ID,
-                sets,
-            };
-        });
+                const exerciseHistory = await exercisesService.getExerciseHistory(workoutExercise.ID);
+
+                if (exerciseHistory) {
+                    const exerciseHistoryByDate = exercisesService.sortHistory(exerciseHistory);
+
+                    sets[0].weight = exerciseHistoryByDate[0][0].Weight;
+                }
+
+                return {
+                    id: workoutExercise.ID,
+                    sets,
+                };
+            })
+        );
 
         return;
     }

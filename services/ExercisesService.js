@@ -2,6 +2,7 @@ import { exerciseHistoryIndexes, globalObjectStoreNames, objectStoreNames } from
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import '/models/ExerciseResponse.js';
 import '/models/Exercise.js';
+import { compareDate, isSameDay } from '/lib/DateHelpers.js';
 
 class ExercisesService {
     fetchGlobalExercises() {
@@ -101,6 +102,32 @@ class ExercisesService {
         }
 
         return count > 0;
+    }
+
+    /** 
+     * @param {ExerciseHistoryEntry[][]} groupedEntries 
+     * @param {ExerciseHistoryEntry} entry 
+     * */
+    groupHistoryEntriesByDate(groupedEntries, entry) {
+        if (groupedEntries.length === 0) {
+            return [[entry]];
+        }
+
+        const lastEntryGroup = groupedEntries[groupedEntries.length - 1];
+        if (isSameDay(lastEntryGroup[0].Date, entry.Date)) {
+            const newLastEntryGroup = [...lastEntryGroup, entry];
+            const groupedEntriesWithoutLast = groupedEntries.slice(0, -1);
+            return [...groupedEntriesWithoutLast, newLastEntryGroup];
+        }
+
+        return [...groupedEntries, [entry]];
+    }
+
+    /** @param {ExerciseHistory} exerciseHistory */
+    sortHistory(exerciseHistory) {
+        return exerciseHistory.History
+            .reduce(this.groupHistoryEntriesByDate, [])
+            .toSorted((firstGroup, secondGroup) => (compareDate(secondGroup[0].Date, firstGroup[0].Date)));
     }
 }
 

@@ -2,7 +2,7 @@ import { globalClassNames, iconNames } from '/Constants.js';
 import { appRouter } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
-import { compareDate, formatDate, isSameDay } from '/lib/DateHelpers.js';
+import { formatDate } from '/lib/DateHelpers.js';
 import { Icon } from '/components/Icon.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
@@ -86,9 +86,7 @@ export class ExerciseHistoryPage extends HTMLElement {
             bestSetElement.textContent = `Bester Satz: ${bestSetEver.Weight}kg x ${bestSetEver.Reps} Wiederholungen (${formatDate(bestSetEver.Date)})`;
         }
 
-        const historyByDay = exerciseHistory.History
-            .reduce(this.groupHistoryEntriesByDate, [])
-            .toSorted((firstGroup, secondGroup) => (compareDate(secondGroup[0].Date, firstGroup[0].Date)));
+        const historyByDay = exercisesService.sortHistory(exerciseHistory);
 
         const dayList = this.shadowRoot?.querySelector('ul');
         if (dayList) {
@@ -97,26 +95,6 @@ export class ExerciseHistoryPage extends HTMLElement {
                 dayList.appendChild(this.#createHistoryDay(day));
             });
         }
-    }
-
-    /** 
-     * @param {ExerciseHistoryEntry[][]} groupedEntries 
-     * @param {ExerciseHistoryEntry} entry 
-     * @returns {ExerciseHistoryEntry[][]}
-     * */
-    groupHistoryEntriesByDate(groupedEntries, entry) {
-        if (groupedEntries.length === 0) {
-            return [[entry]];
-        }
-
-        const lastEntryGroup = groupedEntries[groupedEntries.length - 1];
-        if (isSameDay(lastEntryGroup[0].Date, entry.Date)) {
-            const newLastEntryGroup = [...lastEntryGroup, entry];
-            const groupedEntriesWithoutLast = groupedEntries.slice(0, -1);
-            return [...groupedEntriesWithoutLast, newLastEntryGroup];
-        }
-
-        return [...groupedEntries, [entry]];
     }
 
     /** 
