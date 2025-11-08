@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v9';
+const CACHE_VERSION = 'v10';
 
 const ASSETS = [
     '/favicon.ico',
@@ -44,6 +44,7 @@ const ASSETS = [
 ];
 
 const ROUTES = [
+    '',
     '/',
     '/workouts',
     '/workouts/neu',
