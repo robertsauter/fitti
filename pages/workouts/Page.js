@@ -4,6 +4,7 @@ import { AppRouterLink } from '/components/AppRouterLink.js';
 import { buttonSizeClassNames, buttonVariantClassNames, globalClassNames, iconNames } from '/Constants.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 import { Icon } from '/components/Icon.js';
+import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
@@ -72,20 +73,23 @@ export class WorkoutsPage extends HTMLElement {
 			workoutElement.className = 'card';
 			workoutElement.id = `${this.#ids.workout}${workout.ID}`;
 
+			const isWorkoutRunning = workoutsStartStore.workoutId === workout.ID;
+			const buttonText = isWorkoutRunning ? 'Fortsetzen' : 'Starten';
+
 			workoutElement.innerHTML = `
-			<div class="${globalClassNames.headerContainer}">
-				<h2></h2>	
-				<div class="buttonsWrapper">
-					<button type="button" class="button error outlined icon">
-						<fit-icon name="${iconNames.deleteFilled}"></fit-icon>
-					</button>
-					<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" size="${buttonSizeClassNames.icon}">
-						<fit-icon name="${iconNames.editFilled}"></fit-icon>
-					</fit-app-router-link>
-				</div>
+				<div class="${globalClassNames.headerContainer}">
+					<h2></h2>	
+					<div class="buttonsWrapper">
+						<button type="button" class="button error outlined icon">
+							<fit-icon name="${iconNames.deleteFilled}"></fit-icon>
+						</button>
+						<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" size="${buttonSizeClassNames.icon}">
+							<fit-icon name="${iconNames.editFilled}"></fit-icon>
+						</fit-app-router-link>
+					</div>
 				</div>
 				<fit-app-router-link route="${appRouterIds.workoutsStart}" size="${buttonSizeClassNames.textAndIcon}">
-					Starten
+					${buttonText}
 					<fit-icon name="${iconNames.playSparkle}"></fit-icon>
 				</fit-app-router-link>
 			`;
