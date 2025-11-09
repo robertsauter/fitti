@@ -39,7 +39,10 @@ class WorkoutsStartStore {
                 if (exerciseHistory) {
                     const exerciseHistoryByDate = exercisesService.sortHistory(exerciseHistory);
 
-                    sets[0].weight = exerciseHistoryByDate[0][0].Weight;
+                    sets[0] = {
+                        weight: exerciseHistoryByDate[0][0].Weight,
+                        reps: exerciseHistoryByDate[0][0].Reps,
+                    }
                 }
 
                 return {
