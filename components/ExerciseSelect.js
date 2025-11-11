@@ -9,7 +9,7 @@ export class ExerciseSelect extends HTMLElement {
     /** @type {number} */
     #exerciseIndex;
 
-    /** @type {string | null} */
+    /** @type {number | null} */
     #selectedExerciseId = null;
 
     get selectedExerciseId() {
@@ -44,39 +44,20 @@ export class ExerciseSelect extends HTMLElement {
 
         const exerciseSelect = this.querySelector(`#${this.#inputNames.exercise}${this.#exerciseIndex}`);
 
-        const globalExercises = await exercisesService.getGlobalExercises();
         const userExercises = await exercisesService.getUserExercises();
 
         if (exerciseSelect instanceof HTMLSelectElement) {
             if (userExercises.length > 0) {
-                const userOptionGroup = document.createElement('optgroup');
-                userOptionGroup.label = 'Deine Übungen';
                 userExercises.forEach((exercise) => {
                     const option = document.createElement('option');
                     option.value = String(exercise.ID);
                     option.textContent = exercise.Name;
-                    userOptionGroup.appendChild(option);
+                    exerciseSelect.appendChild(option);
                 });
-
-                exerciseSelect.appendChild(userOptionGroup);
-            }
-
-            if (globalExercises.length > 0) {
-                const globalOptionGroup = document.createElement('optgroup');
-                globalOptionGroup.label = 'Ausgewählte Übungen';
-
-                globalExercises.forEach((exercise) => {
-                    const option = document.createElement('option');
-                    option.value = String(exercise.ID);
-                    option.textContent = exercise.Name;
-                    globalOptionGroup.appendChild(option);
-                });
-
-                exerciseSelect.appendChild(globalOptionGroup);
             }
 
             if (this.#selectedExerciseId !== null) {
-                exerciseSelect.value = this.#selectedExerciseId;
+                exerciseSelect.value = String(this.#selectedExerciseId);
             } else {
                 exerciseSelect.value = '';
             }
@@ -110,7 +91,7 @@ export class ExerciseSelect extends HTMLElement {
             }
         }
 
-        this.#selectedExerciseId = select.value;
+        this.#selectedExerciseId = Number(select.value);
         this.dispatchEvent(new Event('change'));
     }
 

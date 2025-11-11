@@ -32,11 +32,9 @@ export class ExportButton extends HTMLElement {
 
     async exportData() {
         const userExercises = await exercisesService.getUserExercises();
-        const globalExercises = await exercisesService.getGlobalExercises();
-        const allExercises = [...userExercises, ...globalExercises];
 
-        const exerciseHistories = await Promise.all(allExercises.map(async (exercise) => {
-            return exercisesService.getExerciseHistory(String(exercise.ID));
+        const exerciseHistories = await Promise.all(userExercises.map(async (exercise) => {
+            return exercisesService.getExerciseHistory(exercise.ID);
         }));
 
         const userWorkouts = await workoutsService.getUserWorkouts();
@@ -44,7 +42,6 @@ export class ExportButton extends HTMLElement {
 
         const trainingData = {
             userExercises,
-            globalExercises,
             exerciseHistories,
             userWorkouts,
             workoutHistory,

@@ -19,7 +19,7 @@ export class EditExerciseCard extends HTMLElement {
 
     #exerciseId = 0;
 
-    /** @type {string | null} */
+    /** @type {number | null} */
     #selectedExerciseId = null;
 
     get selectedExerciseId() {
@@ -80,7 +80,6 @@ export class EditExerciseCard extends HTMLElement {
 
         this.#exerciseId = Number(this.getAttribute('exerciseId'));
 
-        const wrapperId = `${this.#ids.exerciseWrapper}${this.#exerciseId}`;
         const upButtonId = `${this.#ids.upButton}${this.#exerciseId}`;
         const downButtonId = `${this.#ids.downButton}${this.#exerciseId}`;
         const deleteButtonId = `${this.#ids.deleteButton}${this.#exerciseId}`;
@@ -120,7 +119,7 @@ export class EditExerciseCard extends HTMLElement {
 
         if (this.#selectedExerciseId !== null) {
             exerciseSelect.selectedExerciseId = this.#selectedExerciseId;
-            const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
+            const exercise = await exercisesService.getUserExercise(this.#selectedExerciseId);
 
             if (exercise === undefined) {
                 this.deleteExercise();
@@ -180,7 +179,7 @@ export class EditExerciseCard extends HTMLElement {
                 return;
             }
 
-            const exercise = await exercisesService.getUserOrGlobalExercise(this.#selectedExerciseId);
+            const exercise = await exercisesService.getUserExercise(this.#selectedExerciseId);
 
             const header = this.querySelector('h2');
             if (header) {

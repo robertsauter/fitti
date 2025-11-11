@@ -6,9 +6,7 @@ import { Icon } from '/components/Icon.js';
 
 export class ExercisesPage extends HTMLElement {
     #ids = {
-        globalExercises: 'globalExercises',
         userExercises: 'userExercises',
-        addExerciseButton: 'addExerciseButton',
         exercise: 'exercise',
     };
 

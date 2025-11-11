@@ -1,5 +1,5 @@
 import { Icon } from '/components/Icon.js';
-import { globalObjectStoreNames, iconNames, objectStoreNames } from '/Constants.js';
+import { iconNames, objectStoreNames } from '/Constants.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import { trainingDataParser } from '/lib/TrainingDataParser.js';
 
@@ -144,11 +144,6 @@ export class ImportButton extends HTMLElement {
         if (this.trainingData.userExercises !== undefined) {
             await promiseIndexedDB.clear(objectStoreNames.userExercises);
             await promiseIndexedDB.putAll(objectStoreNames.userExercises, this.trainingData.userExercises);
-        }
-
-        if (this.trainingData.globalExercises !== undefined) {
-            await promiseIndexedDB.clear(globalObjectStoreNames.globalExercises);
-            await promiseIndexedDB.putAll(globalObjectStoreNames.globalExercises, this.trainingData.globalExercises);
         }
 
         if (this.trainingData.exerciseHistories !== undefined) {

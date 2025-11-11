@@ -26,7 +26,6 @@ export class App extends HTMLElement {
         }
 
         await promiseIndexedDB.initialize();
-        //exercisesService.syncGlobalExercises();
 
         appRouter.outlet = this;
 

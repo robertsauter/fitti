@@ -1,6 +1,6 @@
 /** 
  * @typedef {Object} WorkoutExercise
- * @property {string} ID
+ * @property {number} ID
  * @property {number} Sets
  */
 
@@ -19,7 +19,7 @@
 
 /** 
  * @typedef {Object} WorkoutStartExerxise
- * @property {string} id
+ * @property {number} id
  * @property {WorkoutStartSet[]} sets
  */
 

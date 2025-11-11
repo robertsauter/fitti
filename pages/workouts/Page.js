@@ -110,14 +110,14 @@ export class WorkoutsPage extends HTMLElement {
 
 			workoutElement
 				.querySelector('button')
-				?.addEventListener('click', () => this.#deleteExercise(workout.ID));
+				?.addEventListener('click', () => this.#deleteWorkout(workout.ID));
 
 			workoutsElement.appendChild(workoutElement);
 		});
 	}
 
 	/** @param {number} id  */
-	async #deleteExercise(id) {
+	async #deleteWorkout(id) {
 		await workoutsService.deleteUserWorkout(id);
 		this.shadowRoot
 			?.getElementById(`${this.#ids.workout}${id}`)

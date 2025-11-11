@@ -55,14 +55,14 @@ class WorkoutsStartStore {
         return;
     }
 
-    /** @param {string} exerciseId  */
+    /** @param {number} exerciseId  */
     removeExercise(exerciseId) {
         const exerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
         this.#exercises.splice(exerciseIndex, 1);
     }
 
     /**
-     *  @param {string} exerciseId
+     *  @param {number} exerciseId
      *  @returns {WorkoutStartExerxise}
      *   */
     addExercise(exerciseId) {
@@ -80,14 +80,14 @@ class WorkoutsStartStore {
     }
 
     /** 
-     * @param {string} exerciseId 
+     * @param {number} exerciseId 
      * @returns {number | undefined}
      *  */
     getSetsAmount(exerciseId) {
         return this.#exercises.find((exercise) => exercise.id === exerciseId)?.sets.length;
     }
 
-    /** @param {string} exerciseId  */
+    /** @param {number} exerciseId  */
     addSet(exerciseId) {
         const foundExercise = this.#exercises.find((exercise) => exercise.id === exerciseId);
 
@@ -102,7 +102,7 @@ class WorkoutsStartStore {
     }
 
     /**
-     * @param {string} exerciseId 
+     * @param {number} exerciseId 
      * @param {number} setIndex 
      */
     removeSet(exerciseId, setIndex) {
@@ -116,7 +116,7 @@ class WorkoutsStartStore {
     }
 
     /**
-     * @param {string} exerciseId 
+     * @param {number} exerciseId 
      * @param {number} setIndex
      * @param {number} weight 
      */
@@ -131,7 +131,7 @@ class WorkoutsStartStore {
     }
 
     /**
-     * @param {string} exerciseId 
+     * @param {number} exerciseId 
      * @param {number} setIndex
      * @param {number} reps 
      */
@@ -145,7 +145,7 @@ class WorkoutsStartStore {
         foundExercise.sets[setIndex].reps = reps;
     }
 
-    /** @param {string} exerciseId  */
+    /** @param {number} exerciseId  */
     moveExerciseUp(exerciseId) {
         const foundExerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
 
@@ -157,7 +157,7 @@ class WorkoutsStartStore {
         this.#exercises.splice(foundExerciseIndex - 1, 0, ...deletedEntries);
     }
 
-    /** @param {string} exerciseId  */
+    /** @param {number} exerciseId  */
     moveExerciseDown(exerciseId) {
         const foundExerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
 

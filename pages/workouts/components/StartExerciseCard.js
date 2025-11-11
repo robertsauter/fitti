@@ -57,7 +57,7 @@ export class StartExerciseCard extends HTMLElement {
     }
 
     async #displayExercise() {
-        const exercise = await exercisesService.getUserOrGlobalExercise(this.#workoutExercise.id);
+        const exercise = await exercisesService.getUserExercise(this.#workoutExercise.id);
 
         if (exercise === undefined) {
             this.deleteExercise();

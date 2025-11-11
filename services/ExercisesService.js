@@ -1,27 +1,10 @@
-import { exerciseHistoryIndexes, globalObjectStoreNames, objectStoreNames } from '/Constants.js';
+import { exerciseHistoryIndexes, objectStoreNames } from '/Constants.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import '/models/ExerciseResponse.js';
 import '/models/Exercise.js';
 import { compareDate, isSameDay } from '/lib/DateHelpers.js';
 
 class ExercisesService {
-    fetchGlobalExercises() {
-        return fetch('http://localhost:8000/exercises');
-    }
-
-    /** 
-     * @param {string} id
-     * @return {Promise<ExerciseResponse | undefined>} 
-     * */
-    getGlobalExercise(id) {
-        return promiseIndexedDB.get(globalObjectStoreNames.globalExercises, id);
-    }
-
-    /** @return {Promise<ExerciseResponse[]>} */
-    getGlobalExercises() {
-        return promiseIndexedDB.getAll(globalObjectStoreNames.globalExercises);
-    }
-
     /** 
      * @param {number} id
      * @return {Promise<Exercise | undefined>}
@@ -33,17 +16,6 @@ class ExercisesService {
     /** @return {Promise<Exercise[]>} */
     getUserExercises() {
         return promiseIndexedDB.getAll(objectStoreNames.userExercises);
-    }
-
-    /** @param {string} exerciseId  */
-    async getUserOrGlobalExercise(exerciseId) {
-        const idAsNumber = Number(exerciseId);
-
-        if (Number.isNaN(idAsNumber)) {
-            return this.getGlobalExercise(exerciseId);
-        }
-
-        return this.getUserExercise(idAsNumber);
     }
 
     /**
@@ -65,21 +37,8 @@ class ExercisesService {
         return promiseIndexedDB.delete(objectStoreNames.userExercises, id);
     }
 
-    async syncGlobalExercises() {
-        const response = await this.fetchGlobalExercises();
-
-        if (!response.ok) {
-            return;
-        }
-
-        /** @type {ExerciseResponse[]} */
-        const exercises = await response.json();
-
-        return promiseIndexedDB.putAll(globalObjectStoreNames.globalExercises, exercises);
-    }
-
     /** 
-     * @param {string} id  
+     * @param {number} id  
      * @returns {Promise<ExerciseHistory>}
      * */
     async getExerciseHistory(id) {
@@ -87,19 +46,11 @@ class ExercisesService {
     }
 
     /** 
-     * @param {string} id  
+     * @param {number} id  
      * @returns {Promise<boolean>}
      * */
     async doesExerciseExist(id) {
-        const idAsNumber = Number(id);
-
-        let count = 0;
-
-        if (Number.isNaN(idAsNumber)) {
-            count = await promiseIndexedDB.count(globalObjectStoreNames.globalExercises, id)
-        } else {
-            count = await promiseIndexedDB.count(objectStoreNames.userExercises, idAsNumber);
-        }
+        const count = await promiseIndexedDB.count(objectStoreNames.userExercises, id);
 
         return count > 0;
     }

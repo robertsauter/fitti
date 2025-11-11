@@ -6,7 +6,7 @@ import { formatDate } from '/lib/DateHelpers.js';
 import { Icon } from '/components/Icon.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
-    /** @type {string | null} */
+    /** @type {number | null} */
     #exerciseId = null;
 
     constructor() {
@@ -42,7 +42,7 @@ export class ExerciseHistoryPage extends HTMLElement {
         const id = appRouter.getParamValue('id');
 
         if (id !== null) {
-            this.#exerciseId = id;
+            this.#exerciseId = Number(id);
             this.#createExerciseHistory();
         }
     }
@@ -52,7 +52,7 @@ export class ExerciseHistoryPage extends HTMLElement {
             return;
         }
 
-        const exercise = await exercisesService.getUserOrGlobalExercise(this.#exerciseId);
+        const exercise = await exercisesService.getUserExercise(this.#exerciseId);
 
         const titleWrapper = this.shadowRoot?.querySelector(`.${globalClassNames.titleWrapper}`);
 

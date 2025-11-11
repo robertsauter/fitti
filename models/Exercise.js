@@ -20,7 +20,7 @@
 
 /**
  * @typedef {Object} ExerciseHistoryCreateData
- * @property {string} ExerciseId
+ * @property {number} ExerciseId
  * @property {ExerciseHistoryEntry[]} History
  */
 
