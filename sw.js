@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v18';
+const CACHE_VERSION = 'v19';
 
 const ASSETS = [
     '/components/AppRouterLink.js',
@@ -22,12 +22,14 @@ const ASSETS = [
     '/pages/exercises/edit/Page.js',
     '/pages/exercises/history/Page.js',
     '/pages/exercises/Page.js',
+    '/pages/exercises/components/DeleteExerciseButton.js',
     '/pages/settings/components/ExportButton.js',
     '/pages/settings/components/ImportButton.js',
     '/pages/settings/Page.js',
     '/pages/workouts/components/EditExerciseCard.js',
     '/pages/workouts/components/ExerciseSet.js',
     '/pages/workouts/components/StartExerciseCard.js',
+    '/pages/workouts/components/DeleteWorkoutButton.js',
     '/pages/workouts/edit/Page.js',
     '/pages/workouts/history/Page.js',
     '/pages/workouts/start/Page.js',
