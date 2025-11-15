@@ -80,9 +80,6 @@ export class WorkoutsPage extends HTMLElement {
 				<div class="${globalClassNames.headerContainer}">
 					<h2></h2>	
 					<div class="buttonsWrapper">
-						<button type="button" class="button error outlined icon">
-							<fit-icon name="${iconNames.deleteFilled}"></fit-icon>
-						</button>
 						<fit-app-router-link route="${appRouterIds.workoutsEdit}" variant="outlined" size="${buttonSizeClassNames.icon}">
 							<fit-icon name="${iconNames.editFilled}"></fit-icon>
 						</fit-app-router-link>
@@ -108,20 +105,8 @@ export class WorkoutsPage extends HTMLElement {
 					link.setAttribute('data-id', String(workout.ID));
 				});
 
-			workoutElement
-				.querySelector('button')
-				?.addEventListener('click', () => this.#deleteWorkout(workout.ID));
-
 			workoutsElement.appendChild(workoutElement);
 		});
-	}
-
-	/** @param {number} id  */
-	async #deleteWorkout(id) {
-		await workoutsService.deleteUserWorkout(id);
-		this.shadowRoot
-			?.getElementById(`${this.#ids.workout}${id}`)
-			?.remove();
 	}
 }
 

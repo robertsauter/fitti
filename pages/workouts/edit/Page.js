@@ -8,6 +8,7 @@ import { globalClassNames, iconNames } from '/Constants.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
+import { DeleteWorkoutButton } from '/pages/workouts/components/DeleteWorkoutButton.js';
 
 export class WorkoutsEditPage extends HTMLElement {
     #ids = {
@@ -45,12 +46,14 @@ export class WorkoutsEditPage extends HTMLElement {
                 }
             </style>
             <div class="pageContainer">
-                <div class="${globalClassNames.titleWrapper}">
-                    <div class="${globalClassNames.emojiCircle}">
-                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
-                        <fit-icon name="${iconNames.penEmoji}"></fit-icon>
+                <div class="${globalClassNames.headerContainer}">
+                    <div class="${globalClassNames.titleWrapper}">
+                        <div class="${globalClassNames.emojiCircle}">
+                            <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                            <fit-icon name="${iconNames.penEmoji}"></fit-icon>
+                        </div>
+                        <h1>Workout erstellen</h1>
                     </div>
-                    <h1>Workout erstellen</h1>
                 </div>
                 <form id="${this.#ids.workoutForm}">
                     <div class="${globalClassNames.inputWrapper}">
@@ -91,6 +94,10 @@ export class WorkoutsEditPage extends HTMLElement {
             if (header) {
                 header.textContent = 'Workout bearbeiten';
             }
+
+            const headerContainer = this.shadowRoot?.querySelector(`.${globalClassNames.headerContainer}`);
+            const deleteButton = new DeleteWorkoutButton();
+            headerContainer?.appendChild(deleteButton);
 
             this.#workoutId = Number(id);
             this.#initializeWorkout();
