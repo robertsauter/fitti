@@ -2,6 +2,7 @@ import { appRouter, appRouterIds } from '/Routes.js';
 import { NavTabs } from '/components/NavTabs.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
+import { indexedDBManager } from '/lib/IndexedDBManager.js';
 
 export class App extends HTMLElement {
     constructor() {
@@ -26,6 +27,7 @@ export class App extends HTMLElement {
         }
 
         await promiseIndexedDB.initialize();
+        indexedDBManager.runMigrations();
 
         appRouter.outlet = this;
 
