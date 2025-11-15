@@ -77,13 +77,6 @@ export class ExercisesPage extends HTMLElement {
             const buttonsWrapper = document.createElement('div');
             buttonsWrapper.className = 'buttonsWrapper';
 
-            const deleteButton = document.createElement('button');
-            deleteButton.type = 'button';
-            deleteButton.innerHTML = `<fit-icon name="${iconNames.deleteFilled}"></fit-icon>`
-            deleteButton.className = 'button error outlined icon';
-            deleteButton.addEventListener('click', () => this.#deleteExercise(exercise.ID));
-            buttonsWrapper.appendChild(deleteButton);
-
             const editLink = new AppRouterLink(
                 appRouterIds.exercisesEdit,
                 `<fit-icon name="${iconNames.editFilled}"></fit-icon>`
@@ -110,14 +103,6 @@ export class ExercisesPage extends HTMLElement {
 
             exercisesElement.appendChild(exerciseElement);
         });
-    }
-
-    /** @param {number} id  */
-    async #deleteExercise(id) {
-        await exercisesService.deleteUserExercise(id);
-        this.shadowRoot
-            ?.getElementById(`${this.#ids.exercise}${id}`)
-            ?.remove();
     }
 }
 

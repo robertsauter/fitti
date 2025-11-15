@@ -17,7 +17,7 @@ export class App extends HTMLElement {
 
     async connectedCallback() {
         this.requestPersistentStorage();
-        //this.registerServiceWorker();
+        this.registerServiceWorker();
 
         try {
             window.screen.orientation

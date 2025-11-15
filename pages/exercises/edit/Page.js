@@ -2,6 +2,7 @@ import { globalClassNames, iconNames } from '/Constants.js';
 import { appRouter, appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
+import { DeleteExerciseButton } from '/pages/exercises/components/DeleteExerciseButton.js';
 
 export class ExercisesEditPage extends HTMLElement {
     #ids = {
@@ -31,12 +32,14 @@ export class ExercisesEditPage extends HTMLElement {
                 }
             </style>
             <div class="${globalClassNames.pageContainer}">
-                <div class="${globalClassNames.titleWrapper}">
-                    <div class="${globalClassNames.emojiCircle}">
-                        <fit-icon name="${iconNames.bicepEmoji}"></fit-icon>
-                        <fit-icon name="${iconNames.penEmoji}"></fit-icon>
+                <div class="${globalClassNames.headerContainer}">
+                    <div class="${globalClassNames.titleWrapper}">
+                        <div class="${globalClassNames.emojiCircle}">
+                            <fit-icon name="${iconNames.bicepEmoji}"></fit-icon>
+                            <fit-icon name="${iconNames.penEmoji}"></fit-icon>
+                        </div>
+                        <h1>Übung erstellen</h1>
                     </div>
-                    <h1>Übung erstellen</h1>
                 </div>
                 <form id="${this.#ids.saveExerciseForm}">
                     <div class="${globalClassNames.inputWrapper}">
@@ -76,6 +79,10 @@ export class ExercisesEditPage extends HTMLElement {
             if (header) {
                 header.textContent = 'Übung bearbeiten';
             }
+
+            const headerContainer = this.shadowRoot?.querySelector(`.${globalClassNames.headerContainer}`);
+            const deleteButton = new DeleteExerciseButton();
+            headerContainer?.appendChild(deleteButton);
 
             this.#exerciseId = Number(id);
             this.#fillData();
