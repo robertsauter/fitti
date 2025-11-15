@@ -36,4 +36,4 @@ export class DeleteExerciseButton extends HTMLElement {
     }
 }
 
-customElements.define('fit-delete-workout-button', DeleteExerciseButton);
+customElements.define('fit-delete-exercise-button', DeleteExerciseButton);
