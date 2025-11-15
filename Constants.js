@@ -69,3 +69,8 @@ export const iconNames = {
     uploadFilled: 'uploadFilled',
 };
 Object.freeze(iconNames);
+
+export const migrationIds = {
+    migrateExerciseIdAsNumber: 'migrateExerciseIdAsNumber',
+};
+Object.freeze(migrationIds);

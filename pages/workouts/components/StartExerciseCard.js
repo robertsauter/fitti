@@ -15,7 +15,7 @@ export class StartExerciseCard extends HTMLElement {
         downButton: 'downButton',
     };
 
-    /** @type {WorkoutStartExerxise} */
+    /** @type {WorkoutStartExercise} */
     #workoutExercise;
 
 
@@ -23,7 +23,7 @@ export class StartExerciseCard extends HTMLElement {
         return this.#workoutExercise;
     }
 
-    /** @param {WorkoutStartExerxise} exercise */
+    /** @param {WorkoutStartExercise} exercise */
     constructor(exercise) {
         super();
 

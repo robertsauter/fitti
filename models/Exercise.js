@@ -14,7 +14,7 @@
 /**
  * @typedef {Object} ExerciseHistory
  * @property {number} ID
- * @property {string} ExerciseId
+ * @property {number} ExerciseId
  * @property {ExerciseHistoryEntry[]} History
  */
 

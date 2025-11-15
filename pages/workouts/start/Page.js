@@ -117,7 +117,7 @@ export class WorkoutsStartPage extends HTMLElement {
         });
     }
 
-    /** @param {WorkoutStartExerxise} exercise  */
+    /** @param {WorkoutStartExercise} exercise  */
     #displayExercise(exercise) {
         const exerciseElement = this.createExerciseElement(exercise);
 
@@ -126,7 +126,7 @@ export class WorkoutsStartPage extends HTMLElement {
             ?.appendChild(exerciseElement);
     }
 
-    /** @param {WorkoutStartExerxise} exercise  */
+    /** @param {WorkoutStartExercise} exercise  */
     createExerciseElement(exercise) {
         const exerciseElement = new StartExerciseCard(exercise);
         exerciseElement.addEventListener(customEventNames.moveUp, this.moveExerciseUp);

@@ -5,7 +5,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 class WorkoutsStartStore {
     /** @type {number | undefined} */
     #workoutId;
-    /** @type {WorkoutStartExerxise[]} */
+    /** @type {WorkoutStartExercise[]} */
     #exercises = [];
 
     get workoutId() {
@@ -63,7 +63,7 @@ class WorkoutsStartStore {
 
     /**
      *  @param {number} exerciseId
-     *  @returns {WorkoutStartExerxise}
+     *  @returns {WorkoutStartExercise}
      *   */
     addExercise(exerciseId) {
         const newExercise = {

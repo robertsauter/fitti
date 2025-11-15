@@ -107,7 +107,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         return workoutElement;
     }
 
-    /** @param {WorkoutStartExerxise} exercise */
+    /** @param {WorkoutStartExercise} exercise */
     async #createExerciseElement(exercise) {
         const exerciseDetails = await exercisesService.getUserExercise(exercise.id);
 

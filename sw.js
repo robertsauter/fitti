@@ -1,8 +1,6 @@
 const CACHE_VERSION = 'v14';
 
 const ASSETS = [
-    '/manifest.json',
-    '/favicon.ico',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
@@ -13,6 +11,7 @@ const ASSETS = [
     '/lib/Observable.js',
     '/lib/PromiseIndexedDB.js',
     '/lib/TrainingDataParser.js',
+    '/lib/IndexedDBManager.js',
     '/models/Exercise.js',
     '/models/ExerciseResponse.js',
     '/models/Observer.js',
@@ -42,6 +41,8 @@ const ASSETS = [
     '/index.html',
     '/Nunito-VariableFont_wght.ttf',
     '/Routes.js',
+    '/manifest.json',
+    '/favicon.ico',
 ];
 
 const ROUTES = [

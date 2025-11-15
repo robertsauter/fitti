@@ -10,7 +10,7 @@ export class ExerciseSet extends HTMLElement {
         reps: 'reps',
     };
 
-    /** @type {number | string} */
+    /** @type {number} */
     #exerciseId;
     /** @type {number} */
     #setIndex;
@@ -24,7 +24,7 @@ export class ExerciseSet extends HTMLElement {
     }
 
     /** 
-     * @param {number | string} exerciseId 
+     * @param {number} exerciseId 
      * @param {number} setIndex
      * @param {WorkoutStartSet} set 
      * */
@@ -116,7 +116,7 @@ export class ExerciseSet extends HTMLElement {
             return;
         }
 
-        workoutsStartStore.updateWeight(String(this.#exerciseId), this.#setIndex, Number(input.value));
+        workoutsStartStore.updateWeight(this.#exerciseId, this.#setIndex, Number(input.value));
     }
 
     /**
@@ -129,7 +129,7 @@ export class ExerciseSet extends HTMLElement {
             return;
         }
 
-        workoutsStartStore.updateReps(String(this.#exerciseId), this.#setIndex, Number(input.value));
+        workoutsStartStore.updateReps(this.#exerciseId, this.#setIndex, Number(input.value));
     }
 
     removeSet() {

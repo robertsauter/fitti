@@ -18,7 +18,7 @@
  */
 
 /** 
- * @typedef {Object} WorkoutStartExerxise
+ * @typedef {Object} WorkoutStartExercise
  * @property {number} id
  * @property {WorkoutStartSet[]} sets
  */
@@ -33,6 +33,6 @@
  * @typedef {Object} WorkoutHistoryEntry
  * @property {number} ID
  * @property {number} WorkoutId
- * @property {WorkoutStartExerxise[]} Exercises
+ * @property {WorkoutStartExercise[]} Exercises
  * @property {Date} Date
  */
