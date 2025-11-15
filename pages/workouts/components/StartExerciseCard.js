@@ -46,10 +46,14 @@ export class StartExerciseCard extends HTMLElement {
                     align-items: center;
                 }
             </style>
-            <li class="exerciseCard card">
+            <li class="card">
                 <div class="${globalClassNames.headerContainer}">
                     <h2></h2>
                 </div>
+                <details>
+                    <summary>Sets</summary>
+                    <div class="exerciseCard"></div>
+                </details>
             </li>
         `;
 
@@ -107,7 +111,7 @@ export class StartExerciseCard extends HTMLElement {
 
         headerContainer.appendChild(buttonsWrapper);
 
-        const wrapperElement = this.querySelector('li');
+        const wrapperElement = this.querySelector('.exerciseCard');
 
         if (wrapperElement === null) {
             return;

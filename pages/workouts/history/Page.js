@@ -2,7 +2,7 @@ import { globalClassNames, iconNames } from '/Constants.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
-import { formatDate } from '/lib/DateHelpers.js';
+import { compareDate, formatDate } from '/lib/DateHelpers.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 import { Icon } from '/components/Icon.js';
 
@@ -60,6 +60,8 @@ export class WorkoutsHistoryPage extends HTMLElement {
         if (!workoutsList) {
             return;
         }
+
+        workoutHistory.sort((firstWorkout, secondWorkout) => compareDate(secondWorkout.Date, firstWorkout.Date));
 
         workoutHistory.forEach(async (workout) => {
             const workoutElement = await this.#createWorkoutElement(workout);
