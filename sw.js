@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v15';
+const CACHE_VERSION = 'v16';
 
 const ASSETS = [
     '/components/AppRouterLink.js',
@@ -18,6 +18,7 @@ const ASSETS = [
     '/models/Route.js',
     '/models/TrainingData.js',
     '/models/Workout.js',
+    '/models/Updater.js',
     '/pages/exercises/edit/Page.js',
     '/pages/exercises/history/Page.js',
     '/pages/exercises/Page.js',
