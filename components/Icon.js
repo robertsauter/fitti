@@ -66,6 +66,8 @@ export class Icon extends HTMLElement {
                 return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M4.5 2a.75.75 0 0 0 0 1.5H15A.75.75 0 0 0 15 2zm5.996 15.35a.75.75 0 0 1-1.493-.102V7.058L6.03 10.027l-.084.073a.75.75 0 0 1-.976-1.134L9.26 4.68a.7.7 0 0 1 .257-.146l.08-.023a.7.7 0 0 1 .151-.016l.06.002l.07.008l.12.03l.091.038l.037.02l.09.06l.072.062l4.242 4.25l.073.085a.75.75 0 0 1-.074.976l-.084.073a.75.75 0 0 1-.976-.074l-2.966-2.97v10.193z"/></svg>`;
             case iconNames.delete:
                 return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M8.5 4h3a1.5 1.5 0 0 0-3 0m-1 0a2.5 2.5 0 0 1 5 0h5a.5.5 0 0 1 0 1h-1.054l-1.194 10.344A3 3 0 0 1 12.272 18H7.728a3 3 0 0 1-2.98-2.656L3.554 5H2.5a.5.5 0 0 1 0-1zM5.741 15.23A2 2 0 0 0 7.728 17h4.544a2 2 0 0 0 1.987-1.77L15.439 5H4.561zM8.5 7.5A.5.5 0 0 1 9 8v6a.5.5 0 0 1-1 0V8a.5.5 0 0 1 .5-.5M12 8a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/></svg>`;
+            case iconNames.timerFilled:
+                return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M7 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m7.45 1.429a.5.5 0 0 1 .706 0l1.414 1.414a.5.5 0 1 1-.707.707L14.45 4.636a.5.5 0 0 1 0-.707M16.5 11a7 7 0 1 1-14 0a7 7 0 0 1 14 0M9 6.5v5a.5.5 0 0 0 1 0v-5a.5.5 0 0 0-1 0"/></svg>`;
             default:
                 return ``
         }

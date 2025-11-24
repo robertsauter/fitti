@@ -1,12 +1,20 @@
 import { workoutsService } from '/services/WorkoutsService.js';
 import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { Observable } from '/lib/Observable.js';
+import '/models/Observer.js';
 
 class WorkoutsStartStore {
     /** @type {number | undefined} */
     #workoutId;
     /** @type {WorkoutStartExercise[]} */
     #exercises = [];
+    /** @type {Date | null} */
+    #startDate = null;
+    /** @type {Date | null} */
+    #setTimerStartDate = null;
+    /** @type {Observable<boolean>} */
+    #isStartedObservable = new Observable();
 
     get workoutId() {
         return this.#workoutId;
@@ -16,9 +24,18 @@ class WorkoutsStartStore {
         return this.#exercises;
     }
 
+    get startDate() {
+        return this.#startDate;
+    }
+
+    get setTimerStartDate() {
+        return this.#setTimerStartDate;
+    }
+
     /** @param {number} workoutId  */
     async initializeExercises(workoutId) {
         this.#workoutId = workoutId;
+        this.#startDate = new Date();
 
         const workout = await workoutsService.getUserWorkout(Number(workoutId));
 
@@ -52,6 +69,7 @@ class WorkoutsStartStore {
             })
         );
 
+        this.#isStartedObservable.emit(true);
         return;
     }
 
@@ -172,6 +190,16 @@ class WorkoutsStartStore {
     reset() {
         this.#workoutId = undefined;
         this.#exercises = [];
+        this.#isStartedObservable.emit(false);
+    }
+
+    resetSetTimerStartDate() {
+        this.#setTimerStartDate = new Date();
+    }
+
+    /** @param {Observer<boolean>} observer */
+    addIsStartedObserver(observer) {
+        this.#isStartedObservable.addObserver(observer);
     }
 }
 

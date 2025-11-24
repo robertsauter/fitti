@@ -44,9 +44,6 @@ export class ExerciseSet extends HTMLElement {
         this.innerHTML = `
             <style>
                 @import url('/globals.css');
-                p {
-                    font-weight: bold;
-                }
             </style>
             <li class="setCard">
                 <p>Set ${this.#setIndex + 1}</p>

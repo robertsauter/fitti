@@ -68,6 +68,7 @@ export const iconNames = {
     gearEmoji: 'gearEmoji',
     downloadFilled: 'downloadFilled',
     uploadFilled: 'uploadFilled',
+    timerFilled: 'timerFilled',
 };
 Object.freeze(iconNames);
 

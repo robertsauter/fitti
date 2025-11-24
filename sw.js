@@ -1,6 +1,9 @@
-const CACHE_VERSION = 'v19';
+const CACHE_VERSION = 'v20';
 
 const ASSETS = [
+    '/components/currentWorkoutBar/CurrentWorkoutBar.js',
+    '/components/currentWorkoutBar/SetTimer.js',
+    '/components/currentWorkoutBar/WorkoutTimer.js',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
@@ -40,12 +43,12 @@ const ASSETS = [
     '/store/WorkoutsStartStore.js',
     '/App.js',
     '/Constants.js',
+    '/favicon.ico',
     '/globals.css',
     '/index.html',
     '/Nunito-VariableFont_wght.ttf',
     '/Routes.js',
     '/manifest.json',
-    '/favicon.ico',
 ];
 
 const ROUTES = [
