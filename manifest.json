@@ -2,7 +2,7 @@
     "id": "/",
     "name": "Fitti",
     "short_name": "Fitti",
-    "theme_color": "#CEFF1A",
+    "theme_color": "#E5BEED",
     "background_color": "#CEFF1A",
     "start_url": "/",
     "display": "standalone",
