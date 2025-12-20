@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v21';
+const CACHE_VERSION = 'v22';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
