@@ -67,7 +67,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
         const paginatedWorkoutHistory = await workoutsService.getWorkoutHistoryPaginated({
             currentPage: this.#currentPage,
             pageSize: 10,
-        });
+        }, true);
 
         const workoutHistory = paginatedWorkoutHistory.items;
 
