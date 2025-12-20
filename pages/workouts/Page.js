@@ -46,7 +46,7 @@ export class WorkoutsPage extends HTMLElement {
 						<fit-icon name="${iconNames.add}"></fit-icon>
 					</fit-app-router-link>
 				</div>
-				<fit-app-router-link route="${appRouterIds.workoutsHistory}" variant="${buttonVariantClassNames.outlined}" size="${buttonSizeClassNames.textAndIcon}">
+				<fit-app-router-link route="${appRouterIds.workoutsHistory}" variant="${buttonVariantClassNames.outlined}" size="${buttonSizeClassNames.textAndIcon}" data-page="0">
 					Beendete Workouts
 					<fit-icon name="${iconNames.checkmarkCircleFilled}"></fit-icon>
 				</fit-app-router-link>

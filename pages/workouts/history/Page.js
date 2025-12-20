@@ -5,8 +5,12 @@ import { exercisesService } from '/services/ExercisesService.js';
 import { compareDate, formatDate } from '/lib/DateHelpers.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 import { Icon } from '/components/Icon.js';
+import { appRouter, appRouterIds } from '/Routes.js';
+import { PaginationButtons } from '/components/PaginationButtons.js';
 
 export class WorkoutsHistoryPage extends HTMLElement {
+    #currentPage = 0;
+
     constructor() {
         super();
 
@@ -31,7 +35,7 @@ export class WorkoutsHistoryPage extends HTMLElement {
                 .setWrapper {
                     display: grid;
                     grid-template-columns: 1fr 1.5fr 1.5fr;
-                } 
+                }
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}">
@@ -45,11 +49,28 @@ export class WorkoutsHistoryPage extends HTMLElement {
             </div>
         `;
 
+        this.#setCurrentPage();
         this.#displayWorkouts();
     }
 
+    #setCurrentPage() {
+        const page = appRouter.getParamValue('page');
+
+        if (page === null) {
+            return;
+        }
+
+        this.#currentPage = Number(page);
+    }
+
     async #displayWorkouts() {
-        const workoutHistory = await workoutsService.getWorkoutHistory();
+        const paginatedWorkoutHistory = await workoutsService.getWorkoutHistoryPaginated({
+            currentPage: this.#currentPage,
+            pageSize: 10,
+        });
+
+        const workoutHistory = paginatedWorkoutHistory.items;
+
         if (workoutHistory === undefined || workoutHistory.length === 0) {
             this.#displayFallback();
             return;
@@ -72,6 +93,15 @@ export class WorkoutsHistoryPage extends HTMLElement {
 
             workoutsList.appendChild(workoutElement);
         });
+
+        const container = this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`);
+
+        if (!container) {
+            return;
+        }
+
+        const paginationButtons = new PaginationButtons(appRouterIds.workoutsHistory, paginatedWorkoutHistory.pagination);
+        container.appendChild(paginationButtons);
     }
 
     /** @param {WorkoutHistoryEntry} workoutHistoryEntry  */

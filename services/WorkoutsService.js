@@ -3,6 +3,7 @@ import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import '/models/Workout.js';
 import '/models/Exercise.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
+import '/models/Pagination.js';
 
 class WorkoutsService {
     /** @param {WorkoutCreateData} workout  */
@@ -80,6 +81,15 @@ class WorkoutsService {
     /** @returns {Promise<WorkoutHistoryEntry[]>} */
     getWorkoutHistory() {
         return promiseIndexedDB.getAll(objectStoreNames.workoutHistory);
+    }
+
+    /**
+     * @param {PaginationOptions} options 
+     * @param {boolean} [isAscending] 
+     * @returns {Promise<PaginatedList<WorkoutHistoryEntry>>}
+     */
+    getWorkoutHistoryPaginated(options, isAscending) {
+        return promiseIndexedDB.getPaginated(objectStoreNames.workoutHistory, options, isAscending);
     }
 }
 

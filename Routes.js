@@ -31,7 +31,7 @@ const routes = [
     },
     {
         id: appRouterIds.workoutsHistory,
-        path: '/workouts/beendet',
+        path: '/workouts/beendet/:page',
         component: '<fit-workouts-history-page></fit-workouts-history-page>',
         importPath: '/pages/workouts/history/Page.js',
     },

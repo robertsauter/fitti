@@ -69,6 +69,8 @@ export const iconNames = {
     downloadFilled: 'downloadFilled',
     uploadFilled: 'uploadFilled',
     timerFilled: 'timerFilled',
+    arrowRight: 'arrowRight',
+    arrowLeft: 'arrowLeft',
 };
 Object.freeze(iconNames);
 
