@@ -4,6 +4,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
 import { formatDate } from '/lib/DateHelpers.js';
 import { Icon } from '/components/Icon.js';
+import { ProgressChart } from '/components/ProgressChart.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
     /** @type {number | null} */
@@ -45,6 +46,10 @@ export class ExerciseHistoryPage extends HTMLElement {
             this.#exerciseId = Number(id);
             this.#createExerciseHistory();
         }
+
+        this.shadowRoot
+            ?.querySelector('p')
+            ?.after(new ProgressChart(300, 200));
     }
 
     async #createExerciseHistory() {
@@ -139,7 +144,9 @@ export class ExerciseHistoryPage extends HTMLElement {
     #displayFallback() {
         const fallbackElement = document.createElement('p');
         fallbackElement.textContent = 'Du hast noch keinen Fortschritt für diese Übung aufgezeichnet.';
-        this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`)?.appendChild(fallbackElement);
+        this.shadowRoot
+            ?.querySelector(`.${globalClassNames.pageContainer}`)
+            ?.appendChild(fallbackElement);
     }
 }
 

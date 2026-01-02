@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v23';
+const CACHE_VERSION = 'v24';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -7,6 +7,7 @@ const ASSETS = [
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
+    '/components/LineChart.js',
     '/components/NavTabs.js',
     '/components/RandomGenderWorkoutEmoji.js',
     '/components/PaginationButtons.js',
@@ -57,7 +58,7 @@ const ROUTES = [
     '/',
     '/workouts',
     '/workouts/neu',
-    '/workouts/beendet',
+    '/workouts/beendet/?',
     '/workouts/?/bearbeiten',
     '/workouts/?/starten',
     '/uebungen',
