@@ -34,6 +34,7 @@ export class ExerciseHistoryPage extends HTMLElement {
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}"></div>
                 <p></p>
+                <fit-progress-chart></fit-progress-chart>
                 <ul></ul>
             </div>
         `;
@@ -46,10 +47,6 @@ export class ExerciseHistoryPage extends HTMLElement {
             this.#exerciseId = Number(id);
             this.#createExerciseHistory();
         }
-
-        this.shadowRoot
-            ?.querySelector('p')
-            ?.after(new ProgressChart(300, 200));
     }
 
     async #createExerciseHistory() {
