@@ -4,7 +4,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
 import { formatDate } from '/lib/DateHelpers.js';
 import { Icon } from '/components/Icon.js';
-import { ProgressChart } from '/components/ProgressChart.js';
+import { ProgressChart } from '/pages/exercises/components/ProgressChart.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
     /** @type {number | null} */
@@ -55,11 +55,16 @@ export class ExerciseHistoryPage extends HTMLElement {
             this.#createExerciseHistory();
         }
 
-        if (this.#exerciseId !== null) {
-            this.shadowRoot
-                ?.querySelector('.progressWrapper')
-                ?.appendChild(new ProgressChart(this.#exerciseId));
-        }
+        // TODO: Don't use hack anymore. Maybe adoptedStylesheet is better than dynamic css import!!!
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                if (this.#exerciseId !== null) {
+                    this.shadowRoot
+                        ?.querySelector('.progressWrapper')
+                        ?.appendChild(new ProgressChart(this.#exerciseId));
+                }
+            });
+        });
     }
 
     async #createExerciseHistory() {

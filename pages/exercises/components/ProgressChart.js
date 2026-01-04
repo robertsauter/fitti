@@ -64,7 +64,7 @@ export class ProgressChart extends HTMLElement {
             return;
         }
 
-        const parentStyles = getComputedStyle(parent)
+        const parentStyles = getComputedStyle(parent);
 
         this.#width = parent.clientWidth - parseFloat(parentStyles.paddingLeft) - parseFloat(parentStyles.paddingRight);
         this.#height = this.#width / 3 * 2;
