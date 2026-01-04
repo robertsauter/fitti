@@ -5,8 +5,6 @@ import '/models/Exercise.js';
 
 export class ProgressChart extends HTMLElement {
     #exerciseId;
-    /** @type {TimePeriod} */
-    #timePeriod;
     #highestVolume = 0;
     #width = 0;
     #height = 0;
@@ -14,6 +12,14 @@ export class ProgressChart extends HTMLElement {
     #chartHeight = 0;
     #offestX = 0;
     #offsetY = 0;
+    #axisColor = '#273043';
+    #lineColor = '#c44536';
+    #helperLineColor = '#E5BEED';
+    /** @type {TimePeriod} */
+    #timePeriod = {
+        startDate: new Date(),
+        endDate: new Date(),
+    };
     /** @type {ExerciseHistoryEntry[]} */
     #filteredExerciseHistory = [];
     /** @type {ExerciseHistoryEntry[]} */
@@ -39,7 +45,18 @@ export class ProgressChart extends HTMLElement {
                 const hasHigherVolume = entry.Reps * entry.Weight > historyEntry.Reps * historyEntry.Weight;
 
                 return hasHigherVolume && isSameDay(entry.Date, historyEntry.Date);
-            }));
+            }))
+            .map((historyEntry) => {
+                const date = new Date(historyEntry.Date);
+                date.setHours(0);
+                date.setMinutes(0);
+                date.setSeconds(2);
+
+                return {
+                    ...historyEntry,
+                    Date: date,
+                }
+            });
 
         const parent = this.parentElement;
 
@@ -110,9 +127,7 @@ export class ProgressChart extends HTMLElement {
             .filter((entry) => {
                 const time = entry.Date.getTime();
 
-                const isin = time > this.#timePeriod.startDate.getTime() && time < this.#timePeriod.endDate.getTime();
-                console.log(entry.Date, this.#timePeriod, isin)
-                return isin
+                return time > this.#timePeriod.startDate.getTime() && time < this.#timePeriod.endDate.getTime();
             });
 
         this.#highestVolume = this.#exerciseHistory
@@ -134,9 +149,9 @@ export class ProgressChart extends HTMLElement {
     #changeTimePeriod(timePeriod) {
         const now = new Date();
         const endDate = new Date();
-        endDate.setHours(23);
-        endDate.setMinutes(59);
-        endDate.setSeconds(59);
+        endDate.setHours(0);
+        endDate.setMinutes(0);
+        endDate.setSeconds(3);
         let startDate;
 
         switch (timePeriod) {
@@ -184,7 +199,8 @@ export class ProgressChart extends HTMLElement {
             return;
         }
 
-        this.#context.strokeStyle = 'black';
+        this.#context.fillStyle = this.#axisColor;
+        this.#context.strokeStyle = this.#axisColor;
 
         const startY = this.#height / 100 * 90;
 
@@ -196,7 +212,7 @@ export class ProgressChart extends HTMLElement {
         this.#context.lineTo(endX, startY);
         this.#context.stroke();
 
-        this.#context.strokeStyle = 'grey';
+        this.#context.strokeStyle = this.#helperLineColor;
 
         const middleY = this.#height / 100 * 50;
         this.#context.beginPath();
@@ -219,7 +235,8 @@ export class ProgressChart extends HTMLElement {
             return;
         }
 
-        this.#context.strokeStyle = 'black';
+        this.#context.strokeStyle = this.#axisColor;
+        this.#context.fillStyle = this.#axisColor;
 
         this.#context.beginPath();
         this.#context.moveTo(this.#offestX, this.#offsetY);
@@ -235,17 +252,22 @@ export class ProgressChart extends HTMLElement {
             return;
         }
 
-        this.#context.strokeStyle = 'red';
+        const coordinates = this.#filteredExerciseHistory.map((datapoint) => this.#getDatapointCoordinates(datapoint));
 
+        this.#context.strokeStyle = this.#lineColor;
         this.#context.beginPath();
-
-        // TODO: Add dots and use moveTo for first coordinate
-        this.#filteredExerciseHistory.forEach((datapoint) => {
-            const { x, y } = this.#getDatapointCoordinates(datapoint);
+        coordinates.forEach(({ x, y }) => {
             this.#context?.lineTo(x, y);
         });
-
         this.#context.stroke();
+
+        this.#context.fillStyle = this.#lineColor;
+        this.#context.beginPath();
+        coordinates.forEach(({ x, y }) => {
+            this.#context?.moveTo(x, y);
+            this.#context?.arc(x, y, 4, 0, Math.PI * 2, true);
+        });
+        this.#context.fill();
     }
 
     /** @param {ExerciseHistoryEntry} datapoint  */
@@ -257,7 +279,7 @@ export class ProgressChart extends HTMLElement {
 
         const y = this.#chartHeight - this.#chartHeight / this.#highestVolume * datapoint.Reps * datapoint.Weight + this.#offsetY;
 
-        return { x, y }
+        return { x, y };
     }
 }
 
