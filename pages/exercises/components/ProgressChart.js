@@ -73,11 +73,17 @@ export class ProgressChart extends HTMLElement {
         this.#offestX = this.#width / 100 * 10;
         this.#offsetY = this.#height / 100 * 10;
 
+        const pixelRatio = window.devicePixelRatio;
+
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 @import url(/globals.css);
                 select {
                     width: 100%;
+                }
+                canvas {
+                    width: ${this.#width}px;
+                    height: ${this.#height}px
                 }
             </style>
             <select>
@@ -85,7 +91,7 @@ export class ProgressChart extends HTMLElement {
                 <option value="year">Letzes Jahr</option>
                 <option value="all">Alle Daten bis heute</option>
             </select>
-            <canvas width="${this.#width}" height="${this.#height}"></canvas>
+            <canvas width="${this.#width * pixelRatio}" height="${this.#height * pixelRatio}"></canvas>
         `;
 
         this.shadowRoot
@@ -100,6 +106,8 @@ export class ProgressChart extends HTMLElement {
 
         this.#canvas = canvas;
         this.#context = canvas.getContext('2d');
+
+        this.#context?.scale(pixelRatio, pixelRatio);
 
         if (this.#context === null) {
             return;
