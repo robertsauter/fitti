@@ -6,6 +6,7 @@ import '/models/Exercise.js';
 export class ProgressChart extends HTMLElement {
     #exerciseId;
     #highestVolume = 0;
+    #highestWeight = 0;
     #width = 0;
     #height = 0;
     #chartWidth = 0;
@@ -15,6 +16,7 @@ export class ProgressChart extends HTMLElement {
     #axisColor = '#273043';
     #lineColor = '#c44536';
     #helperLineColor = '#E5BEED';
+    #isVolumeMode = false;
     /** @type {TimePeriod} */
     #timePeriod = {
         startDate: new Date(),
@@ -34,6 +36,7 @@ export class ProgressChart extends HTMLElement {
         super();
 
         this.handleTimePeriodChange = this.handleTimePeriodChange.bind(this);
+        this.toggleMode = this.toggleMode.bind(this);
 
         this.#exerciseId = exerciseId;
         this.#changeTimePeriod('month');
@@ -85,18 +88,39 @@ export class ProgressChart extends HTMLElement {
                     width: ${this.#width}px;
                     height: ${this.#height}px
                 }
+                .progressWrapper {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                .modeWrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
             </style>
-            <select>
-                <option value="month">Letzter Monat</option>
-                <option value="year">Letzes Jahr</option>
-                <option value="all">Alle Daten bis heute</option>
-            </select>
-            <canvas width="${this.#width * pixelRatio}" height="${this.#height * pixelRatio}"></canvas>
+            <div class="card progressWrapper">
+                <h2>Übersicht</h2>
+                <select>
+                    <option value="month">Letzter Monat</option>
+                    <option value="year">Letzes Jahr</option>
+                    <option value="all">Alle Daten bis heute</option>
+                </select>
+                <div class="modeWrapper">
+                    <p>Gewicht</p>
+                    <button class="button outlined">Modus wechseln</button>
+                </div>
+                <canvas width="${this.#width * pixelRatio}" height="${this.#height * pixelRatio}"></canvas>
+            </div>
         `;
 
         this.shadowRoot
             ?.querySelector('select')
             ?.addEventListener('change', this.handleTimePeriodChange);
+
+        this.shadowRoot
+            ?.querySelector('button')
+            ?.addEventListener('click', this.toggleMode);
 
         const canvas = this.shadowRoot?.querySelector('canvas');
 
@@ -130,6 +154,19 @@ export class ProgressChart extends HTMLElement {
         this.#render();
     }
 
+    toggleMode() {
+        this.#isVolumeMode = !this.#isVolumeMode;
+
+        const modeElement = this.shadowRoot?.querySelector('p');
+
+        if (!modeElement) {
+            return;
+        }
+
+        modeElement.textContent = this.#isVolumeMode ? 'Volumen (Gewicht x Reps)' : 'Gewicht';
+        this.#render();
+    }
+
     #render() {
         this.#filteredExerciseHistory = this.#exerciseHistory
             .filter((entry) => {
@@ -142,6 +179,10 @@ export class ProgressChart extends HTMLElement {
             .map((datapoint) => datapoint.Reps * datapoint.Weight)
             .sort((a, b) => a - b)
             .pop() ?? 0;
+
+        this.#highestWeight = this.#exerciseHistory
+            .toSorted((a, b) => a.Weight - b.Weight)
+            .pop()?.Weight ?? 0;
 
         if (this.#canvas === null) {
             return;
@@ -231,8 +272,13 @@ export class ProgressChart extends HTMLElement {
         this.#context.lineTo(endX, this.#offsetY);
         this.#context.stroke();
 
-        this.#context.fillText(String(Math.floor(this.#highestVolume / 2)), 0, middleY + 3);
-        this.#context.fillText(String(this.#highestVolume), 0, this.#offsetY + 3);
+        if (this.#isVolumeMode) {
+            this.#context.fillText(String(Math.floor(this.#highestVolume / 2)), 0, middleY + 3);
+            this.#context.fillText(String(this.#highestVolume), 0, this.#offsetY + 3);
+        } else {
+            this.#context.fillText(String(Math.floor(this.#highestWeight / 2)), 0, middleY + 3);
+            this.#context.fillText(String(this.#highestWeight), 0, this.#offsetY + 3);
+        }
 
         this.#context.fillText(formatDate(this.#timePeriod.startDate), 0, startY + 12);
         this.#context.fillText(formatDate(this.#timePeriod.endDate), endX - 25, startY + 12);
@@ -285,7 +331,12 @@ export class ProgressChart extends HTMLElement {
         const yTimeDifference = datapoint.Date.getTime() - startTime;
         const x = this.#chartWidth / totalTime * yTimeDifference + this.#offestX;
 
-        const y = this.#chartHeight - this.#chartHeight / this.#highestVolume * datapoint.Reps * datapoint.Weight + this.#offsetY;
+        let y;
+        if (this.#isVolumeMode) {
+            y = this.#chartHeight - this.#chartHeight / this.#highestVolume * datapoint.Reps * datapoint.Weight + this.#offsetY;
+        } else {
+            y = this.#chartHeight - this.#chartHeight / this.#highestWeight * datapoint.Weight + this.#offsetY;
+        }
 
         return { x, y };
     }

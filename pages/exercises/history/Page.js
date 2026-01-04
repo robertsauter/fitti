@@ -30,18 +30,10 @@ export class ExerciseHistoryPage extends HTMLElement {
                     flex-direction: column;
                     gap: 0.5rem;
                 }
-                .progressWrapper {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
             </style>
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}"></div>
                 <p></p>
-                <div class="card progressWrapper">
-                    <h2>Übersicht</h2>
-                </div>
                 <ul></ul>
             </div>
         `;
@@ -60,8 +52,8 @@ export class ExerciseHistoryPage extends HTMLElement {
             requestAnimationFrame(() => {
                 if (this.#exerciseId !== null) {
                     this.shadowRoot
-                        ?.querySelector('.progressWrapper')
-                        ?.appendChild(new ProgressChart(this.#exerciseId));
+                        ?.querySelector('p')
+                        ?.after(new ProgressChart(this.#exerciseId));
                 }
             });
         });
