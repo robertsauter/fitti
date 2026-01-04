@@ -21,6 +21,7 @@ const ASSETS = [
     '/models/ExerciseResponse.js',
     '/models/Observer.js',
     '/models/Route.js',
+    '/models/TimePeriod.js',
     '/models/TrainingData.js',
     '/models/Workout.js',
     '/models/Updater.js',

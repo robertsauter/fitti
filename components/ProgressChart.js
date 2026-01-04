@@ -1,52 +1,46 @@
-import { formatDate } from "/lib/DateHelpers.js";
+import { formatDate, isSameDay } from '/lib/DateHelpers.js';
+import '/models/TimePeriod.js';
+import { exercisesService } from '/services/ExercisesService.js';
+import '/models/Exercise.js';
 
 export class ProgressChart extends HTMLElement {
-    #highestVolume;
+    #exerciseId;
+    /** @type {TimePeriod} */
+    #timePeriod;
+    #highestVolume = 0;
     #width = 0;
     #height = 0;
     #chartWidth = 0;
     #chartHeight = 0;
     #offestX = 0;
     #offsetY = 0;
-    #config = {
-        startDate: new Date(2025, 10, 28),
-        endDate: new Date(2025, 11, 28),
-        data: [
-            {
-                Date: new Date(2025, 10, 28),
-                Weight: 80,
-                Reps: 5,
-            },
-            {
-                Date: new Date(2025, 11, 10),
-                Weight: 120,
-                Reps: 5,
-            },
-            {
-                Date: new Date(2025, 11, 15),
-                Weight: 100,
-                Reps: 5,
-            },
-            {
-                Date: new Date(2025, 11, 28),
-                Weight: 200,
-                Reps: 5,
-            },
-        ],
-    };
+    /** @type {ExerciseHistoryEntry[]} */
+    #filteredExerciseHistory = [];
+    /** @type {ExerciseHistoryEntry[]} */
+    #exerciseHistory = [];
     /** @type {CanvasRenderingContext2D | null} */
     #context = null;
+    /** @type {HTMLCanvasElement | null} */
+    #canvas = null;
 
-    constructor() {
+    /** @param {number} exerciseId */
+    constructor(exerciseId) {
         super();
 
-        this.#highestVolume = this.#config.data
-            .map((datapoint) => datapoint.Reps * datapoint.Weight)
-            .sort((a, b) => a - b)
-            .pop() ?? 0;
+        this.handleTimePeriodChange = this.handleTimePeriodChange.bind(this);
+
+        this.#exerciseId = exerciseId;
+        this.#changeTimePeriod('month');
     }
 
-    connectedCallback() {
+    async connectedCallback() {
+        this.#exerciseHistory = (await exercisesService.getExerciseHistory(this.#exerciseId)).History
+            .filter((historyEntry, _index, entries) => !entries.some((entry) => {
+                const hasHigherVolume = entry.Reps * entry.Weight > historyEntry.Reps * historyEntry.Weight;
+
+                return hasHigherVolume && isSameDay(entry.Date, historyEntry.Date);
+            }));
+
         const parent = this.parentElement;
 
         if (parent === null) {
@@ -64,10 +58,22 @@ export class ProgressChart extends HTMLElement {
 
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
-                @import url('/globals.css');
+                @import url(/globals.css);
+                select {
+                    width: 100%;
+                }
             </style>
+            <select>
+                <option value="month">Letzter Monat</option>
+                <option value="year">Letzes Jahr</option>
+                <option value="all">Alle Daten bis heute</option>
+            </select>
             <canvas width="${this.#width}" height="${this.#height}"></canvas>
         `;
+
+        this.shadowRoot
+            ?.querySelector('select')
+            ?.addEventListener('change', this.handleTimePeriodChange);
 
         const canvas = this.shadowRoot?.querySelector('canvas');
 
@@ -75,6 +81,7 @@ export class ProgressChart extends HTMLElement {
             return;
         }
 
+        this.#canvas = canvas;
         this.#context = canvas.getContext('2d');
 
         if (this.#context === null) {
@@ -83,9 +90,93 @@ export class ProgressChart extends HTMLElement {
 
         this.#context.font = '10px Nunito, Arial, Helvetica, sans-serif';
 
+        this.#render();
+    }
+
+    /** @param {Event} event  */
+    handleTimePeriodChange(event) {
+        const target = event.target;
+
+        if (!(target instanceof HTMLSelectElement)) {
+            return;
+        }
+
+        this.#changeTimePeriod(target.value);
+        this.#render();
+    }
+
+    #render() {
+        this.#filteredExerciseHistory = this.#exerciseHistory
+            .filter((entry) => {
+                const time = entry.Date.getTime();
+
+                const isin = time > this.#timePeriod.startDate.getTime() && time < this.#timePeriod.endDate.getTime();
+                console.log(entry.Date, this.#timePeriod, isin)
+                return isin
+            });
+
+        this.#highestVolume = this.#exerciseHistory
+            .map((datapoint) => datapoint.Reps * datapoint.Weight)
+            .sort((a, b) => a - b)
+            .pop() ?? 0;
+
+        if (this.#canvas === null) {
+            return;
+        }
+
+        this.#context?.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
         this.#createXAxis();
         this.#createYAxis();
         this.#createLines();
+    }
+
+    /** @param {string} timePeriod  */
+    #changeTimePeriod(timePeriod) {
+        const now = new Date();
+        const endDate = new Date();
+        endDate.setHours(23);
+        endDate.setMinutes(59);
+        endDate.setSeconds(59);
+        let startDate;
+
+        switch (timePeriod) {
+            case 'year':
+                startDate = new Date();
+                startDate.setFullYear(now.getFullYear() - 1);
+                startDate.setHours(0);
+                startDate.setMinutes(0);
+                startDate.setSeconds(1);
+
+                this.#timePeriod = {
+                    startDate,
+                    endDate,
+                };
+
+                break;
+            case 'all':
+                startDate = new Date(this.#exerciseHistory[0].Date);
+                startDate.setHours(0);
+                startDate.setMinutes(0);
+                startDate.setSeconds(1);
+
+                this.#timePeriod = {
+                    startDate,
+                    endDate,
+                };
+
+                break;
+            default:
+                startDate = new Date();
+                startDate.setMonth(now.getMonth() - 1);
+                startDate.setHours(0);
+                startDate.setMinutes(0);
+                startDate.setSeconds(1);
+
+                this.#timePeriod = {
+                    startDate,
+                    endDate,
+                };
+        }
     }
 
     #createXAxis() {
@@ -119,8 +210,8 @@ export class ProgressChart extends HTMLElement {
         this.#context.fillText(String(Math.floor(this.#highestVolume / 2)), 0, middleY + 3);
         this.#context.fillText(String(this.#highestVolume), 0, this.#offsetY + 3);
 
-        this.#context.fillText(formatDate(this.#config.startDate), 0, startY + 12);
-        this.#context.fillText(formatDate(this.#config.endDate), endX - 25, startY + 12);
+        this.#context.fillText(formatDate(this.#timePeriod.startDate), 0, startY + 12);
+        this.#context.fillText(formatDate(this.#timePeriod.endDate), endX - 25, startY + 12);
     }
 
     #createYAxis() {
@@ -149,7 +240,7 @@ export class ProgressChart extends HTMLElement {
         this.#context.beginPath();
 
         // TODO: Add dots and use moveTo for first coordinate
-        this.#config.data.forEach((datapoint) => {
+        this.#filteredExerciseHistory.forEach((datapoint) => {
             const { x, y } = this.#getDatapointCoordinates(datapoint);
             this.#context?.lineTo(x, y);
         });
@@ -157,9 +248,10 @@ export class ProgressChart extends HTMLElement {
         this.#context.stroke();
     }
 
+    /** @param {ExerciseHistoryEntry} datapoint  */
     #getDatapointCoordinates(datapoint) {
-        const startTime = this.#config.startDate.getTime();
-        const totalTime = this.#config.endDate.getTime() - startTime;
+        const startTime = this.#timePeriod.startDate.getTime();
+        const totalTime = this.#timePeriod.endDate.getTime() - startTime;
         const yTimeDifference = datapoint.Date.getTime() - startTime;
         const x = this.#chartWidth / totalTime * yTimeDifference + this.#offestX;
 
