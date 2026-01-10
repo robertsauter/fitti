@@ -62,31 +62,10 @@ export class ProgressChart extends HTMLElement {
                 }
             });
 
-        const parent = this.parentElement;
-
-        if (parent === null) {
-            return;
-        }
-
-        const parentStyles = getComputedStyle(parent);
-
-        this.#width = parent.clientWidth - parseFloat(parentStyles.paddingLeft) - parseFloat(parentStyles.paddingRight);
-        this.#height = this.#width / 3 * 2;
-        this.#chartWidth = this.#width / 100 * 80;
-        this.#chartHeight = this.#height / 100 * 80;
-        this.#offestX = this.#width / 100 * 10;
-        this.#offsetY = this.#height / 100 * 10;
-
-        const pixelRatio = window.devicePixelRatio;
-
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
             select {
                 width: 100%;
-            }
-            canvas {
-                width: ${this.#width}px;
-                height: ${this.#height}px
             }
             .progressWrapper {
                 display: flex;
@@ -115,23 +94,33 @@ export class ProgressChart extends HTMLElement {
                     <p>Gewicht</p>
                     <button class="button outlined">Modus wechseln</button>
                 </div>
-                <canvas width="${this.#width * pixelRatio}" height="${this.#height * pixelRatio}"></canvas>
             </div>
         `;
 
-        this.shadowRoot
-            ?.querySelector('select')
-            ?.addEventListener('change', this.handleTimePeriodChange);
+        const progressWrapper = shadow.querySelector('.progressWrapper');
 
-        this.shadowRoot
-            ?.querySelector('button')
-            ?.addEventListener('click', this.toggleMode);
-
-        const canvas = this.shadowRoot?.querySelector('canvas');
-
-        if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
+        if (progressWrapper === null) {
             return;
         }
+
+        const wrapperStyles = getComputedStyle(progressWrapper);
+
+        this.#width = progressWrapper.clientWidth - parseFloat(wrapperStyles.paddingLeft) - parseFloat(wrapperStyles.paddingRight);
+        this.#height = this.#width / 3 * 2;
+        this.#chartWidth = this.#width / 100 * 80;
+        this.#chartHeight = this.#height / 100 * 80;
+        this.#offestX = this.#width / 100 * 10;
+        this.#offsetY = this.#height / 100 * 10;
+
+        const pixelRatio = window.devicePixelRatio;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = this.#width * pixelRatio;
+        canvas.height = this.#height * pixelRatio;
+        canvas.style.width = `${this.#width}px`;
+        canvas.style.height = `${this.#height}px`;
+
+        progressWrapper.appendChild(canvas);
 
         this.#canvas = canvas;
         this.#context = canvas.getContext('2d');
@@ -143,6 +132,14 @@ export class ProgressChart extends HTMLElement {
         }
 
         this.#context.font = '10px Nunito, Arial, Helvetica, sans-serif';
+
+        shadow
+            .querySelector('select')
+            ?.addEventListener('change', this.handleTimePeriodChange);
+
+        shadow
+            .querySelector('button')
+            ?.addEventListener('click', this.toggleMode);
 
         this.#render();
     }

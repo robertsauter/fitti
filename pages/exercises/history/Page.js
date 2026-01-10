@@ -52,16 +52,12 @@ export class ExerciseHistoryPage extends HTMLElement {
             this.#createExerciseHistory();
         }
 
-        // TODO: Don't use hack anymore. Maybe adoptedStylesheet is better than dynamic css import!!!
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                if (this.#exerciseId !== null) {
-                    this.shadowRoot
-                        ?.querySelector('p')
-                        ?.after(new ProgressChart(this.#exerciseId));
-                }
-            });
-        });
+
+        if (this.#exerciseId !== null) {
+            this.shadowRoot
+                ?.querySelector('p')
+                ?.after(new ProgressChart(this.#exerciseId));
+        }
     }
 
     async #createExerciseHistory() {
