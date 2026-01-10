@@ -68,6 +68,7 @@ input {
     border-color: var(--primary);
     padding: 0.5rem;
     border-style: solid;
+    font-family: Nunito, Arial, Helvetica, sans-serif;
 }
 
 select {
@@ -77,6 +78,7 @@ select {
     padding: 0.5rem;
     border-style: solid;
     background-color: white;
+    font-family: Nunito, Arial, Helvetica, sans-serif;
 }
 
 textarea {
@@ -86,6 +88,7 @@ textarea {
     padding: 0.5rem;
     border-style: solid;
     min-height: 5rem;
+    font-family: Nunito, Arial, Helvetica, sans-serif;
 }
 
 dialog {
@@ -149,6 +152,7 @@ dialog::backdrop {
     border-width: 0;
     color: white;
     background-color: var(--primary);
+    font-family: Nunito, Arial, Helvetica, sans-serif;
 }
 
 .button.icon {
