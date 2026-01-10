@@ -9,6 +9,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 import { DeleteWorkoutButton } from '/pages/workouts/components/DeleteWorkoutButton.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class WorkoutsEditPage extends HTMLElement {
     #ids = {
@@ -31,20 +32,24 @@ export class WorkoutsEditPage extends HTMLElement {
 
         this.saveWorkout = this.saveWorkout.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            ul {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="pageContainer">
                 <div class="${globalClassNames.headerContainer}">
                     <div class="${globalClassNames.titleWrapper}">

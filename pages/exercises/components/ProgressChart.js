@@ -2,6 +2,7 @@ import { formatDate, isSameDay } from '/lib/DateHelpers.js';
 import '/models/TimePeriod.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class ProgressChart extends HTMLElement {
     #exerciseId;
@@ -78,27 +79,31 @@ export class ProgressChart extends HTMLElement {
 
         const pixelRatio = window.devicePixelRatio;
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url(/globals.css);
-                select {
-                    width: 100%;
-                }
-                canvas {
-                    width: ${this.#width}px;
-                    height: ${this.#height}px
-                }
-                .progressWrapper {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                .modeWrapper {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            select {
+                width: 100%;
+            }
+            canvas {
+                width: ${this.#width}px;
+                height: ${this.#height}px
+            }
+            .progressWrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .modeWrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="card progressWrapper">
                 <h2>Übersicht</h2>
                 <select>

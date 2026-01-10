@@ -33,9 +33,6 @@ export class ExerciseSelect extends HTMLElement {
         const exerciseSelectName = `${this.#inputNames.exercise}${this.#exerciseIndex}`;
 
         this.innerHTML = `
-            <style>
-                @import url('/globals.css');
-            </style>
             <div class="${globalClassNames.inputWrapper}">
                 <label for="${exerciseSelectName}">Übung</label>
                 <select id="${exerciseSelectName}" name="${exerciseSelectName}" required></select>

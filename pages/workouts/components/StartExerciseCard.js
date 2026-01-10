@@ -39,7 +39,6 @@ export class StartExerciseCard extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <style>
-                @import url('/globals.css');
                 .buttonsWrapper {
                     display: flex;
                     gap: 0.5rem;

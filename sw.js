@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v28';
+const CACHE_VERSION = 'v29';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -15,6 +15,7 @@ const ASSETS = [
     '/lib/IndexedDBManager.js',
     '/lib/Observable.js',
     '/lib/PromiseIndexedDB.js',
+    '/lib/StyleSheetManager.js',
     '/lib/TrainingDataParser.js',
     '/models/Exercise.js',
     '/models/ExerciseResponse.js',
@@ -40,7 +41,6 @@ const ASSETS = [
     '/pages/workouts/edit/Page.js',
     '/pages/workouts/history/Page.js',
     '/pages/workouts/start/Page.js',
-    '/pages/workouts/start/Page.css',
     '/pages/workouts/Page.js',
     '/services/ExercisesService.js',
     '/services/WorkoutsService.js',
@@ -48,7 +48,6 @@ const ASSETS = [
     '/App.js',
     '/Constants.js',
     '/favicon.ico',
-    '/globals.css',
     '/index.html',
     '/Nunito-VariableFont_wght.ttf',
     '/Routes.js',

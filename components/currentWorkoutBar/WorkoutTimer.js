@@ -1,5 +1,6 @@
 import { globalClassNames } from '/Constants.js';
 import { getTimeDifferenceFromNow } from '/lib/DateHelpers.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 
 export class WorkoutTimer extends HTMLElement {
@@ -9,9 +10,11 @@ export class WorkoutTimer extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet];
+
+        shadow.innerHTML = `
             <style>
-                @import url('/globals.css');
                 .timerTitle {
                     font-weight: bold;
                 }

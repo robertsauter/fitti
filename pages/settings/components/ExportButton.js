@@ -1,5 +1,6 @@
 import { Icon } from '/components/Icon.js';
 import { iconNames } from '/Constants.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 
@@ -10,13 +11,17 @@ export class ExportButton extends HTMLElement {
 
         this.exportData = this.exportData.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                button {
-                    width: 100%;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            button {
+                width: 100%;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <button class="button outlined textAndIcon">
                 Daten herunterladen
                 <fit-icon name="${iconNames.downloadFilled}"></fit-icon>

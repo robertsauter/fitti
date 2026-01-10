@@ -3,6 +3,7 @@ import { appRouter, appRouterIds } from '/Routes.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
 import { Icon } from '/components/Icon.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class NavTabs extends HTMLElement {
 
@@ -11,56 +12,60 @@ export class NavTabs extends HTMLElement {
 
         this.updateTabs = this.updateTabs.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .navbarContainer {
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    background-color: var(--pink);
-                    border-top-left-radius: 1rem;
-                    border-top-right-radius: 1rem;
-                    margin-top: 0.5rem;
-                }
-                .tabsWrapper {
-                    padding: 1rem;
-                    display: grid;
-                    grid-template-columns: 1fr 1fr 1fr;
-                    gap: 0.25rem;
-                }
-                fit-app-router-link::part(link) {
-                    display: flex;
-                    align-items: center;
-                    font-weight: bold;
-                    gap: 0.5rem;
-                    font-size: 1.125rem;
-                    background-color: white;
-                    padding: 1rem;
-                    justify-content: center;
-                    color: inherit;
-                }
-                .tab.active fit-app-router-link::part(link) {
-                    background-color: var(--primary);
-                    color: white;
-                }
-                .tab.middle fit-app-router-link::part(link) {
-                    border-radius: 0.25rem;
-                }
-                .tab.left fit-app-router-link::part(link) {
-                    border-top-left-radius: 2rem;
-                    border-bottom-left-radius: 2rem;
-                    border-top-right-radius: 0.25rem;
-                    border-bottom-right-radius: 0.25rem;
-                }
-                .tab.right fit-app-router-link::part(link) {
-                    border-top-right-radius: 2rem;
-                    border-bottom-right-radius: 2rem;
-                    border-top-left-radius: 0.25rem;
-                    border-bottom-left-radius: 0.25rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .navbarContainer {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: var(--pink);
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                margin-top: 0.5rem;
+            }
+            .tabsWrapper {
+                padding: 1rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 0.25rem;
+            }
+            fit-app-router-link::part(link) {
+                display: flex;
+                align-items: center;
+                font-weight: bold;
+                gap: 0.5rem;
+                font-size: 1.125rem;
+                background-color: white;
+                padding: 1rem;
+                justify-content: center;
+                color: inherit;
+            }
+            .tab.active fit-app-router-link::part(link) {
+                background-color: var(--primary);
+                color: white;
+            }
+            .tab.middle fit-app-router-link::part(link) {
+                border-radius: 0.25rem;
+            }
+            .tab.left fit-app-router-link::part(link) {
+                border-top-left-radius: 2rem;
+                border-bottom-left-radius: 2rem;
+                border-top-right-radius: 0.25rem;
+                border-bottom-right-radius: 0.25rem;
+            }
+            .tab.right fit-app-router-link::part(link) {
+                border-top-right-radius: 2rem;
+                border-bottom-right-radius: 2rem;
+                border-top-left-radius: 0.25rem;
+                border-bottom-left-radius: 0.25rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="navbarContainer">
                 <div class="tabsWrapper">
                     <div class="tab left">

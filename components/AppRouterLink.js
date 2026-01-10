@@ -1,4 +1,5 @@
 import { buttonSizeClassNames, buttonVariantClassNames } from '/Constants.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import '/models/Route.js';
 import { appRouter } from '/Routes.js';
 
@@ -18,6 +19,18 @@ export class AppRouterLink extends HTMLElement {
 
         this.navigate = this.navigate.bind(this);
 
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            a {
+                display: block;
+                text-align: center;
+                text-decoration: none;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
         const finalRouteId = routeId ?? this.getAttribute('route');
 
         if (finalRouteId === null) {
@@ -26,15 +39,7 @@ export class AppRouterLink extends HTMLElement {
 
         this.#routeId = finalRouteId;
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                a {
-                    display: block;
-                    text-align: center;
-                    text-decoration: none;
-                }
-            </style>
+        shadow.innerHTML = `
             <a part="link" class="button">${innerHTML ?? this.innerHTML}</a>
         `;
 

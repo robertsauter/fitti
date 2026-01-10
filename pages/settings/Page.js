@@ -1,5 +1,6 @@
 import { Icon } from '/components/Icon.js';
 import { globalClassNames, iconNames } from '/Constants.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { ExportButton } from '/pages/settings/components/ExportButton.js';
 import { ImportButton } from '/pages/settings/components/ImportButton.js';
 
@@ -8,15 +9,19 @@ export class SettingsPage extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .card {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}">
                     <div class="${globalClassNames.emojiCircle}">

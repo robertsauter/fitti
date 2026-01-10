@@ -3,14 +3,17 @@ import { appRouterIds } from '/Routes.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { SetTimer } from '/components/currentWorkoutBar/SetTimer.js';
 import { WorkoutTimer } from '/components/currentWorkoutBar/WorkoutTimer.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class CurrentWorkoutBar extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet];
+
+        shadow.innerHTML = `
             <style>
-                @import url('/globals.css');
                 .timer {
                     background-color: var(--background-secondary);
                     border-radius: 0 0 1rem 1rem;

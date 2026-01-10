@@ -5,6 +5,7 @@ import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
 import { indexedDBManager } from '/lib/IndexedDBManager.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { CurrentWorkoutBar } from '/components/currentWorkoutBar/CurrentWorkoutBar.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class App extends HTMLElement {
     constructor() {
@@ -12,13 +13,21 @@ export class App extends HTMLElement {
 
         this.toggleCurrentWorkoutBar = this.toggleCurrentWorkoutBar.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                #routerOutlet.currentWorkoutBarShown {
-                    padding-top: 4rem;
-                }
-            </style>
+        styleSheetManager.initialize();
+
+        document.adoptedStyleSheets = [styleSheetManager.sheet];
+
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            #routerOutlet.currentWorkoutBarShown {
+                padding-top: 4rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="appContainer">
                 <div id="routerOutlet"></div>
             </div> 
@@ -27,7 +36,7 @@ export class App extends HTMLElement {
 
     async connectedCallback() {
         this.requestPersistentStorage();
-        this.registerServiceWorker();
+        //this.registerServiceWorker();
 
         try {
             window.screen.orientation

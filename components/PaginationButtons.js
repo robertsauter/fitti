@@ -2,6 +2,7 @@ import { AppRouterLink } from '/components/AppRouterLink.js';
 import { buttonSizeClassNames, iconNames } from '/Constants.js';
 import '/models/Pagination.js';
 import { Icon } from '/components/Icon.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class PaginationButtons extends HTMLElement {
     #pageId;
@@ -14,14 +15,18 @@ export class PaginationButtons extends HTMLElement {
     constructor(pageId, pagination) {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .paginationContainer {
-                    display: flex;
-                    justify-content: space-between;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .paginationContainer {
+                display: flex;
+                justify-content: space-between;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="paginationContainer">
                 <div class="backButtonContainer"></div>
                 <div class="forwardButtonContainer"></div>

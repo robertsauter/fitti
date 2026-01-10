@@ -5,6 +5,7 @@ import { buttonSizeClassNames, buttonVariantClassNames, globalClassNames, iconNa
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
 import { Icon } from '/components/Icon.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
@@ -15,25 +16,29 @@ export class WorkoutsPage extends HTMLElement {
 	constructor() {
 		super();
 
-		this.attachShadow({ mode: 'open' }).innerHTML = `
-			<style>
-				@import url('/globals.css');
-				ul {
-					display: flex;
-					flex-direction: column;
-					gap: 1rem;
-				}
-				.card {
-					display: flex;
-					flex-direction: column;
-					gap: 0.5rem;
-				}
-				.buttonsWrapper {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-			</style>
+		const componentStyleSheet = new CSSStyleSheet();
+		componentStyleSheet.replaceSync(`
+			ul {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+			}
+			.card {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+			.buttonsWrapper {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+        `);
+
+		const shadow = this.attachShadow({ mode: 'open' });
+		shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+		shadow.innerHTML = `
 			<div class="${globalClassNames.pageContainer}">
 				<div class="${globalClassNames.headerContainer}">
 					<div class="${globalClassNames.titleWrapper}">

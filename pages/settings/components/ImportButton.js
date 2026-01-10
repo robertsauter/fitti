@@ -1,6 +1,7 @@
 import { Icon } from '/components/Icon.js';
 import { iconNames, objectStoreNames } from '/Constants.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { trainingDataParser } from '/lib/TrainingDataParser.js';
 
 export class ImportButton extends HTMLElement {
@@ -14,36 +15,40 @@ export class ImportButton extends HTMLElement {
         this.importData = this.importData.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                label {
-                    font-weight: normal;
-                    margin: 0;
-                }
-                .dialogWrapper {
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                }
-                dialog p {
-                    word-break: break-word;
-                }
-                .dialogHeader {
-                    padding-bottom: 1rem;
-                }
-                .dialogContent {
-                    flex-grow: 1;
-                    overflow-y: auto;
-                }
-                .dialogFooter {
-                    padding-top: 1rem;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            label {
+                font-weight: normal;
+                margin: 0;
+            }
+            .dialogWrapper {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            dialog p {
+                word-break: break-word;
+            }
+            .dialogHeader {
+                padding-bottom: 1rem;
+            }
+            .dialogContent {
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+            .dialogFooter {
+                padding-top: 1rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <label class="button outlined textAndIcon">
                 Daten hochladen
                 <fit-icon name="${iconNames.uploadFilled}"></fit-icon>

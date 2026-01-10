@@ -3,6 +3,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
 import { buttonSizeClassNames, buttonVariantClassNames, globalClassNames, iconNames } from '/Constants.js';
 import { Icon } from '/components/Icon.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class ExercisesPage extends HTMLElement {
     #ids = {
@@ -13,25 +14,29 @@ export class ExercisesPage extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .card {
-                   display: flex;
-                   flex-direction: column;
-                   gap: 0.5rem; 
-                }
-                .buttonsWrapper {
-                    display: flex;
-                    gap: 0.5rem;
-                    align-items: center;
-                }
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem; 
+            }
+            .buttonsWrapper {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+            }
+            ul {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.headerContainer}">
                     <div class="${globalClassNames.titleWrapper}">

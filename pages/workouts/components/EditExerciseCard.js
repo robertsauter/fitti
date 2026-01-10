@@ -53,7 +53,6 @@ export class EditExerciseCard extends HTMLElement {
     async connectedCallback() {
         this.innerHTML = `
             <style>
-                @import url('/globals.css');
                 .card {
                    display: flex;
                    flex-direction: column;

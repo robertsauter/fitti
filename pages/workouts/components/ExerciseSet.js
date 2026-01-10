@@ -42,9 +42,6 @@ export class ExerciseSet extends HTMLElement {
 
     connectedCallback() {
         this.innerHTML = `
-            <style>
-                @import url('/globals.css');
-            </style>
             <li class="setCard">
                 <p>Set ${this.#setIndex + 1}</p>
                 <div class="${globalClassNames.inputWrapper}">

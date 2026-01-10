@@ -3,6 +3,7 @@ import { appRouter, appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
 import { DeleteExerciseButton } from '/pages/exercises/components/DeleteExerciseButton.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class ExercisesEditPage extends HTMLElement {
     #ids = {
@@ -22,15 +23,19 @@ export class ExercisesEditPage extends HTMLElement {
 
         this.saveExercise = this.saveExercise.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                form {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.headerContainer}">
                     <div class="${globalClassNames.titleWrapper}">

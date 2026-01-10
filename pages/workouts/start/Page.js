@@ -8,6 +8,7 @@ import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
 import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class WorkoutsStartPage extends HTMLElement {
     #ids = {
@@ -24,11 +25,45 @@ export class WorkoutsStartPage extends HTMLElement {
         this.moveExerciseDown = this.moveExerciseDown.bind(this);
         this.saveWorkout = this.saveWorkout.bind(this);
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                @import url('/pages/workouts/start/Page.css');
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+              form {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .exercisesList {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .exerciseCard,
+            .buttonsCard,
+            .setCard {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .buttonsWrapper {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .setsList {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}">
                     <div class="${globalClassNames.emojiCircle}">

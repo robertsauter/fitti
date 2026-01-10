@@ -5,6 +5,7 @@ import '/models/Exercise.js';
 import { formatDate } from '/lib/DateHelpers.js';
 import { Icon } from '/components/Icon.js';
 import { ProgressChart } from '/pages/exercises/components/ProgressChart.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class ExerciseHistoryPage extends HTMLElement {
     /** @type {number | null} */
@@ -13,24 +14,28 @@ export class ExerciseHistoryPage extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .setWrapper {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr 2fr;
-                }
-                .dayList {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-                .dayCard {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .setWrapper {
+                display: grid;
+                grid-template-columns: 1fr 1fr 2fr;
+            }
+            .dayList {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .dayCard {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}"></div>
                 <p></p>

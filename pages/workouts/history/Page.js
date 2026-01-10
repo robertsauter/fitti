@@ -7,6 +7,7 @@ import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.j
 import { Icon } from '/components/Icon.js';
 import { appRouter, appRouterIds } from '/Routes.js';
 import { PaginationButtons } from '/components/PaginationButtons.js';
+import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
 export class WorkoutsHistoryPage extends HTMLElement {
     #currentPage = 0;
@@ -14,29 +15,33 @@ export class WorkoutsHistoryPage extends HTMLElement {
     constructor() {
         super();
 
-        this.attachShadow({ mode: 'open' }).innerHTML = `
-            <style>
-                @import url('/globals.css');
-                .workoutsList {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-                .exercisesList {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                .card {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-                .setWrapper {
-                    display: grid;
-                    grid-template-columns: 1fr 1.5fr 1.5fr;
-                }
-            </style>
+        const componentStyleSheet = new CSSStyleSheet();
+        componentStyleSheet.replaceSync(`
+            .workoutsList {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .exercisesList {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .setWrapper {
+                display: grid;
+                grid-template-columns: 1fr 1.5fr 1.5fr;
+            }
+        `);
+
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
+
+        shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
                 <div class="${globalClassNames.titleWrapper}">
                     <div class="${globalClassNames.emojiCircle}">
