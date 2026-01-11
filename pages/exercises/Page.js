@@ -59,7 +59,7 @@ export class ExercisesPage extends HTMLElement {
     }
 
     async #displayUserExercises() {
-        const exercises = await exercisesService.getUserExercises();
+        const exercises = await exercisesService.getUserExercisesSorted();
 
         const exercisesElement = this.shadowRoot?.getElementById(this.#ids.userExercises);
 

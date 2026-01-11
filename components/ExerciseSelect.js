@@ -41,7 +41,7 @@ export class ExerciseSelect extends HTMLElement {
 
         const exerciseSelect = this.querySelector(`#${this.#inputNames.exercise}${this.#exerciseIndex}`);
 
-        const userExercises = await exercisesService.getUserExercises();
+        const userExercises = await exercisesService.getUserExercisesSorted();
 
         if (exerciseSelect instanceof HTMLSelectElement) {
             if (userExercises.length > 0) {

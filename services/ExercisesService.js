@@ -18,6 +18,13 @@ class ExercisesService {
         return promiseIndexedDB.getAll(objectStoreNames.userExercises);
     }
 
+    async getUserExercisesSorted() {
+        /** @type {Exercise[]} */
+        const exercises = await promiseIndexedDB.getAll(objectStoreNames.userExercises);
+        exercises.sort((a, b) => a.Name.localeCompare(b.Name));
+        return exercises;
+    }
+
     /**
      * @param {ExerciseCreateData} exercise 
      */
