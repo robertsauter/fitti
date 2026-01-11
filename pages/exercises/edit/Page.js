@@ -33,7 +33,7 @@ export class ExercisesEditPage extends HTMLElement {
         `);
 
         const shadow = this.attachShadow({ mode: 'open' });
-        shadow.adoptedStyleSheets = [styleSheetManager.sheet];
+        shadow.adoptedStyleSheets = [styleSheetManager.sheet, componentStyleSheet];
 
         shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">

@@ -39,7 +39,7 @@ export class StartExerciseCard extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <style>
-                .buttonsWrapper {
+                .exerciseManageButtonsWrapper {
                     display: flex;
                     gap: 0.5rem;
                     align-items: center;
@@ -79,7 +79,7 @@ export class StartExerciseCard extends HTMLElement {
         }
 
         const buttonsWrapper = document.createElement('div');
-        buttonsWrapper.className = 'buttonsWrapper';
+        buttonsWrapper.className = 'exerciseManageButtonsWrapper';
 
         const upButtonId = `${this.#ids.upButton}${exercise.ID}`;
         const upButton = document.createElement('button');
