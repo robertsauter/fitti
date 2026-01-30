@@ -86,6 +86,29 @@ class ExercisesService {
             .reduce(this.groupHistoryEntriesByDate, [])
             .toSorted((firstGroup, secondGroup) => (compareDate(secondGroup[0].Date, firstGroup[0].Date)));
     }
+
+    /** @param {ExerciseHistoryEntry[]} entries  */
+    filterHistoryByHighestWeight(entries) {
+        return entries
+            .reduce(this.groupHistoryEntriesByDate, [])
+            .map((dayGroup) => {
+                const highestWeightSet = dayGroup
+                    .toSorted((firstSet, secondSet) => secondSet.Weight - firstSet.Weight)
+                    .at(0);
+
+                if (highestWeightSet === undefined) {
+                    return null;
+                }
+
+                const highestWeightGroup = dayGroup
+                    .filter((set) => set.Weight === highestWeightSet.Weight)
+                    .toSorted((firstSet, secondSet) => secondSet.Reps - firstSet.Reps)
+                    .at(0);
+
+                return highestWeightGroup ?? null;
+            })
+            .filter((set) => set !== null);
+    }
 }
 
 export const exercisesService = new ExercisesService();

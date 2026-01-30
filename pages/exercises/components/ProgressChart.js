@@ -44,12 +44,9 @@ export class ProgressChart extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.#exerciseHistory = (await exercisesService.getExerciseHistory(this.#exerciseId)).History
-            .filter((historyEntry, _index, entries) => !entries.some((entry) => {
-                const hasHigherVolume = entry.Reps * entry.Weight > historyEntry.Reps * historyEntry.Weight;
-
-                return hasHigherVolume && isSameDay(entry.Date, historyEntry.Date);
-            }))
+        const history = (await exercisesService.getExerciseHistory(this.#exerciseId)).History;
+        this.#exerciseHistory = exercisesService
+            .filterHistoryByHighestWeight(history)
             .map((historyEntry) => {
                 const date = new Date(historyEntry.Date);
                 date.setHours(0);
