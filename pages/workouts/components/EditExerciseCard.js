@@ -1,6 +1,5 @@
 import '/models/Workout.js';
 import '/models/Exercise.js';
-import '/models/ExerciseResponse.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { ExerciseSelect } from '/components/ExerciseSelect.js';
 import { globalClassNames, iconNames } from '/Constants.js';

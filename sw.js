@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v30';
+const CACHE_VERSION = 'v31';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -18,7 +18,6 @@ const ASSETS = [
     '/lib/StyleSheetManager.js',
     '/lib/TrainingDataParser.js',
     '/models/Exercise.js',
-    '/models/ExerciseResponse.js',
     '/models/Observer.js',
     '/models/Route.js',
     '/models/TimePeriod.js',

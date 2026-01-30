@@ -1,7 +1,6 @@
 import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
-import '/models/ExerciseResponse.js';
 import { ExerciseSet } from '/pages/workouts/components/ExerciseSet.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { customEventNames, globalClassNames, iconNames } from '/Constants.js';

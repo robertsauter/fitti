@@ -1,6 +1,5 @@
 import { exerciseHistoryIndexes, objectStoreNames } from '/Constants.js';
 import { promiseIndexedDB } from '/lib/PromiseIndexedDB.js';
-import '/models/ExerciseResponse.js';
 import '/models/Exercise.js';
 import { compareDate, isSameDay } from '/lib/DateHelpers.js';
 

@@ -1,6 +1,5 @@
 import '/models/Workout.js';
 import '/models/Exercise.js';
-import '/models/ExerciseResponse.js';
 import { EditExerciseCard } from '/pages/workouts/components/EditExerciseCard.js';
 import { workoutsService } from '/services/WorkoutsService.js';
 import { appRouter, appRouterIds } from '/Routes.js';

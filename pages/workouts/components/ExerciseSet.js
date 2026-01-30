@@ -1,6 +1,5 @@
 import '/models/Workout.js';
 import '/models/Exercise.js';
-import '/models/ExerciseResponse.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
 
