@@ -70,17 +70,11 @@ const ROUTES = [
 /** @param {string[]} resources  */
 async function addResourcesToCache(resources) {
     const cache = await caches.open(CACHE_VERSION);
-    await cache.addAll(resources);
+    return cache.addAll(resources);
 }
 
 /** @param {Request} request  */
 async function cacheFirst(request) {
-    const responseFromCache = await caches.match(request);
-
-    if (responseFromCache) {
-        return responseFromCache;
-    }
-
     const url = new URL(request.url);
     const urlParts = url.pathname.split('/');
 
@@ -92,17 +86,22 @@ async function cacheFirst(request) {
 
     if (isRoute) {
         const indexResponse = await caches.match('/index.html');
-
         if (indexResponse) {
             return indexResponse;
         }
+    }
+
+    const responseFromCache = await caches.match(request);
+
+    if (responseFromCache) {
+        return responseFromCache;
     }
 
     const responseFromNetwork = await fetch(request);
     const isInAssets = ASSETS.some((asset) => asset === url.pathname);
 
     if (isInAssets) {
-        putInCache(request, responseFromNetwork.clone());
+        await putInCache(request, responseFromNetwork.clone());
     }
 
     return responseFromNetwork;
@@ -114,18 +113,18 @@ async function cacheFirst(request) {
  */
 async function putInCache(request, response) {
     const cache = await caches.open(CACHE_VERSION);
-    await cache.put(request, response);
+    return cache.put(request, response);
 }
 
 /** @param {string} key  */
 async function deleteCache(key) {
-    await caches.delete(key);
+    return caches.delete(key);
 }
 
 async function deleteOldCaches() {
     const keyList = await caches.keys();
     const cachesToDelete = keyList.filter((key) => key !== CACHE_VERSION);
-    await Promise.all(cachesToDelete.map(deleteCache));
+    return Promise.all(cachesToDelete.map(deleteCache));
 }
 
 self.addEventListener('install', (event) => {
