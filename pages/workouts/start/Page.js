@@ -24,6 +24,7 @@ export class WorkoutsStartPage extends HTMLElement {
         this.moveExerciseUp = this.moveExerciseUp.bind(this);
         this.moveExerciseDown = this.moveExerciseDown.bind(this);
         this.saveWorkout = this.saveWorkout.bind(this);
+        this.removeExerciseSelect = this.removeExerciseSelect.bind(this);
 
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
@@ -32,31 +33,30 @@ export class WorkoutsStartPage extends HTMLElement {
                 flex-direction: column;
                 gap: 1.5rem;
             }
-
             .exercisesList {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
             }
-
             .exerciseCard,
             .buttonsCard,
-            .setCard {
+            .setCard,
+            .setsList {
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
             }
-
             .buttonsWrapper {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 0.5rem;
             }
-
-            .setsList {
+            .exerciseSelectCard {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 gap: 0.5rem;
+                align-items: center;
+                justify-content: space-between;
             }
         `);
 
@@ -179,13 +179,36 @@ export class WorkoutsStartPage extends HTMLElement {
 
         addButton.disabled = true;
 
-        const exerciseSelect = new ExerciseSelect(workoutsStartStore.exercises.length + 1);
+        const selectCard = document.createElement('div');
+        selectCard.className = 'card exerciseSelectCard';
+        selectCard.innerHTML = `
+            <button type="button" class="button error outlined icon">
+                <fit-icon name="${iconNames.deleteFilled}"></fit-icon>
+            </button>
+        `;
 
+        const removeButton = selectCard.querySelector('button');
+
+        if (removeButton === null) {
+            return;
+        }
+
+        removeButton.addEventListener('click', this.removeExerciseSelect);
+
+        const exerciseSelect = new ExerciseSelect(workoutsStartStore.exercises.length + 1);
         exerciseSelect.addEventListener('change', this.addExercise);
+        selectCard.insertBefore(exerciseSelect, removeButton);
+        exerciseSelect.style.flexGrow = '1';
 
         this.shadowRoot
             ?.querySelector('ul')
-            ?.appendChild(exerciseSelect);
+            ?.appendChild(selectCard);
+    }
+
+    removeExerciseSelect() {
+        this.shadowRoot
+            ?.querySelector('.exerciseSelectCard')
+            ?.remove();
     }
 
     /** @param {Event} event  */
@@ -204,7 +227,7 @@ export class WorkoutsStartPage extends HTMLElement {
         select.resetValidation();
 
         const newExercise = workoutsStartStore.addExercise(select.selectedExerciseId);
-        select.remove();
+        this.removeExerciseSelect();
         this.#displayExercise(newExercise);
 
         const addButton = this.shadowRoot?.getElementById(this.#ids.addExerciseButton);
