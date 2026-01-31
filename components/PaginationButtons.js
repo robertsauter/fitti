@@ -38,8 +38,6 @@ export class PaginationButtons extends HTMLElement {
     }
 
     connectedCallback() {
-
-
         if (this.#pagination.currentPage > 0) {
             const container = this.shadowRoot?.querySelector('.backButtonContainer');
             const backButton = new AppRouterLink(this.#pageId, `<fit-icon name="${iconNames.arrowLeft}"></fit-icon>`);

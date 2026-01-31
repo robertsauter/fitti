@@ -108,7 +108,9 @@ export class AppRouterLink extends HTMLElement {
             return;
         }
 
-        appRouter.navigate(this.#routeId, false, this.#params);
+        setTimeout(() => {
+            appRouter.navigate(this.#routeId, false, this.#params);
+        }, 100);
     }
 }
 
