@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v33';
+const CACHE_VERSION = 'v34';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -81,6 +81,10 @@ async function cacheFirst(request) {
 
     const isRoute = ROUTES.some((asset) => {
         const assetParts = asset.split('/');
+
+        if (assetParts.length !== urlParts.length) {
+            return false;
+        }
 
         return assetParts.every((assetPart, i) => assetPart === '?' || assetPart === urlParts[i]);
     });
