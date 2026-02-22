@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.bechtio.fitti.twa",
+      "sha256_cert_fingerprints": [
+        "B4:99:1B:58:A2:CB:55:65:3D:FA:8F:F0:F3:34:49:57:4F:60:33:9C:96:22:EC:83:42:D3:68:7D:78:0A:61:66",
+        "9C:7D:39:E8:03:92:FC:97:90:EA:3D:82:67:CC:14:BF:BA:3D:44:9F:CD:CF:DE:74:78:74:DC:15:20:29:0C:82"
+      ]
+    }
+  }
+]
