@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v34';
+const CACHE_VERSION = 'v35';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -54,20 +54,6 @@ const ASSETS = [
     '/manifest.json',
 ];
 
-const ROUTES = [
-    '/',
-    '/workouts',
-    '/workouts/neu',
-    '/workouts/beendet/?',
-    '/workouts/?/bearbeiten',
-    '/workouts/?/starten',
-    '/uebungen',
-    '/uebungen/neu',
-    '/uebungen/?',
-    '/uebungen/?/fortschritt',
-    '/einstellungen',
-];
-
 /** @param {string[]} resources  */
 async function addResourcesToCache(resources) {
     const cache = await caches.open(CACHE_VERSION);
@@ -77,19 +63,12 @@ async function addResourcesToCache(resources) {
 /** @param {Request} request  */
 async function cacheFirst(request) {
     const url = new URL(request.url);
-    const urlParts = url.pathname.split('/');
 
-    const isRoute = ROUTES.some((asset) => {
-        const assetParts = asset.split('/');
+    if (url.pathname.startsWith('/.well-known/')) {
+        return fetch(request);
+    }
 
-        if (assetParts.length !== urlParts.length) {
-            return false;
-        }
-
-        return assetParts.every((assetPart, i) => assetPart === '?' || assetPart === urlParts[i]);
-    });
-
-    if (isRoute) {
+    if (request.mode === 'navigate') {
         const indexResponse = await caches.match('/index.html');
         if (indexResponse) {
             return indexResponse;
