@@ -71,6 +71,7 @@ export const iconNames = {
     timerFilled: 'timerFilled',
     arrowRight: 'arrowRight',
     arrowLeft: 'arrowLeft',
+    faceInCloudEmoji: 'faceInCloudEmoji',
 };
 Object.freeze(iconNames);
 

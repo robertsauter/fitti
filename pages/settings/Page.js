@@ -3,6 +3,8 @@ import { globalClassNames, iconNames } from '/Constants.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { ExportButton } from '/pages/settings/components/ExportButton.js';
 import { ImportButton } from '/pages/settings/components/ImportButton.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
+import { appRouterIds } from '/Routes.js';
 
 export class SettingsPage extends HTMLElement {
 
@@ -38,6 +40,7 @@ export class SettingsPage extends HTMLElement {
                     <h3>Daten exportieren</h3>
                     <fit-export-button></fit-export-button>
                 </div>
+                <fit-app-router-link route="${appRouterIds.imprint}" variant="outlined">Impressum</fit-app-router-link>
             </div>
         `;
     }

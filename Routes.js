@@ -12,6 +12,7 @@ export const appRouterIds = {
     exercisesEdit: 'exercisesEdit',
     exerciseHistory: 'exerciseHistory',
     settings: 'settings',
+    imprint: 'imprint',
 };
 Object.freeze(appRouterIds);
 
@@ -76,6 +77,12 @@ const routes = [
         path: '/einstellungen',
         component: '<fit-settings-page></fit-settings-page>',
         importPath: '/pages/settings/Page.js',
+    },
+    {
+        id: appRouterIds.imprint,
+        path: '/impressum',
+        component: '<fit-imprint-page></fit-imprint-page>',
+        importPath: '/pages/imprint/Page.js',
     },
 ];
 

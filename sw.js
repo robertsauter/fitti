@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v32';
+const CACHE_VERSION = 'v33';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -30,6 +30,7 @@ const ASSETS = [
     '/pages/exercises/Page.js',
     '/pages/exercises/components/DeleteExerciseButton.js',
     '/pages/exercises/components/ProgressChart.js',
+    '/pages/imprint/Page.js',
     '/pages/settings/components/ExportButton.js',
     '/pages/settings/components/ImportButton.js',
     '/pages/settings/Page.js',
