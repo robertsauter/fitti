@@ -18,8 +18,10 @@ export class ImprintPage extends HTMLElement {
                     <h1>Impressum</h1>
                 </div>
                 <p>Gemacht von Robert Sauter</p>
-                <p>Diese Seite erfasst oder verarbeitet keinerlei Daten!</p>
                 <p>Öffentliches Repository: <a href="https://github.com/robertsauter/fitti" target="_blank">github.com</a></p>
+                <h2>Datenschutzrichtlinie (Privacy policy)</h2>
+                <p>Diese Seite erfasst oder verarbeitet keinerlei Daten.</p>
+                <p>(This website does not track or analyze any of your data.)</p>
             </div>
         `;
     }
