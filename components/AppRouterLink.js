@@ -4,6 +4,8 @@ import '/models/Route.js';
 import { appRouter } from '/Routes.js';
 
 export class AppRouterLink extends HTMLElement {
+    static observedAttributes = ['disabled'];
+
     /** @type {string} */
     #routeId = '';
 
@@ -18,6 +20,7 @@ export class AppRouterLink extends HTMLElement {
         super();
 
         this.navigate = this.navigate.bind(this);
+        this.doNothing = this.doNothing.bind(this);
 
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
@@ -68,6 +71,33 @@ export class AppRouterLink extends HTMLElement {
         this.#setupRoute();
     }
 
+    /** 
+     * @param {string} name
+     * @param {string} _oldValue 
+     * @param {string} newValue   
+     * */
+    attributeChangedCallback(name, _oldValue, newValue) {
+        if (name === 'disabled') {
+            const link = this.shadowRoot?.querySelector('a');
+
+            if (!link) {
+                return;
+            }
+
+            if (newValue === 'disabled') {
+                link.classList.add('disabled');
+                link.removeEventListener('click', this.navigate);
+                link.addEventListener('click', this.doNothing);
+            }
+
+            if (newValue === '') {
+                link.classList.remove('disabled');
+                link.removeEventListener('click', this.doNothing);
+                link.addEventListener('click', this.navigate);
+            }
+        }
+    }
+
     #setupRoute() {
         const foundRoute = appRouter.getRoute(this.#routeId);
 
@@ -111,6 +141,11 @@ export class AppRouterLink extends HTMLElement {
         setTimeout(() => {
             appRouter.navigate(this.#routeId, false, this.#params);
         }, 100);
+    }
+
+    /** @param {Event} event  */
+    doNothing(event) {
+        event.preventDefault();
     }
 }
 

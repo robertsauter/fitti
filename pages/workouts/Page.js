@@ -47,7 +47,7 @@ export class WorkoutsPage extends HTMLElement {
 						</div>
 						<h1>Workouts</h1>
 					</div>
-					<fit-app-router-link route="${appRouterIds.workoutsAdd}" size="${buttonSizeClassNames.icon}">
+					<fit-app-router-link route="${appRouterIds.workoutsAdd}" size="${buttonSizeClassNames.icon}" class="addPageLink">
 						<fit-icon name="${iconNames.add}"></fit-icon>
 					</fit-app-router-link>
 				</div>
@@ -101,6 +101,8 @@ export class WorkoutsPage extends HTMLElement {
 			`);
 			addExerciseButton.setAttribute('size', buttonSizeClassNames.textAndIcon);
 			pageContainer.appendChild(addExerciseButton);
+
+			this.shadowRoot?.querySelector('.addPageLink')?.setAttribute('disabled', 'disabled');;
 
 			return;
 		}
