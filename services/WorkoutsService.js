@@ -91,6 +91,10 @@ class WorkoutsService {
     getWorkoutHistoryPaginated(options, isAscending) {
         return promiseIndexedDB.getPaginated(objectStoreNames.workoutHistory, options, isAscending);
     }
+
+    getWorkoutHistoryEntryCount() {
+        return promiseIndexedDB.count(objectStoreNames.workoutHistory);
+    }
 }
 
 export const workoutsService = new WorkoutsService();

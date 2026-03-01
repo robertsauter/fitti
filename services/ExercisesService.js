@@ -109,6 +109,10 @@ class ExercisesService {
             })
             .filter((set) => set !== null);
     }
+
+    getExercisesCount() {
+        return promiseIndexedDB.count(objectStoreNames.userExercises);
+    }
 }
 
 export const exercisesService = new ExercisesService();

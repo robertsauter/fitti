@@ -67,6 +67,14 @@ export class ExercisesPage extends HTMLElement {
             return;
         }
 
+        if (exercises.length === 0) {
+            const emptyTextElement = document.createElement('p');
+            emptyTextElement.textContent = 'Du hast bisher noch keine Übung erstellt.';
+            exercisesElement.after(emptyTextElement);
+            exercisesElement.remove();
+            return;
+        }
+
         exercises.forEach((exercise) => {
             const exerciseElement = document.createElement('li');
             exerciseElement.id = `${this.#ids.exercise}${exercise.ID}`;

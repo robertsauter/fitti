@@ -6,10 +6,10 @@ import { RandomGenderWorkoutEmoji } from '/components/RandomGenderWorkoutEmoji.j
 import { Icon } from '/components/Icon.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
-		userWorkouts: 'userWorkouts',
 		workout: 'workout',
 	};
 
@@ -51,11 +51,6 @@ export class WorkoutsPage extends HTMLElement {
 						<fit-icon name="${iconNames.add}"></fit-icon>
 					</fit-app-router-link>
 				</div>
-				<fit-app-router-link route="${appRouterIds.workoutsHistory}" variant="${buttonVariantClassNames.outlined}" size="${buttonSizeClassNames.textAndIcon}" data-page="0">
-					Beendete Workouts
-					<fit-icon name="${iconNames.checkmarkCircleFilled}"></fit-icon>
-				</fit-app-router-link>
-				<ul id="${this.#ids.userWorkouts}"></ul>
 			</div>
 		`;
 	}
@@ -64,14 +59,63 @@ export class WorkoutsPage extends HTMLElement {
 		this.#displayUserWorkouts();
 	}
 
-	async #displayUserWorkouts() {
-		const workouts = await workoutsService.getUserWorkouts();
+	/** @param {Element} pageContainer  */
+	async #displayHistoryButton(pageContainer) {
+		const historyEntryCount = await workoutsService.getWorkoutHistoryEntryCount();
 
-		const workoutsElement = this.shadowRoot?.getElementById(this.#ids.userWorkouts);
-
-		if (!workoutsElement) {
+		if (historyEntryCount === 0) {
 			return;
 		}
+
+		const historyButton = new AppRouterLink(appRouterIds.workoutsHistory, `
+			Beendete Workouts
+			<fit-icon name="${iconNames.checkmarkCircleFilled}"></fit-icon>
+		`);
+		historyButton.setAttribute('variant', buttonVariantClassNames.outlined);
+		historyButton.setAttribute('size', buttonSizeClassNames.textAndIcon);
+		historyButton.setAttribute('data-page', '0');
+
+		pageContainer.appendChild(historyButton);
+		return;
+	}
+
+	async #displayUserWorkouts() {
+		const pageContainer = this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`);
+
+		if (!pageContainer) {
+			return;
+		}
+
+		await this.#displayHistoryButton(pageContainer);
+
+		const exercisesCount = await exercisesService.getExercisesCount();
+
+		if (exercisesCount === 0) {
+			const emptyTextElement = document.createElement('p');
+			emptyTextElement.textContent = 'Bevor du ein Workout anlegen kannst, musst du zuerst Übungen erstellen.';
+			pageContainer.appendChild(emptyTextElement);
+
+			const addExerciseButton = new AppRouterLink(appRouterIds.exercisesAdd, `
+				Übung erstellen
+				<fit-icon name="${iconNames.add}"></fit-icon>
+			`);
+			addExerciseButton.setAttribute('size', buttonSizeClassNames.textAndIcon);
+			pageContainer.appendChild(addExerciseButton);
+
+			return;
+		}
+
+		const workouts = await workoutsService.getUserWorkouts();
+
+		if (workouts.length === 0) {
+			const emptyTextElement = document.createElement('p');
+			emptyTextElement.textContent = 'Du hast bisher noch kein Workout erstellt.';
+			pageContainer.appendChild(emptyTextElement);
+
+			return;
+		}
+
+		const workoutsElement = document.createElement('ul');
 
 		workouts.forEach((workout) => {
 			const workoutElement = document.createElement('li');
@@ -112,6 +156,8 @@ export class WorkoutsPage extends HTMLElement {
 
 			workoutsElement.appendChild(workoutElement);
 		});
+
+		pageContainer.appendChild(workoutsElement);
 	}
 }
 
