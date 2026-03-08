@@ -17,6 +17,7 @@ class ExercisesService {
         return promiseIndexedDB.getAll(objectStoreNames.userExercises);
     }
 
+    /* TODO: Do sorting with IndexedDB */
     async getUserExercisesSorted() {
         /** @type {Exercise[]} */
         const exercises = await promiseIndexedDB.getAll(objectStoreNames.userExercises);

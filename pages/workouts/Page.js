@@ -7,6 +7,7 @@ import { Icon } from '/components/Icon.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { exercisesService } from '/services/ExercisesService.js';
+import { AddExerciseLink } from '/components/AddExerciseLink.js';
 
 export class WorkoutsPage extends HTMLElement {
 	#ids = {
@@ -95,14 +96,10 @@ export class WorkoutsPage extends HTMLElement {
 			emptyTextElement.textContent = 'Bevor du ein Workout anlegen kannst, musst du zuerst Übungen erstellen.';
 			pageContainer.appendChild(emptyTextElement);
 
-			const addExerciseButton = new AppRouterLink(appRouterIds.exercisesAdd, `
-				Übung erstellen
-				<fit-icon name="${iconNames.add}"></fit-icon>
-			`);
-			addExerciseButton.setAttribute('size', buttonSizeClassNames.textAndIcon);
-			pageContainer.appendChild(addExerciseButton);
+			const addExerciseLink = new AddExerciseLink();
+			pageContainer.appendChild(addExerciseLink);
 
-			this.shadowRoot?.querySelector('.addPageLink')?.setAttribute('disabled', 'disabled');;
+			this.shadowRoot?.querySelector('.addPageLink')?.setAttribute('disabled', 'disabled');
 
 			return;
 		}

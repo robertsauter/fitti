@@ -6,6 +6,7 @@ import { indexedDBManager } from '/lib/IndexedDBManager.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
 import { CurrentWorkoutBar } from '/components/currentWorkoutBar/CurrentWorkoutBar.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
+import { workoutsService } from '/services/WorkoutsService.js';
 
 export class App extends HTMLElement {
     constructor() {
@@ -49,6 +50,7 @@ export class App extends HTMLElement {
         indexedDBManager.runMigrations();
 
         appRouter.outlet = this;
+        this.#navigateToOnboarding();
 
         const appContainer = this.shadowRoot?.querySelector('.appContainer');
         if (!appContainer) {
@@ -59,6 +61,17 @@ export class App extends HTMLElement {
         appContainer.appendChild(navTabs);
 
         workoutsStartStore.addIsStartedObserver(this.toggleCurrentWorkoutBar);
+    }
+
+    async #navigateToOnboarding() {
+        const [exercisesCount, workoutsCount] = await Promise.all([
+            exercisesService.getExercisesCount(),
+            workoutsService.getWorkoutsCount()
+        ]);
+
+        if (exercisesCount === 0 || workoutsCount === 0) {
+            appRouter.navigate(appRouterIds.welcome);
+        }
     }
 
     async requestPersistentStorage() {

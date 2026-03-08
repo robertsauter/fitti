@@ -13,6 +13,7 @@ export const appRouterIds = {
     exerciseHistory: 'exerciseHistory',
     settings: 'settings',
     imprint: 'imprint',
+    welcome: 'welcome',
 };
 Object.freeze(appRouterIds);
 
@@ -84,6 +85,12 @@ const routes = [
         component: '<fit-imprint-page></fit-imprint-page>',
         importPath: '/pages/imprint/Page.js',
     },
+    {
+        id: appRouterIds.welcome,
+        path: '/willkommen',
+        component: '<fit-welcome-page></fit-welcome-page>',
+        importPath: '/pages/welcome/Page.js',
+    }
 ];
 
 export const appRouter = new ClientRouter(routes);

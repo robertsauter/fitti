@@ -1,9 +1,10 @@
-const CACHE_VERSION = 'v37';
+const CACHE_VERSION = 'v38';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
     '/components/currentWorkoutBar/SetTimer.js',
     '/components/currentWorkoutBar/WorkoutTimer.js',
+    '/components/AddExerciseLink.js',
     '/components/AppRouterLink.js',
     '/components/ExerciseSelect.js',
     '/components/Icon.js',
@@ -34,6 +35,8 @@ const ASSETS = [
     '/pages/settings/components/ExportButton.js',
     '/pages/settings/components/ImportButton.js',
     '/pages/settings/Page.js',
+    '/pages/welcome/Page.js',
+    '/pages/welcome/components/ExercisesList.js',
     '/pages/workouts/components/EditExerciseCard.js',
     '/pages/workouts/components/ExerciseSet.js',
     '/pages/workouts/components/StartExerciseCard.js',

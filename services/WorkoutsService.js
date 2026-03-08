@@ -95,6 +95,10 @@ class WorkoutsService {
     getWorkoutHistoryEntryCount() {
         return promiseIndexedDB.count(objectStoreNames.workoutHistory);
     }
+
+    getWorkoutsCount() {
+        return promiseIndexedDB.count(objectStoreNames.userWorkouts);
+    }
 }
 
 export const workoutsService = new WorkoutsService();

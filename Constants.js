@@ -72,6 +72,7 @@ export const iconNames = {
     arrowRight: 'arrowRight',
     arrowLeft: 'arrowLeft',
     faceInCloudEmoji: 'faceInCloudEmoji',
+    wavingHandEmoji: 'wavingHandEmoji',
 };
 Object.freeze(iconNames);
 
@@ -79,3 +80,8 @@ export const migrationIds = {
     migrateExerciseIdAsNumber: 'migrateExerciseIdAsNumber',
 };
 Object.freeze(migrationIds);
+
+export const errorMessages = {
+    elementNotFound: 'An element could not be found.'
+};
+Object.freeze(errorMessages);
