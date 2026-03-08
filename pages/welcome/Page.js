@@ -1,11 +1,11 @@
 import { buttonSizeClassNames, errorMessages, globalClassNames, iconNames } from '/Constants.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import { Icon } from '/components/Icon.js';
-import { exercisesService } from '/services/ExercisesService.js';
 import { AddExerciseLink } from '/components/AddExerciseLink.js';
 import { ExercisesList } from '/pages/welcome/components/ExercisesList.js';
 import { appRouterIds } from '/Routes.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
+import { exercisesService } from '/services/ExercisesService.js';
 
 export class WelcomePage extends HTMLElement {
     constructor() {
@@ -35,11 +35,17 @@ export class WelcomePage extends HTMLElement {
         this.#displayAddWorkoutsButton();
     }
 
-    #displayAddWorkoutsButton() {
+    async #displayAddWorkoutsButton() {
         const pageContainer = this.shadowRoot?.querySelector(`.${globalClassNames.pageContainer}`);
 
         if (!pageContainer) {
             throw new Error(errorMessages.elementNotFound);
+        }
+
+        const exercisesCount = await exercisesService.getExercisesCount();
+
+        if (exercisesCount === 0) {
+            return;
         }
 
         const addWorkoutButton = new AppRouterLink(appRouterIds.workoutsAdd, `

@@ -4,6 +4,7 @@ import { exercisesService } from '/services/ExercisesService.js';
 import { Icon } from '/components/Icon.js';
 import { DeleteExerciseButton } from '/pages/exercises/components/DeleteExerciseButton.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
+import { workoutsService } from '/services/WorkoutsService.js';
 
 export class ExercisesEditPage extends HTMLElement {
     #ids = {
@@ -147,6 +148,13 @@ export class ExercisesEditPage extends HTMLElement {
                 Name: name,
                 Description: description,
             });
+        }
+
+        const workoutsCount = await workoutsService.getWorkoutsCount();
+
+        if (workoutsCount === 0) {
+            appRouter.navigate(appRouterIds.welcome);
+            return;
         }
 
         appRouter.navigate(appRouterIds.exercises);
