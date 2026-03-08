@@ -1,4 +1,4 @@
-import { iconNames } from '/Constants.js';
+import { errorMessages, iconNames } from '/Constants.js';
 import { appRouter, appRouterIds } from '/Routes.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
 import { Icon } from '/components/Icon.js';
@@ -96,28 +96,38 @@ export class NavTabs extends HTMLElement {
 
             if (activeRoute.path.includes('workouts')) {
                 this.updateTabs('left');
-            } else if (activeRoute.path.includes('uebungen')) {
-                this.updateTabs('middle');
-            } else if (activeRoute.path.includes('einstellungen')) {
-                this.updateTabs('right');
+                return;
             }
+
+            if (activeRoute.path.includes('uebungen')) {
+                this.updateTabs('middle');
+                return;
+            }
+
+            if (activeRoute.path.includes('einstellungen')) {
+                this.updateTabs('right');
+                return;
+            }
+
+            this.updateTabs(null);
         });
     }
 
-    /** @param {string} className  */
+    /** @param {string | null} className  */
     updateTabs(className) {
         const tabs = this.shadowRoot?.querySelectorAll('.tab');
 
         if (tabs === undefined) {
-            return;
+            throw new Error(errorMessages.elementNotFound);
         }
 
         tabs.forEach((tab) => {
-            if (tab.classList.contains(className)) {
+            if (className !== null && tab.classList.contains(className)) {
                 tab.classList.add('active');
-            } else {
-                tab.classList.remove('active');
+                return;
             }
+
+            tab.classList.remove('active');
         });
     }
 }
