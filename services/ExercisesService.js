@@ -25,6 +25,13 @@ class ExercisesService {
         return exercises;
     }
 
+    /** @param {string} [searchQuery]  */
+    async getUserExercisesSortedAndFiltered(searchQuery) {
+        return (await this.getUserExercisesSorted()).filter(
+            (exercise) => exercise.Name.toLowerCase().includes(searchQuery?.toLowerCase() ?? '')
+        );
+    }
+
     /**
      * @param {ExerciseCreateData} exercise 
      */

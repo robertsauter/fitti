@@ -82,6 +82,7 @@ export const migrationIds = {
 Object.freeze(migrationIds);
 
 export const errorMessages = {
-    elementNotFound: 'An element could not be found.'
+    elementNotFound: 'An element could not be found.',
+    unexpectedType: 'Unexpected type',
 };
 Object.freeze(errorMessages);

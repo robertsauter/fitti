@@ -1,7 +1,7 @@
 import { appRouterIds } from '/Routes.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { AppRouterLink } from '/components/AppRouterLink.js';
-import { buttonSizeClassNames, buttonVariantClassNames, globalClassNames, iconNames } from '/Constants.js';
+import { buttonSizeClassNames, buttonVariantClassNames, errorMessages, globalClassNames, iconNames } from '/Constants.js';
 import { Icon } from '/components/Icon.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
 
@@ -13,6 +13,8 @@ export class ExercisesPage extends HTMLElement {
 
     constructor() {
         super();
+
+        this.search = this.search.bind(this);
 
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
@@ -49,6 +51,7 @@ export class ExercisesPage extends HTMLElement {
                         <fit-icon name="${iconNames.add}"></fit-icon>
                     </fit-app-router-link>
                 </div>
+                <input placeholder="Suchen..." />
                 <ul id="${this.#ids.userExercises}"></ul>
             </div>
         `;
@@ -56,16 +59,29 @@ export class ExercisesPage extends HTMLElement {
 
     connectedCallback() {
         this.#displayUserExercises();
+        this.shadowRoot?.querySelector('input')?.addEventListener('input', this.search);
     }
 
-    async #displayUserExercises() {
-        const exercises = await exercisesService.getUserExercisesSorted();
+    /** @param {InputEvent} event  */
+    search(event) {
+        const input = event.target;
+        if (!(input instanceof HTMLInputElement)) {
+            throw new Error(errorMessages.unexpectedType);
+        }
+        this.#displayUserExercises(input.value);
+    }
+
+    /** @param {string} [searchQuery]  */
+    async #displayUserExercises(searchQuery) {
+        const exercises = await exercisesService.getUserExercisesSortedAndFiltered(searchQuery);
 
         const exercisesElement = this.shadowRoot?.getElementById(this.#ids.userExercises);
 
         if (!exercisesElement) {
             return;
         }
+
+        exercisesElement.innerHTML = '';
 
         if (exercises.length === 0) {
             const emptyTextElement = document.createElement('p');
