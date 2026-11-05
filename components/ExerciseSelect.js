@@ -89,7 +89,6 @@ export class ExerciseSelect extends HTMLElement {
         }
 
         this.#selectedExerciseId = Number(select.value);
-        this.dispatchEvent(new Event('change'));
     }
 
     triggerExerciseInUseValidation() {

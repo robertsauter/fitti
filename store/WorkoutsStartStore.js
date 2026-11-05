@@ -81,16 +81,28 @@ class WorkoutsStartStore {
 
     /**
      *  @param {number} exerciseId
-     *  @returns {WorkoutStartExercise}
+     *  @returns {Promise<WorkoutStartExercise>}
      *   */
-    addExercise(exerciseId) {
-        const newExercise = {
+    async addExercise(exerciseId) {
+        const exerciseHistory = await exercisesService.getExerciseHistory(exerciseId);
+
+        /** @type WorkoutStartExercise */
+        let newExercise = {
             id: exerciseId,
             sets: [{
                 reps: null,
                 weight: null
             }],
         };
+
+        if (exerciseHistory) {
+            const exerciseHistoryByDate = exercisesService.sortHistory(exerciseHistory);
+
+            newExercise.sets[0] = {
+                weight: exerciseHistoryByDate[0][0].Weight,
+                reps: exerciseHistoryByDate[0][0].Reps,
+            }
+        }
 
         this.#exercises.push(newExercise);
 

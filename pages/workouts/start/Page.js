@@ -25,6 +25,7 @@ export class WorkoutsStartPage extends HTMLElement {
         this.moveExerciseDown = this.moveExerciseDown.bind(this);
         this.saveWorkout = this.saveWorkout.bind(this);
         this.removeExerciseSelect = this.removeExerciseSelect.bind(this);
+        this.enableAddButton = this.enableAddButton.bind(this);
 
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
@@ -209,10 +210,12 @@ export class WorkoutsStartPage extends HTMLElement {
         this.shadowRoot
             ?.querySelector('.exerciseSelectCard')
             ?.remove();
+
+        this.enableAddButton();
     }
 
     /** @param {Event} event  */
-    addExercise(event) {
+    async addExercise(event) {
         const select = event.currentTarget;
 
         if (!(select instanceof ExerciseSelect) || select.selectedExerciseId === null) {
@@ -226,10 +229,14 @@ export class WorkoutsStartPage extends HTMLElement {
 
         select.resetValidation();
 
-        const newExercise = workoutsStartStore.addExercise(select.selectedExerciseId);
+        const newExercise = await workoutsStartStore.addExercise(select.selectedExerciseId);
         this.removeExerciseSelect();
         this.#displayExercise(newExercise);
 
+        this.enableAddButton();
+    }
+
+    enableAddButton() {
         const addButton = this.shadowRoot?.getElementById(this.#ids.addExerciseButton);
 
         if (!(addButton instanceof HTMLButtonElement)) {
