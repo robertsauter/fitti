@@ -37,6 +37,7 @@ Object.freeze(globalClassNames);
 
 export const buttonVariantClassNames = {
     outlined: 'outlined',
+    text: 'text',
 };
 Object.freeze(buttonVariantClassNames);
 
@@ -54,6 +55,7 @@ export const iconNames = {
     editFilled: 'editFilled',
     playSparkle: 'playSparkle',
     rocket: 'rocket',
+    rocketFilled: 'rocketFilled',
     bicepEmoji: 'bicepEmoji',
     penEmoji: 'penEmoji',
     save: 'save',

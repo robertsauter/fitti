@@ -85,9 +85,9 @@ export class ExercisesPage extends HTMLElement {
 
         if (exercises.length === 0) {
             const emptyTextElement = document.createElement('p');
-            emptyTextElement.textContent = 'Du hast bisher noch keine Übung erstellt.';
-            exercisesElement.after(emptyTextElement);
-            exercisesElement.remove();
+            const isSearchQuery = searchQuery !== undefined && searchQuery !== '';
+            emptyTextElement.textContent = isSearchQuery ? 'Gib einen anderen Suchbegriff ein' : 'Du hast bisher noch keine Übung erstellt.';
+            exercisesElement.appendChild(emptyTextElement);
             return;
         }
 

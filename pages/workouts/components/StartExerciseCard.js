@@ -3,8 +3,9 @@ import { exercisesService } from '/services/ExercisesService.js';
 import '/models/Exercise.js';
 import { ExerciseSet } from '/pages/workouts/components/ExerciseSet.js';
 import { workoutsStartStore } from '/store/WorkoutsStartStore.js';
-import { customEventNames, globalClassNames, iconNames } from '/Constants.js';
-import { Icon } from '/components/Icon.js';
+import { buttonSizeClassNames, buttonVariantClassNames, customEventNames, globalClassNames, iconNames } from '/Constants.js';
+import { AppRouterLink } from '/components/AppRouterLink.js';
+import { appRouterIds } from '/Routes.js';
 
 export class StartExerciseCard extends HTMLElement {
     #ids = {
@@ -45,9 +46,7 @@ export class StartExerciseCard extends HTMLElement {
                 }
             </style>
             <li class="card">
-                <div class="${globalClassNames.headerContainer}">
-                    <h2></h2>
-                </div>
+                <div class="${globalClassNames.headerContainer}"></div>
                 <details>
                     <summary>Sets</summary>
                     <div class="exerciseCard"></div>
@@ -66,16 +65,20 @@ export class StartExerciseCard extends HTMLElement {
             return;
         }
 
-        const header = this.querySelector('h2');
-        if (header !== null) {
-            header.textContent = exercise.Name;
-        }
-
         const headerContainer = this.querySelector(`.${globalClassNames.headerContainer}`);
 
         if (headerContainer === null) {
             return;
         }
+
+        const header = document.createElement('h2');
+        header.textContent = exercise.Name;
+
+        const progressLink = new AppRouterLink(appRouterIds.exerciseHistory);
+        progressLink.addContent(header);
+        progressLink.setAttribute('data-id', String(exercise.ID));
+        progressLink.setAttribute('variant', buttonVariantClassNames.text);
+        headerContainer.appendChild(progressLink);
 
         const buttonsWrapper = document.createElement('div');
         buttonsWrapper.className = 'exerciseManageButtonsWrapper';

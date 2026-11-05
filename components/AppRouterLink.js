@@ -1,4 +1,4 @@
-import { buttonSizeClassNames, buttonVariantClassNames } from '/Constants.js';
+import { buttonSizeClassNames, buttonVariantClassNames, errorMessages } from '/Constants.js';
 import { styleSheetManager } from '/lib/StyleSheetManager.js';
 import '/models/Route.js';
 import { appRouter } from '/Routes.js';
@@ -146,6 +146,17 @@ export class AppRouterLink extends HTMLElement {
     /** @param {Event} event  */
     doNothing(event) {
         event.preventDefault();
+    }
+
+    /** @param {HTMLElement} element  */
+    addContent(element) {
+        const link = this.shadowRoot?.querySelector('a');
+
+        if (!link) {
+            throw new Error(errorMessages.elementNotFound);
+        }
+
+        link.appendChild(element);
     }
 }
 
