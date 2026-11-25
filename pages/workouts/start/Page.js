@@ -26,6 +26,7 @@ export class WorkoutsStartPage extends HTMLElement {
         this.saveWorkout = this.saveWorkout.bind(this);
         this.removeExerciseSelect = this.removeExerciseSelect.bind(this);
         this.enableAddButton = this.enableAddButton.bind(this);
+        this.openExercises = this.openExercises.bind(this);
 
         const componentStyleSheet = new CSSStyleSheet();
         componentStyleSheet.replaceSync(`
@@ -129,6 +130,10 @@ export class WorkoutsStartPage extends HTMLElement {
         this.shadowRoot
             ?.querySelector('form')
             ?.addEventListener('submit', this.saveWorkout);
+
+        this.shadowRoot
+            ?.getElementById(this.#ids.saveWorkoutButton)
+            ?.addEventListener('click', this.openExercises);
     }
 
     #displayFallback() {
@@ -160,6 +165,18 @@ export class WorkoutsStartPage extends HTMLElement {
         this.shadowRoot
             ?.querySelector('ul')
             ?.appendChild(exerciseElement);
+    }
+
+    openExercises() {
+        this.shadowRoot
+            ?.querySelectorAll('details')
+            .forEach((element) => {
+                if (!(element instanceof HTMLDetailsElement)) {
+                    return;
+                }
+
+                element.open = true;
+            });
     }
 
     /** @param {WorkoutStartExercise} exercise  */
