@@ -61,6 +61,7 @@ export class App extends HTMLElement {
         appContainer.appendChild(navTabs);
 
         workoutsStartStore.addIsStartedObserver(this.toggleCurrentWorkoutBar);
+        workoutsStartStore.initializeExercises(null);
     }
 
     async #navigateToOnboarding() {

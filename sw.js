@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v41';
+const CACHE_VERSION = 'v42';
 
 const ASSETS = [
     '/components/currentWorkoutBar/CurrentWorkoutBar.js',
@@ -16,6 +16,7 @@ const ASSETS = [
     '/lib/IndexedDBManager.js',
     '/lib/Observable.js',
     '/lib/PromiseIndexedDB.js',
+    '/lib/StartedWorkoutParser.js',
     '/lib/StyleSheetManager.js',
     '/lib/TrainingDataParser.js',
     '/models/Exercise.js',

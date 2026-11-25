@@ -17,6 +17,13 @@
  * @property {WorkoutExercise[]} Exercises
  */
 
+/**
+ * @typedef {Object} StartedWorkout
+ * @property {number} id
+ * @property {Date} startDate
+ * @property {WorkoutStartExercise[]} exercises
+ */
+
 /** 
  * @typedef {Object} WorkoutStartExercise
  * @property {number} id

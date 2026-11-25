@@ -3,6 +3,8 @@ import '/models/Workout.js';
 import { exercisesService } from '/services/ExercisesService.js';
 import { Observable } from '/lib/Observable.js';
 import '/models/Observer.js';
+import { errorMessages, localStorageKeys } from '/Constants.js';
+import { startedWorkoutParser } from '/lib/StartedWorkoutParser.js';
 
 class WorkoutsStartStore {
     /** @type {number | undefined} */
@@ -32,15 +34,30 @@ class WorkoutsStartStore {
         return this.#setTimerStartDate;
     }
 
-    /** @param {number} workoutId  */
+    /** @param {number | null} workoutId  */
     async initializeExercises(workoutId) {
+        if (workoutId !== null) {
+            return this.#initializeEmpty(workoutId);
+        }
+
+        const localStorageString = window.localStorage.getItem(localStorageKeys.startedWorkout);
+        if (localStorageString === null) {
+            throw new Error(errorMessages.unexpectedType);
+        }
+
+        this.#initializeFromLocalStorage(localStorageString);
+        return;
+    }
+
+    /** @param {number} workoutId  */
+    async #initializeEmpty(workoutId) {
         this.#workoutId = workoutId;
         this.#startDate = new Date();
 
         const workout = await workoutsService.getUserWorkout(Number(workoutId));
 
         if (workout === undefined) {
-            return;
+            throw new Error(errorMessages.unexpectedType);
         }
 
         this.#exercises = await Promise.all(
@@ -70,13 +87,30 @@ class WorkoutsStartStore {
         );
 
         this.#isStartedObservable.emit(true);
+        this.#saveToLocalStorage();
         return;
+    }
+
+    /** @param {string} localStorageString  */
+    #initializeFromLocalStorage(localStorageString) {
+        const localStorageData = JSON.parse(localStorageString);
+        const parsedData = startedWorkoutParser.parseStartedWorkout(localStorageData);
+
+        if (parsedData === null) {
+            throw new Error(errorMessages.unexpectedType);
+        }
+
+        this.#workoutId = parsedData.id;
+        this.#startDate = parsedData.startDate;
+        this.#exercises = parsedData.exercises;
+        this.#isStartedObservable.emit(true);
     }
 
     /** @param {number} exerciseId  */
     removeExercise(exerciseId) {
         const exerciseIndex = this.#exercises.findIndex((exercise) => exercise.id === exerciseId);
         this.#exercises.splice(exerciseIndex, 1);
+        this.#saveToLocalStorage();
     }
 
     /**
@@ -105,6 +139,7 @@ class WorkoutsStartStore {
         }
 
         this.#exercises.push(newExercise);
+        this.#saveToLocalStorage();
 
         return newExercise;
     }
@@ -129,6 +164,7 @@ class WorkoutsStartStore {
             weight: null,
             reps: null,
         });
+        this.#saveToLocalStorage();
     }
 
     /**
@@ -143,6 +179,7 @@ class WorkoutsStartStore {
         }
 
         foundExercise.sets.splice(setIndex, 1);
+        this.#saveToLocalStorage();
     }
 
     /**
@@ -158,6 +195,7 @@ class WorkoutsStartStore {
         }
 
         foundExercise.sets[setIndex].weight = weight;
+        this.#saveToLocalStorage();
     }
 
     /**
@@ -173,6 +211,7 @@ class WorkoutsStartStore {
         }
 
         foundExercise.sets[setIndex].reps = reps;
+        this.#saveToLocalStorage();
     }
 
     /** @param {number} exerciseId  */
@@ -185,6 +224,7 @@ class WorkoutsStartStore {
 
         const deletedEntries = this.#exercises.splice(foundExerciseIndex, 1);
         this.#exercises.splice(foundExerciseIndex - 1, 0, ...deletedEntries);
+        this.#saveToLocalStorage();
     }
 
     /** @param {number} exerciseId  */
@@ -197,12 +237,14 @@ class WorkoutsStartStore {
 
         const deletedEntries = this.#exercises.splice(foundExerciseIndex, 1);
         this.#exercises.splice(foundExerciseIndex + 1, 0, ...deletedEntries);
+        this.#saveToLocalStorage();
     }
 
     reset() {
         this.#workoutId = undefined;
         this.#exercises = [];
         this.#isStartedObservable.emit(false);
+        window.localStorage.removeItem(localStorageKeys.startedWorkout);
     }
 
     resetSetTimerStartDate() {
@@ -212,6 +254,14 @@ class WorkoutsStartStore {
     /** @param {Observer<boolean>} observer */
     addIsStartedObserver(observer) {
         this.#isStartedObservable.addObserver(observer);
+    }
+
+    #saveToLocalStorage() {
+        window.localStorage.setItem(localStorageKeys.startedWorkout, JSON.stringify({
+            id: this.workoutId,
+            startDate: this.#startDate,
+            exercises: this.#exercises,
+        }));
     }
 }
 

@@ -88,3 +88,8 @@ export const errorMessages = {
     unexpectedType: 'Unexpected type',
 };
 Object.freeze(errorMessages);
+
+export const localStorageKeys = {
+    startedWorkout: 'startedWorkout',
+};
+Object.freeze(localStorageKeys);
