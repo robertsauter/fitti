@@ -14,6 +14,7 @@ export class WorkoutsStartPage extends HTMLElement {
     #ids = {
         addExerciseButton: 'addExerciseButton',
         saveWorkoutButton: 'saveWorkoutButton',
+        cancelWorkoutButton: 'cancelWorkoutButton',
     };
 
     constructor() {
@@ -67,12 +68,17 @@ export class WorkoutsStartPage extends HTMLElement {
 
         shadow.innerHTML = `
             <div class="${globalClassNames.pageContainer}">
-                <div class="${globalClassNames.titleWrapper}">
-                    <div class="${globalClassNames.emojiCircle}">
-                        <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
-                        <fit-icon name="${iconNames.notepadEmoji}"></fit-icon>
+                <div class="${globalClassNames.headerContainer}">
+                    <div class="${globalClassNames.titleWrapper}">
+                        <div class="${globalClassNames.emojiCircle}">
+                            <fit-random-gender-workout-emoji></fit-random-gender-workout-emoji>
+                            <fit-icon name="${iconNames.notepadEmoji}"></fit-icon>
+                        </div>
+                        <h1></h1>
                     </div>
-                    <h1></h1>
+                    <button id="${this.#ids.cancelWorkoutButton}" class="button icon">
+                        <fit-icon name="${iconNames.dismissFilled}"></fit-icon>
+                    </button>
                 </div>
                 <form>
                     <ul class="exercisesList"></ul>
@@ -134,6 +140,10 @@ export class WorkoutsStartPage extends HTMLElement {
         this.shadowRoot
             ?.getElementById(this.#ids.saveWorkoutButton)
             ?.addEventListener('click', this.openExercises);
+
+        this.shadowRoot
+            ?.getElementById(this.#ids.cancelWorkoutButton)
+            ?.addEventListener('click', this.cancelWorkout);
     }
 
     #displayFallback() {
@@ -165,6 +175,11 @@ export class WorkoutsStartPage extends HTMLElement {
         this.shadowRoot
             ?.querySelector('ul')
             ?.appendChild(exerciseElement);
+    }
+
+    cancelWorkout() {
+        workoutsStartStore.reset();
+        appRouter.navigate(appRouterIds.workouts);
     }
 
     openExercises() {

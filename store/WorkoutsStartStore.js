@@ -36,13 +36,15 @@ class WorkoutsStartStore {
 
     /** @param {number | null} workoutId  */
     async initializeExercises(workoutId) {
+        this.#isStartedObservable.emit(false);
+
         if (workoutId !== null) {
             return this.#initializeEmpty(workoutId);
         }
 
         const localStorageString = window.localStorage.getItem(localStorageKeys.startedWorkout);
         if (localStorageString === null) {
-            throw new Error(errorMessages.unexpectedType);
+            return;
         }
 
         this.#initializeFromLocalStorage(localStorageString);
